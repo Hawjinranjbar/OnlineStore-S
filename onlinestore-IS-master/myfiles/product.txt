@@ -1,0 +1,10 @@
+1;Nivea Moisturizing Cream;180000;20;1
+2;L'Oréal Matte Lipstick;250000;15;2
+3;Cinere Sunscreen SPF50;320000;10;1
+4;Dove Shampoo for Dry Hair;140000;30;3
+5;Seagull Face Wash Foam;170000;25;1
+6;Rexona Body Spray;130000;18;4
+7;Maybelline Fit Me Foundation;340000;12;2
+8;Garnier Micellar Water;220000;22;1
+9;Pantene Hair Oil;210000;17;3
+10;Victoria's Secret Body Mist;450000;8;4
