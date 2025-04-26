@@ -8,18 +8,16 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class frmUser {
-}
-
 import common.User;
 import managers.UserManager;
 
 import javax.swing.*;
-        import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 
 public class FrmUser extends JFrame {
     private JTextField txtId, txtUsername, txtPassword;

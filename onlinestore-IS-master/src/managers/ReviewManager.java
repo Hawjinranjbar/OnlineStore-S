@@ -1,7 +1,7 @@
 package managers;
 
 import common.Review; // Import Review class
-import fileManager.txtFileManager; // Import file manager
+import filemanager.txtFileManager; // Import filemanager (note the lowercase 'f')
 import java.io.File; // File handling
 
 // Manager class to manage file operations for Review

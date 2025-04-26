@@ -4,20 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/OnlineStore-S.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/myfiles/Review.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/myfiles/User.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/FrmUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Review.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/frmReview.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ReviewManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/UserManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/OnlineStore-S.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/FrmUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/FrmUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ReviewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ReviewManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/UserManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +48,9 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.FrmUser.executor": "Run",
     "Application.Main.executor": "Run",
+    "Application.frmOrderCustomer.executor": "Run",
     "Application.frmReview.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -88,11 +81,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1745669356395</updated>
-      <workItem from="1745669357952" duration="654000" />
+      <workItem from="1745669357952" duration="2154000" />
     </task>
+    <task id="LOCAL-00001" summary="push these">
+      <option name="closed" value="true" />
+      <created>1745670039560</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1745670039560</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="push these" />
+    <option name="LAST_COMMIT_MESSAGE" value="push these" />
   </component>
 </project>

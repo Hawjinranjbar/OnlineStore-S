@@ -1,7 +1,7 @@
 package managers;
 
 import common.User;
-import fileManager.txtFileManager;
+import filemanager.txtFileManager;
 import java.io.File;
 
 public class UserManager {
@@ -18,19 +18,19 @@ public class UserManager {
         // Auto-create User.txt if it does not exist
         File file = new File("myFiles/" + FILE_NAME);
         if (!file.exists()) {
-            txtFileManager fileManager = new txtFileManager(FILE_NAME);
-            fileManager.CreateFile();
+            txtFileManager filemanager = new txtFileManager(FILE_NAME);
+            filemanager.CreateFile();
         }
     }
 
     public static void addUser(User user) {
-        txtFileManager fileManager = new txtFileManager(FILE_NAME);
-        fileManager.AppendRow(user.getId() + ";" + user.getUsername() + ";" + user.getPassword() + ";" + user.getRole());
+        txtFileManager filemanager = new txtFileManager(FILE_NAME);
+        filemanager.AppendRow(user.getId() + ";" + user.getUsername() + ";" + user.getPassword() + ";" + user.getRole());
     }
 
     public static User[] getAllUsers() {
-        txtFileManager fileManager = new txtFileManager(FILE_NAME);
-        String[] lines = fileManager.GetArray();
+        txtFileManager filemanager = new txtFileManager(FILE_NAME);
+        String[] lines = filemanager.GetArray();
         User[] users = new User[lines.length];
         for (int i = 0; i < lines.length; i++) {
             String[] parts = lines[i].split(";");
@@ -46,18 +46,18 @@ public class UserManager {
     }
 
     public static void deleteUser(int rowIndex) {
-        txtFileManager fileManager = new txtFileManager(FILE_NAME);
-        fileManager.DeleteRow(rowIndex);
+        txtFileManager filemanager = new txtFileManager(FILE_NAME);
+        filemanager.DeleteRow(rowIndex);
     }
 
     public static void updateUser(User user, int rowIndex) {
-        txtFileManager fileManager = new txtFileManager(FILE_NAME);
-        fileManager.UpdateRow(user.getId() + ";" + user.getUsername() + ";" + user.getPassword() + ";" + user.getRole(), rowIndex);
+        txtFileManager filemanager = new txtFileManager(FILE_NAME);
+        filemanager.UpdateRow(user.getId() + ";" + user.getUsername() + ";" + user.getPassword() + ";" + user.getRole(), rowIndex);
     }
 
     public static User getUser(int rowIndex) {
-        txtFileManager fileManager = new txtFileManager(FILE_NAME);
-        String line = fileManager.GetRow(rowIndex);
+        txtFileManager filemanager = new txtFileManager(FILE_NAME);
+        String line = filemanager.GetRow(rowIndex);
         if (line != null && !line.trim().isEmpty()) {
             String[] parts = line.split(";");
             if (parts.length == 4) {
