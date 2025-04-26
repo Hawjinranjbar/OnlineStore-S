@@ -6,7 +6,7 @@ public class frmMain extends JFrame {
     public frmMain() {
         setTitle("پنل اصلی");
         setSize(500, 400);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Set background color
         getContentPane().setBackground(new Color(255, 182, 193)); // Light Pink
