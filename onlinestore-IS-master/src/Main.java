@@ -1,22 +1,20 @@
 import common.Product;
 import managers.ProductManager;
 
-
 public class Main {
     public static void main(String[] args) {
-        // ساخت محصول نمونه
-        Product p = new Product(1, "Mouse Logitech", 250000, 20);
-
-        // ساخت منیجر و ثبت محصول
+        // ساخت منیجر محصول
         ProductManager pm = new ProductManager();
-        pm.Insert(p);
 
-        // خواندن کل لیست محصول‌ها
+        // خواندن کل لیست محصولات
         Product[] products = pm.SelectAll();
 
-        System.out.println("📦 لیست محصولات:");
+        // چاپ لیست محصولات
+        System.out.println("📋 Product List:");
         for (int i = 0; i < products.length; i++) {
-            System.out.println((i + 1) + ". " + products[i].toString());
+            if (products[i] != null) {
+                System.out.println((i + 1) + ". " + products[i].toString());
+            }
         }
     }
 }

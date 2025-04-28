@@ -1,61 +1,59 @@
 package managers;
 
-import filemanager.txtFileManager;
 import common.Product;
+import filemanager.txtFileManager;
 
 public class ProductManager {
-    txtFileManager fm;
-    String fileName = "Product.txt";
+    private txtFileManager fm;
 
     public ProductManager() {
-        fm = new txtFileManager(fileName);
+        fm = new txtFileManager("product.txt");
     }
 
-    // افزودن محصول جدید
     public void Insert(Product p) {
         fm.AppendRow(p.toString());
     }
 
-    // دریافت همه محصولات
+    public void Update(Product p, int row) {
+        fm.UpdateRow(p.toString(), row);
+    }
+
+    public void Delete(int row) {
+        fm.DeleteRow(row);
+    }
+
     public Product[] SelectAll() {
         String[] rows = fm.GetArray();
+        if (rows == null || rows.length == 0) {
+            return new Product[0]; // اگه فایلی نباشه یا خالی باشه
+        }
+
         Product[] products = new Product[rows.length];
         for (int i = 0; i < rows.length; i++) {
-            products[i] = Product.fromString(rows[i]);
+            try {
+                if (rows[i] != null && !rows[i].trim().isEmpty()) {
+                    String[] parts = rows[i].split(";");
+                    if (parts.length == 10) {
+                        int id = Integer.parseInt(parts[0]);
+                        String name = parts[1];
+                        String brand = parts[2];
+                        String description = parts[3];
+                        double price = Double.parseDouble(parts[4]);
+                        int stock = Integer.parseInt(parts[5]);
+                        String category = parts[6];
+                        String skinType = parts[7];
+                        boolean isOrganic = Boolean.parseBoolean(parts[8]);
+                        String imageFileName = parts[9];
+
+                        products[i] = new Product(id, name, brand, description, price, stock, category, skinType, isOrganic, imageFileName);
+                    }
+                }
+            } catch (Exception ex) {
+                // اگر خطایی تو پارسینگ بود، اون محصول رد میشه
+                System.out.println("❌ Error reading product at row " + i + ": " + ex.getMessage());
+                products[i] = null;
+            }
         }
         return products;
-    }
-
-    // گرفتن محصول خاص با ایندکس (Primary Key فرضی)
-    public Product SelectByPK(int rowNumber) {
-        String row = fm.GetRow(rowNumber);
-        if (row != null)
-            return Product.fromString(row);
-        return null;
-    }
-
-    // گرفتن تعداد کل محصولات
-    public int SelectCount() {
-        return fm.SelectCount();
-    }
-
-    // حذف یک محصول بر اساس شماره سطر
-    public void Delete(int rowNumber) {
-        fm.DeleteRow(rowNumber);
-    }
-
-    // ویرایش محصول
-    public void Update(Product p, int rowNumber) {
-        fm.UpdateRow(p.toString(), rowNumber);
-    }
-
-    // درج محصول در یک سطر خاص
-    public void InsertAt(Product p, int rowNumber) {
-        fm.InsertRow(p.toString(), rowNumber);
-    }
-
-    // پاک‌سازی کل فایل محصولات
-    public void ClearAll() {
-        fm.Clear();
     }
 }
