@@ -17,6 +17,7 @@ public class frmCart extends JFrame {
     private JTextField txtDiscountCode;
     private JButton btnApplyDiscount;
     private JButton btnFinalizeOrder;
+    private JButton btnDeleteProduct;
     private JButton btnGoToLogin;
     private CartManager cartManager;
     private ProductManager productManager;
@@ -25,7 +26,7 @@ public class frmCart extends JFrame {
 
     public frmCart() {
         setTitle("🛒 Your Shopping Cart");
-        setSize(800, 700);
+        setSize(800, 750);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
@@ -63,10 +64,14 @@ public class frmCart extends JFrame {
         btnFinalizeOrder.setFont(font);
         btnFinalizeOrder.setBackground(new Color(204, 255, 204));
 
+        btnDeleteProduct = new JButton("🗑️ Delete Product");
+        btnDeleteProduct.setFont(font);
+        btnDeleteProduct.setBackground(new Color(255, 204, 204));
+
         btnGoToLogin = new JButton("🔑 Go to Login");
         btnGoToLogin.setFont(font);
         btnGoToLogin.setBackground(new Color(255, 204, 229));
-        btnGoToLogin.setVisible(false); // اول مخفیه
+        btnGoToLogin.setVisible(false);
 
         JPanel discountPanel = new JPanel();
         discountPanel.setBackground(new Color(255, 240, 245));
@@ -74,12 +79,13 @@ public class frmCart extends JFrame {
         discountPanel.add(txtDiscountCode);
         discountPanel.add(btnApplyDiscount);
 
-        JPanel bottomPanel = new JPanel(new GridLayout(5, 1, 5, 5));
+        JPanel bottomPanel = new JPanel(new GridLayout(6, 1, 5, 5));
         bottomPanel.setBackground(new Color(255, 240, 245));
         bottomPanel.add(lblDiscountInfo);
         bottomPanel.add(discountPanel);
         bottomPanel.add(lblTotalPrice);
         bottomPanel.add(btnFinalizeOrder);
+        bottomPanel.add(btnDeleteProduct);
         bottomPanel.add(btnGoToLogin);
 
         add(scrollPane, BorderLayout.CENTER);
@@ -97,10 +103,16 @@ public class frmCart extends JFrame {
             }
         });
 
+        btnDeleteProduct.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                deleteProductFromCart();
+            }
+        });
+
         btnGoToLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new frmLoginCustomer();
-                dispose(); // این فرم رو ببند
+                dispose();
             }
         });
 
@@ -115,13 +127,15 @@ public class frmCart extends JFrame {
         double totalPrice = 0;
         StringBuilder sb = new StringBuilder();
 
-        for (Cart c : carts) {
+        for (int i = 0; i < carts.length; i++) {
+            Cart c = carts[i];
             if (c != null) {
                 for (Product p : products) {
                     if (p != null && p.getId() == c.getProductId()) {
                         double itemPrice = p.getPrice() * c.getQuantity();
                         totalPrice += itemPrice;
-                        sb.append("🌸 ").append(p.getName())
+                        sb.append(i).append(". ") // شماره ردیف
+                                .append("🌸 ").append(p.getName())
                                 .append(" (x").append(c.getQuantity()).append(")")
                                 .append(" - ").append(formatPrice(itemPrice)).append(" Toman\n");
                         break;
@@ -166,19 +180,33 @@ public class frmCart extends JFrame {
             JOptionPane.showMessageDialog(this, "❌ Invalid or inactive discount code.");
         }
 
-        loadCart(); // رفرش کن
+        loadCart();
     }
 
     private void finalizeOrder() {
         if (frmLoginCustomer.loggedInCustomer == null) {
             JOptionPane.showMessageDialog(this, "❌ You must login first!");
-            btnGoToLogin.setVisible(true); // دکمه لاگین رو نشون بده
+            btnGoToLogin.setVisible(true);
             return;
         }
 
         JOptionPane.showMessageDialog(this, "✅ Order finalized successfully!\nThanks for shopping with us 🛍️");
 
-        // اینجا میتونیم سبد خرید رو خالی کنیم یا سفارش رو ذخیره کنیم بعداً
+        // اینجا بعداً میتونیم cart.txt رو خالی کنیم و سفارش رو ثبت کنیم
+    }
+
+    private void deleteProductFromCart() {
+        try {
+            String input = JOptionPane.showInputDialog(this, "Enter row number to delete:");
+            if (input != null && !input.isEmpty()) {
+                int row = Integer.parseInt(input.trim());
+                cartManager.Delete(row);
+                JOptionPane.showMessageDialog(this, "✅ Product deleted from cart!");
+                loadCart();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "❌ Error deleting product.");
+        }
     }
 
     private String formatPrice(double price) {
@@ -189,4 +217,3 @@ public class frmCart extends JFrame {
         new frmCart();
     }
 }
-
