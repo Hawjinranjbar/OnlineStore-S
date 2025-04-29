@@ -5,46 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
-      <change afterPath="$PROJECT_DIR$/myfiles/discount.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Discount.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/DiscountManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmOrderCustomer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmReview.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/myfiles/Order.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/Order.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/myfiles/Review.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/Review.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/myfiles/User.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/User.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/myfiles/customer.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/customer.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/myfiles/product.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/product.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/Framuser.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/Framuser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/FrmUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/FrmUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/frmCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmCustomer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/frmCustomerRegistration.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmCustomerRegistration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/frmMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/frmOrderCustomer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/frmProduct.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/frmReview.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Customer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CustomerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CustomerManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ProductManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ProductManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/common/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/common/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmCustomer$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmCustomer$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmCustomer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmOrderCustomer$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmOrderCustomer$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmOrderCustomer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmProduct$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmProduct$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmProduct.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmReview$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmReview$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmReview$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmReview$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmReview.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/CustomerManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/ProductManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/ProductManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmLoginCustomer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,31 +46,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Framuser.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FrmUser.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmCustomer.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmCustomerRegistration.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmOrderCustomer.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmProduct.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmReview.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmShowProducts.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Framuser.executor": "Run",
+    "Application.FrmUser.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.frmCustomer.executor": "Run",
+    "Application.frmCustomerRegistration.executor": "Run",
+    "Application.frmLoginCustomer.executor": "Run",
+    "Application.frmOrderCustomer.executor": "Run",
+    "Application.frmProduct.executor": "Run",
+    "Application.frmReview.executor": "Run",
+    "Application.frmShowProducts.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\asus\IdeaProjects\OnlineStore-S" />
@@ -139,7 +104,7 @@
       <workItem from="1745871464107" duration="447000" />
       <workItem from="1745872281441" duration="14000" />
       <workItem from="1745934424925" duration="962000" />
-      <workItem from="1745936573161" duration="1054000" />
+      <workItem from="1745936573161" duration="2865000" />
     </task>
     <task id="LOCAL-00001" summary="push these">
       <option name="closed" value="true" />
@@ -189,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745842034182</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="push these">
+      <option name="closed" value="true" />
+      <created>1745938311850</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1745938311850</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
