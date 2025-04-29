@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CustomerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CustomerManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmLoginCustomer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmDiscount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/DiscountManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/DiscountManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,9 +51,11 @@
     "Application.Main.executor": "Run",
     "Application.frmCustomer.executor": "Run",
     "Application.frmCustomerRegistration.executor": "Run",
+    "Application.frmDiscount.executor": "Run",
     "Application.frmLoginCustomer.executor": "Run",
     "Application.frmOrderCustomer.executor": "Run",
     "Application.frmProduct.executor": "Run",
+    "Application.frmRegisterCustomer.executor": "Run",
     "Application.frmReview.executor": "Run",
     "Application.frmShowProducts.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -104,7 +104,7 @@
       <workItem from="1745871464107" duration="447000" />
       <workItem from="1745872281441" duration="14000" />
       <workItem from="1745934424925" duration="962000" />
-      <workItem from="1745936573161" duration="2865000" />
+      <workItem from="1745936573161" duration="3288000" />
     </task>
     <task id="LOCAL-00001" summary="push these">
       <option name="closed" value="true" />
@@ -162,7 +162,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745938311850</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="push these">
+      <option name="closed" value="true" />
+      <created>1745940115922</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1745940115922</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
