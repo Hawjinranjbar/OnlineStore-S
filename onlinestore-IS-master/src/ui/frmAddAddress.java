@@ -8,12 +8,12 @@ import common.Address;
 
 public class frmAddAddress extends JFrame {
     private JTextField txtId, txtCity, txtStreet, txtPostalCode, txtDetails;
-    private JButton btnSave;
+    private JButton btnSave, btnReturnToCart;
     private AddressManager am;
 
     public frmAddAddress() {
         setTitle("🏡 Add New Address");
-        setSize(500, 500);
+        setSize(500, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
@@ -45,9 +45,15 @@ public class frmAddAddress extends JFrame {
         btnSave.setBackground(new Color(204, 255, 204));
         btnSave.setFont(font);
 
-        JPanel buttonPanel = new JPanel();
+        btnReturnToCart = new JButton("↩️ Return to Cart");
+        btnReturnToCart.setBackground(new Color(255, 229, 204));
+        btnReturnToCart.setFont(font);
+        btnReturnToCart.setVisible(false); // اول مخفیه
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setBackground(new Color(255, 240, 245));
         buttonPanel.add(btnSave);
+        buttonPanel.add(btnReturnToCart);
 
         add(inputPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
@@ -55,6 +61,13 @@ public class frmAddAddress extends JFrame {
         btnSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 saveAddress();
+            }
+        });
+
+        btnReturnToCart.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new frmCart(); // رفتن به سبد خرید
+                dispose(); // این فرم رو ببند
             }
         });
 
@@ -72,7 +85,9 @@ public class frmAddAddress extends JFrame {
             );
             am.Insert(address);
             JOptionPane.showMessageDialog(this, "✅ Address saved successfully!");
+
             clearFields();
+            btnReturnToCart.setVisible(true); // دکمه بازگشت رو نشون بده
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "❌ Error saving address: " + ex.getMessage());
         }
