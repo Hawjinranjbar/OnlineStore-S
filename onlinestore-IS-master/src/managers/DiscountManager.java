@@ -24,41 +24,19 @@ public class DiscountManager {
 
     public Discount[] SelectAll() {
         String[] rows = fm.GetArray();
-        if (rows == null || rows.length == 0) {
-            return new Discount[0];
-        }
-
         Discount[] discounts = new Discount[rows.length];
         for (int i = 0; i < rows.length; i++) {
-            try {
-                if (rows[i] != null && !rows[i].trim().isEmpty()) {
-                    String[] parts = rows[i].split(";");
-                    if (parts.length == 6) {
-                        discounts[i] = new Discount(
-                                Integer.parseInt(parts[0]),
-                                parts[1],
-                                Integer.parseInt(parts[2]),
-                                parts[3],
-                                Double.parseDouble(parts[4]),
-                                Boolean.parseBoolean(parts[5])
-                        );
-                    }
+            if (rows[i] != null) {
+                String[] parts = rows[i].split(";");
+                if (parts.length == 3) {
+                    discounts[i] = new Discount(
+                            parts[0],
+                            Integer.parseInt(parts[1]),
+                            Boolean.parseBoolean(parts[2])
+                    );
                 }
-            } catch (Exception ex) {
-                System.out.println("❌ Error reading discount at row " + i + ": " + ex.getMessage());
-                discounts[i] = null;
             }
         }
         return discounts;
-    }
-
-    public Discount findByCode(String code) {
-        Discount[] discounts = SelectAll();
-        for (Discount d : discounts) {
-            if (d != null && d.getDiscountCode().equalsIgnoreCase(code) && d.isActive()) {
-                return d;
-            }
-        }
-        return null;
     }
 }
