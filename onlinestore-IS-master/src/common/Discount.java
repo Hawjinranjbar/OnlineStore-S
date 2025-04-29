@@ -7,7 +7,7 @@ public class Discount {
     private String applicableCategory;
     private double minPurchaseAmount;
     private boolean isActive;
-
+    
     public Discount(int discountId, String discountCode, int discountPercent, String applicableCategory, double minPurchaseAmount, boolean isActive) {
         this.discountId = discountId;
         this.discountCode = discountCode;

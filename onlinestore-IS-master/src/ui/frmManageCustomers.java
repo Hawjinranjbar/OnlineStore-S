@@ -50,41 +50,51 @@ public class frmManageCustomers extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        btnRefresh.addActionListener(e -> refreshList());
+        // No lambdas here ⛔️
 
-        btnUpdate.addActionListener(e -> {
-            try {
-                int row = Integer.parseInt(JOptionPane.showInputDialog("Enter row number to update:"));
-                String newName = JOptionPane.showInputDialog("New name:");
-                String newPhone = JOptionPane.showInputDialog("New phone:");
-                String newEmail = JOptionPane.showInputDialog("New email:");
-                String newPassword = JOptionPane.showInputDialog("New password:");
-
-                Customer oldCustomer = cm.SelectAll()[row];
-                Customer updatedCustomer = new Customer(
-                        oldCustomer.getId(),
-                        newName,
-                        newPhone,
-                        newEmail,
-                        newPassword
-                );
-
-                cm.Update(updatedCustomer, row);
-                JOptionPane.showMessageDialog(this, "✅ Customer Updated!");
+        btnRefresh.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 refreshList();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "❌ Error updating customer.");
             }
         });
 
-        btnDelete.addActionListener(e -> {
-            try {
-                int row = Integer.parseInt(JOptionPane.showInputDialog("Enter row number to delete:"));
-                cm.Delete(row);
-                JOptionPane.showMessageDialog(this, "✅ Customer Deleted!");
-                refreshList();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "❌ Error deleting customer.");
+        btnUpdate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int row = Integer.parseInt(JOptionPane.showInputDialog("Enter row number to update:"));
+                    String newName = JOptionPane.showInputDialog("New name:");
+                    String newPhone = JOptionPane.showInputDialog("New phone:");
+                    String newEmail = JOptionPane.showInputDialog("New email:");
+                    String newPassword = JOptionPane.showInputDialog("New password:");
+
+                    Customer oldCustomer = cm.SelectAll()[row];
+                    Customer updatedCustomer = new Customer(
+                            oldCustomer.getId(),
+                            newName,
+                            newPhone,
+                            newEmail,
+                            newPassword
+                    );
+
+                    cm.Update(updatedCustomer, row);
+                    JOptionPane.showMessageDialog(frmManageCustomers.this, "✅ Customer Updated!");
+                    refreshList();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frmManageCustomers.this, "❌ Error updating customer.");
+                }
+            }
+        });
+
+        btnDelete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int row = Integer.parseInt(JOptionPane.showInputDialog("Enter row number to delete:"));
+                    cm.Delete(row);
+                    JOptionPane.showMessageDialog(frmManageCustomers.this, "✅ Customer Deleted!");
+                    refreshList();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frmManageCustomers.this, "❌ Error deleting customer.");
+                }
             }
         });
 

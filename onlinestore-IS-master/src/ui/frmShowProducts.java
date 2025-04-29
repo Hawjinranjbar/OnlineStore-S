@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import managers.ProductManager;
+import managers.CartManager;
 import common.Product;
+import common.Cart;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -16,7 +18,7 @@ public class frmShowProducts extends JFrame {
     private JLabel lblResultCount;
     private JPanel panelProducts;
     private JScrollPane scrollPane;
-    private Font emojiFont = new Font("Segoe UI Emoji", Font.PLAIN, 16); // فونت ایموجی
+    private Font emojiFont = new Font("Segoe UI Emoji", Font.PLAIN, 16);
 
     public frmShowProducts() {
         setTitle("💋 Beauty Shop - View Products");
@@ -130,7 +132,7 @@ public class frmShowProducts extends JFrame {
         card.setLayout(new BorderLayout(5, 5));
         card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-        card.setPreferredSize(new Dimension(250, 300));
+        card.setPreferredSize(new Dimension(250, 340)); // چون دکمه هم اضافه شده
 
         JLabel lblImage = new JLabel();
         try {
@@ -159,8 +161,26 @@ public class frmShowProducts extends JFrame {
         infoPanel.add(lblPrice);
         infoPanel.add(lblCategory);
 
+        JButton btnAddToCart = new JButton("➕ Add to Cart");
+        btnAddToCart.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 13));
+        btnAddToCart.setBackground(new Color(255, 204, 229));
+
+        btnAddToCart.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    CartManager cm = new CartManager();
+                    Cart c = new Cart(p.getId(), 1);
+                    cm.Insert(c);
+                    JOptionPane.showMessageDialog(frmShowProducts.this, "🛒 Product added to cart!");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frmShowProducts.this, "❌ Error adding product to cart.");
+                }
+            }
+        });
+
         card.add(lblImage, BorderLayout.NORTH);
         card.add(infoPanel, BorderLayout.CENTER);
+        card.add(btnAddToCart, BorderLayout.SOUTH);
 
         return card;
     }
