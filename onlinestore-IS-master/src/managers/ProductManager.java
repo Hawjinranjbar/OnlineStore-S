@@ -5,6 +5,13 @@ import filemanager.txtFileManager;
 
 public class ProductManager {
     private txtFileManager fm;
+    public static void main(String[] args) {
+        ProductManager pm = new ProductManager();
+        Product[] products = pm.SelectAll();
+        for (Product p : products) {
+            if (p != null) System.out.println(p.getName());
+        }
+    }
 
     public ProductManager() {
         fm = new txtFileManager("product.txt");

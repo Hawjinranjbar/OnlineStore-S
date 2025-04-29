@@ -5,7 +5,46 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
+      <change afterPath="$PROJECT_DIR$/myfiles/discount.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Discount.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/DiscountManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmOrderCustomer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmReview.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/myfiles/Order.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/Order.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/myfiles/Review.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/Review.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/myfiles/User.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/User.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/myfiles/customer.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/customer.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/myfiles/product.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/product.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/Framuser.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/Framuser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/FrmUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/FrmUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/frmCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmCustomer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/frmCustomerRegistration.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmCustomerRegistration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/frmMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/frmOrderCustomer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/frmProduct.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/frmReview.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CustomerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CustomerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ProductManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ProductManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/common/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/common/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmCustomer$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmCustomer$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmCustomer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmOrderCustomer$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmOrderCustomer$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmOrderCustomer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmProduct$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmProduct$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmProduct.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmReview$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmReview$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmReview$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmReview$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/frmReview.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/CustomerManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/ProductManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/ProductManager.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,9 +87,12 @@
     &quot;Application.Framuser.executor&quot;: &quot;Run&quot;,
     &quot;Application.FrmUser.executor&quot;: &quot;Run&quot;,
     &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.frmCustomer.executor&quot;: &quot;Run&quot;,
     &quot;Application.frmCustomerRegistration.executor&quot;: &quot;Run&quot;,
     &quot;Application.frmOrderCustomer.executor&quot;: &quot;Run&quot;,
+    &quot;Application.frmProduct.executor&quot;: &quot;Run&quot;,
     &quot;Application.frmReview.executor&quot;: &quot;Run&quot;,
+    &quot;Application.frmShowProducts.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
@@ -65,6 +107,13 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\asus\IdeaProjects\OnlineStore-S" />
+      <recent name="C:\Users\asus\IdeaProjects\OnlineStore-S\onlinestore-IS-master" />
+      <recent name="C:\Users\asus\IdeaProjects\OnlineStore-S\onlinestore-IS-master\src\ui" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -84,6 +133,13 @@
       <workItem from="1745669357952" duration="3131000" />
       <workItem from="1745778318894" duration="60000" />
       <workItem from="1745778450504" duration="31000" />
+      <workItem from="1745820629252" duration="53000" />
+      <workItem from="1745826549832" duration="3053000" />
+      <workItem from="1745841057230" duration="1471000" />
+      <workItem from="1745871464107" duration="447000" />
+      <workItem from="1745872281441" duration="14000" />
+      <workItem from="1745934424925" duration="962000" />
+      <workItem from="1745936573161" duration="1054000" />
     </task>
     <task id="LOCAL-00001" summary="push these">
       <option name="closed" value="true" />
@@ -109,11 +165,46 @@
       <option name="project" value="LOCAL" />
       <updated>1745671625123</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="push these">
+      <option name="closed" value="true" />
+      <created>1745826580408</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1745826580408</updated>
+    </task>
+    <task id="LOCAL-00005" summary="push these">
+      <option name="closed" value="true" />
+      <created>1745841746100</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1745841746100</updated>
+    </task>
+    <task id="LOCAL-00006" summary="push these">
+      <option name="closed" value="true" />
+      <created>1745842034182</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1745842034182</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="push these" />
