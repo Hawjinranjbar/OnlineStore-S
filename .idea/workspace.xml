@@ -6,19 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmDiscount.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmDiscount.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmLoginCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmLoginCustomer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmRegisterCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmRegisterCustomer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmLoginCustomer$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmLoginCustomer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmLoginCustomer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmRegisterCustomer$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmRegisterCustomer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmRegisterCustomer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$AddToCartListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$AddToCartListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$CategoryChangeListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$CategoryChangeListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$SearchButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$SearchButtonListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAddAddress$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAddAddress$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAddAddress.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAddAddress.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -306,7 +298,23 @@
       <option name="project" value="LOCAL" />
       <updated>1746072368536</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="push these">
+      <option name="closed" value="true" />
+      <created>1746049981876</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1746049981876</updated>
+    </task>
+    <task id="LOCAL-00022" summary="push these">
+      <option name="closed" value="true" />
+      <created>1746049992303</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1746049992303</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
