@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myfiles/Order.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/Order.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myfiles/address.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/address.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myfiles/customer.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/customer.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmCart.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmCart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmOrder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmRegisterCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmRegisterCustomer.java" afterDir="false" />
-    </list>
+    <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -116,7 +107,7 @@
       <workItem from="1745872281441" duration="14000" />
       <workItem from="1745934424925" duration="962000" />
       <workItem from="1745936573161" duration="13196000" />
-      <workItem from="1746003577653" duration="9346000" />
+      <workItem from="1746003577653" duration="9666000" />
     </task>
     <task id="LOCAL-00001" summary="push these">
       <option name="closed" value="true" />
@@ -246,7 +237,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746007497987</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="push these">
+      <option name="closed" value="true" />
+      <created>1746017219374</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1746017219374</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
