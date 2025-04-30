@@ -6,9 +6,12 @@ import java.awt.event.*;
 import managers.CartManager;
 import managers.ProductManager;
 import managers.DiscountManager;
+import managers.OrderManager;
 import common.Cart;
 import common.Product;
 import common.Discount;
+import common.Order;
+import java.time.LocalDate;
 
 public class frmCart extends JFrame {
     private JTextArea txtCartList;
@@ -111,9 +114,10 @@ public class frmCart extends JFrame {
 
         btnGoToLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new frmLoginCustomer();
+                new frmLoginCustomer("cart");
                 dispose();
             }
+
         });
 
         loadCart();
@@ -134,7 +138,7 @@ public class frmCart extends JFrame {
                     if (p != null && p.getId() == c.getProductId()) {
                         double itemPrice = p.getPrice() * c.getQuantity();
                         totalPrice += itemPrice;
-                        sb.append(i).append(". ") // شماره ردیف
+                        sb.append(i).append(". ")
                                 .append("🌸 ").append(p.getName())
                                 .append(" (x").append(c.getQuantity()).append(")")
                                 .append(" - ").append(formatPrice(itemPrice)).append(" Toman\n");
@@ -190,9 +194,45 @@ public class frmCart extends JFrame {
             return;
         }
 
-        JOptionPane.showMessageDialog(this, "✅ Order finalized successfully!\nThanks for shopping with us 🛍️");
+        Cart[] carts = cartManager.SelectAll();
+        Product[] products = productManager.SelectAll();
 
-        // اینجا بعداً میتونیم cart.txt رو خالی کنیم و سفارش رو ثبت کنیم
+        if (carts.length == 0) {
+            JOptionPane.showMessageDialog(this, "🛒 Your cart is empty!");
+            return;
+        }
+
+        int customerId = frmLoginCustomer.loggedInCustomer.getId();
+        int addressId = 1; // این رو بعداً از فرم آدرس میگیریم
+        String discountCode = (appliedDiscount != null) ? appliedDiscount.getDiscountCode() : "None";
+
+        double totalAmount = 0;
+        StringBuilder itemsText = new StringBuilder();
+
+        for (Cart c : carts) {
+            for (Product p : products) {
+                if (p != null && p.getId() == c.getProductId()) {
+                    double itemTotal = p.getPrice() * c.getQuantity();
+                    totalAmount += itemTotal;
+                    itemsText.append(c.getQuantity()).append("x").append(p.getName()).append(", ");
+                }
+            }
+        }
+
+        if (appliedDiscount != null) {
+            double discountAmount = (appliedDiscount.getDiscountPercent() / 100.0) * totalAmount;
+            totalAmount -= discountAmount;
+        }
+
+        int orderId = (int) (System.currentTimeMillis() % 100000);
+        String date = LocalDate.now().toString();
+
+        Order order = new Order(orderId, customerId, addressId, totalAmount, discountCode, itemsText.toString(), date);
+        new OrderManager().Insert(order);
+        cartManager.ClearAll();
+
+        JOptionPane.showMessageDialog(this, "✅ Order finalized and saved!\n🧾 Order ID: " + orderId);
+        loadCart();
     }
 
     private void deleteProductFromCart() {

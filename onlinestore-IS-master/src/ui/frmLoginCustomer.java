@@ -7,14 +7,23 @@ import managers.CustomerManager;
 import common.Customer;
 
 public class frmLoginCustomer extends JFrame {
-    public static Customer loggedInCustomer = null; // ✨ لاگین‌شده
+    public static Customer loggedInCustomer = null;
 
     private JTextField txtEmail;
     private JPasswordField txtPassword;
     private JButton btnLogin;
     private CustomerManager cm;
+    private String source; // 👈 مشخص می‌کنه از کجا اومده
 
+    // کانستراکتور پیش‌فرض
     public frmLoginCustomer() {
+        this("default");
+    }
+
+    // کانستراکتور با ورودی (مثلاً "cart")
+    public frmLoginCustomer(String source) {
+        this.source = source;
+
         setTitle("🔐 Customer Login");
         setSize(400, 300);
         setLocationRelativeTo(null);
@@ -47,7 +56,11 @@ public class frmLoginCustomer extends JFrame {
         add(panel, BorderLayout.CENTER);
         add(btnPanel, BorderLayout.SOUTH);
 
-        btnLogin.addActionListener(e -> login());
+        btnLogin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                login();
+            }
+        });
 
         setVisible(true);
     }
@@ -59,10 +72,15 @@ public class frmLoginCustomer extends JFrame {
         Customer customer = cm.findByEmailAndPassword(email, password);
 
         if (customer != null) {
-            loggedInCustomer = customer; // ✨ ست کردن مشتری لاگین شده
+            loggedInCustomer = customer;
             JOptionPane.showMessageDialog(this, "✅ Login successful!\nWelcome, " + customer.getName());
-            dispose(); // فرم لاگین بسته میشه
-            // new frmOrderCustomer(); // اگه بخوای منتقلش کنی به خرید
+            dispose();
+
+            // اگر از سبد خرید اومده بود، برش گردون اونجا
+            if (source.equalsIgnoreCase("cart")) {
+                new frmCart();
+            }
+
         } else {
             JOptionPane.showMessageDialog(this, "❌ Invalid email or password.");
         }

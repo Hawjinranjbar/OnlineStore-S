@@ -5,15 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
-      <change afterPath="$PROJECT_DIR$/images/img32.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmOrder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/img31.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/images/img31.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myfiles/Order.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/Order.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/myfiles/cart.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/cart.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myfiles/product.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/product.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/OrderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/OrderManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmOrderCustomer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/myfiles/customer.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/customer.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CartManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CartManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmCart.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmCart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmLoginCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmLoginCustomer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +115,7 @@
       <workItem from="1745872281441" duration="14000" />
       <workItem from="1745934424925" duration="962000" />
       <workItem from="1745936573161" duration="13196000" />
-      <workItem from="1746003577653" duration="659000" />
+      <workItem from="1746003577653" duration="2892000" />
     </task>
     <task id="LOCAL-00001" summary="push these">
       <option name="closed" value="true" />
@@ -231,7 +229,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745950522390</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="push these">
+      <option name="closed" value="true" />
+      <created>1746004347485</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1746004347485</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
