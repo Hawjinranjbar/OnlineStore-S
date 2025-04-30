@@ -62,7 +62,24 @@ public class frmRegisterCustomer extends JFrame {
 
         btnRegister.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                registerCustomer();
+                try {
+                    Customer c = new Customer(
+                            Integer.parseInt(txtId.getText()),
+                            txtName.getText(),
+                            txtPhone.getText(),
+                            txtEmail.getText(),
+                            new String(txtPassword.getPassword())
+                    );
+
+                    cm.Insert(c); // ذخیره‌ی مشتری
+                    JOptionPane.showMessageDialog(frmRegisterCustomer.this, "✅ Customer Registered!");
+
+                    new frmAddAddress(); // بعد از ثبت‌نام، فرم آدرس باز میشه
+                    dispose(); // فرم ثبت‌نام بسته میشه
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frmRegisterCustomer.this, "❌ Error registering customer.");
+                }
             }
         });
 

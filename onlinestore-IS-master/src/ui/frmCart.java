@@ -3,28 +3,21 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import managers.CartManager;
-import managers.ProductManager;
-import managers.DiscountManager;
-import managers.OrderManager;
-import common.Cart;
-import common.Product;
-import common.Discount;
-import common.Order;
 import java.time.LocalDate;
+
+import common.*;
+import managers.*;
 
 public class frmCart extends JFrame {
     private JTextArea txtCartList;
     private JLabel lblTotalPrice;
     private JLabel lblDiscountInfo;
     private JTextField txtDiscountCode;
-    private JButton btnApplyDiscount;
-    private JButton btnFinalizeOrder;
-    private JButton btnDeleteProduct;
-    private JButton btnGoToLogin;
-    private CartManager cartManager;
-    private ProductManager productManager;
-    private DiscountManager discountManager;
+    private JButton btnApplyDiscount, btnFinalizeOrder, btnDeleteProduct, btnGoToLogin;
+
+    private CartManager cartManager = new CartManager();
+    private ProductManager productManager = new ProductManager();
+    private DiscountManager discountManager = new DiscountManager();
     private Discount appliedDiscount = null;
 
     public frmCart() {
@@ -37,14 +30,9 @@ public class frmCart extends JFrame {
 
         Font font = new Font("Segoe UI Emoji", Font.PLAIN, 15);
 
-        cartManager = new CartManager();
-        productManager = new ProductManager();
-        discountManager = new DiscountManager();
-
         txtCartList = new JTextArea();
         txtCartList.setEditable(false);
         txtCartList.setFont(font);
-
         JScrollPane scrollPane = new JScrollPane(txtCartList);
         scrollPane.setBorder(BorderFactory.createTitledBorder("🛍️ Items in Cart"));
 
@@ -94,30 +82,12 @@ public class frmCart extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        btnApplyDiscount.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                applyDiscountManually();
-            }
-        });
-
-        btnFinalizeOrder.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                finalizeOrder();
-            }
-        });
-
-        btnDeleteProduct.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                deleteProductFromCart();
-            }
-        });
-
-        btnGoToLogin.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new frmLoginCustomer("cart");
-                dispose();
-            }
-
+        btnApplyDiscount.addActionListener(e -> applyDiscountManually());
+        btnFinalizeOrder.addActionListener(e -> finalizeOrder());
+        btnDeleteProduct.addActionListener(e -> deleteProductFromCart());
+        btnGoToLogin.addActionListener(e -> {
+            new frmLoginCustomer("cart");
+            dispose();
         });
 
         loadCart();
@@ -127,7 +97,6 @@ public class frmCart extends JFrame {
     private void loadCart() {
         Cart[] carts = cartManager.SelectAll();
         Product[] products = productManager.SelectAll();
-
         double totalPrice = 0;
         StringBuilder sb = new StringBuilder();
 
@@ -138,8 +107,7 @@ public class frmCart extends JFrame {
                     if (p != null && p.getId() == c.getProductId()) {
                         double itemPrice = p.getPrice() * c.getQuantity();
                         totalPrice += itemPrice;
-                        sb.append(i).append(". ")
-                                .append("🌸 ").append(p.getName())
+                        sb.append(i).append(". 🌸 ").append(p.getName())
                                 .append(" (x").append(c.getQuantity()).append(")")
                                 .append(" - ").append(formatPrice(itemPrice)).append(" Toman\n");
                         break;
@@ -168,23 +136,16 @@ public class frmCart extends JFrame {
         }
 
         Discount[] discounts = discountManager.SelectAll();
-        boolean found = false;
-
         for (Discount d : discounts) {
             if (d != null && d.getDiscountCode().equalsIgnoreCase(code) && d.isActive()) {
                 appliedDiscount = d;
-                found = true;
-                break;
+                JOptionPane.showMessageDialog(this, "✅ Discount applied successfully!");
+                loadCart();
+                return;
             }
         }
 
-        if (found) {
-            JOptionPane.showMessageDialog(this, "✅ Discount applied successfully!");
-        } else {
-            JOptionPane.showMessageDialog(this, "❌ Invalid or inactive discount code.");
-        }
-
-        loadCart();
+        JOptionPane.showMessageDialog(this, "❌ Invalid or inactive discount code.");
     }
 
     private void finalizeOrder() {
@@ -195,25 +156,34 @@ public class frmCart extends JFrame {
         }
 
         Cart[] carts = cartManager.SelectAll();
-        Product[] products = productManager.SelectAll();
-
         if (carts.length == 0) {
             JOptionPane.showMessageDialog(this, "🛒 Your cart is empty!");
             return;
         }
 
         int customerId = frmLoginCustomer.loggedInCustomer.getId();
-        int addressId = 1; // این رو بعداً از فرم آدرس میگیریم
-        String discountCode = (appliedDiscount != null) ? appliedDiscount.getDiscountCode() : "None";
+        AddressManager am = new AddressManager();
+        Address[] addresses = am.SelectAll();
+        Address customerAddress = null;
+        for (Address a : addresses) {
+            if (a != null && a.getId() == customerId) {
+                customerAddress = a;
+                break;
+            }
+        }
+
+        if (customerAddress == null) {
+            JOptionPane.showMessageDialog(this, "❌ No address found for this customer!");
+            return;
+        }
 
         double totalAmount = 0;
         StringBuilder itemsText = new StringBuilder();
-
+        Product[] products = productManager.SelectAll();
         for (Cart c : carts) {
             for (Product p : products) {
                 if (p != null && p.getId() == c.getProductId()) {
-                    double itemTotal = p.getPrice() * c.getQuantity();
-                    totalAmount += itemTotal;
+                    totalAmount += p.getPrice() * c.getQuantity();
                     itemsText.append(c.getQuantity()).append("x").append(p.getName()).append(", ");
                 }
             }
@@ -226,13 +196,15 @@ public class frmCart extends JFrame {
 
         int orderId = (int) (System.currentTimeMillis() % 100000);
         String date = LocalDate.now().toString();
+        String discountCode = (appliedDiscount != null) ? appliedDiscount.getDiscountCode() : "None";
 
-        Order order = new Order(orderId, customerId, addressId, totalAmount, discountCode, itemsText.toString(), date);
+        Order order = new Order(orderId, customerId, customerAddress.getId(), totalAmount, discountCode, itemsText.toString(), date);
         new OrderManager().Insert(order);
         cartManager.ClearAll();
 
         JOptionPane.showMessageDialog(this, "✅ Order finalized and saved!\n🧾 Order ID: " + orderId);
-        loadCart();
+        new frmOrder();
+        dispose();
     }
 
     private void deleteProductFromCart() {
