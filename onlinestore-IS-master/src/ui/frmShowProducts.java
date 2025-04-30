@@ -74,6 +74,9 @@ public class frmShowProducts extends JFrame {
         setVisible(true);
     }
 
+    public frmShowProducts(String categoryName) {
+    }
+
     private void searchProducts() {
         String keyword = txtSearch.getText().trim().toLowerCase();
         String selectedCategory = cmbCategory.getSelectedItem().toString();

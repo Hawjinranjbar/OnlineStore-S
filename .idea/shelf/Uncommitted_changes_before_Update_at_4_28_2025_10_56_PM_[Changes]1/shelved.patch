@@ -1,0 +1,151 @@
+Index: onlinestore-IS-master/src/Framuser.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\n\r\npublic class Framuser extends JFrame {\r\n    public Framuser() {\r\n        // Set the title and size of the window\r\n        setTitle(\"پنل مدیریت\");\r\n        setSize(500, 400);\r\n        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\r\n\r\n        // Set the background color of the frame\r\n        getContentPane().setBackground(new Color(255, 182, 193)); // Light Pink\r\n\r\n        // Create the panel with GridLayout for button arrangement\r\n        JPanel panel = new JPanel();\r\n        panel.setLayout(new GridLayout(2, 2, 10, 10)); // 2 rows and 2 columns with some space\r\n        panel.setBackground(new Color(255, 182, 193));\r\n\r\n        // Create buttons for different forms\r\n        JButton btnAdminLogin = createButton(\"ورود مدیر\", \"path/to/admin_icon.png\");\r\n        JButton btnProduct = createButton(\"مدیریت محصولات\", \"path/to/product_icon.png\");\r\n        JButton btnBack = createButton(\"بازگشت\", \"path/to/back_icon.png\");\r\n\r\n        // Add action listeners for each button\r\n        btnAdminLogin.addActionListener(new ActionListener() {\r\n            public void actionPerformed(ActionEvent e) {\r\n                new Framuser().setVisible(true);  // Open admin login form\r\n                dispose();\r\n            }\r\n        });\r\n\r\n        btnProduct.addActionListener(new ActionListener() {\r\n            public void actionPerformed(ActionEvent e) {\r\n                new frmProduct().setVisible(true);  // Open product management form\r\n                dispose();\r\n            }\r\n        });\r\n\r\n        btnBack.addActionListener(new ActionListener() {\r\n            public void actionPerformed(ActionEvent e) {\r\n                new frmMain().setVisible(true);  // Go back to the main form\r\n                dispose();\r\n            }\r\n        });\r\n\r\n        // Add buttons to the panel\r\n        panel.add(btnAdminLogin);\r\n        panel.add(btnProduct);\r\n        panel.add(btnBack);\r\n\r\n        // Add the panel to the frame\r\n        add(panel, BorderLayout.CENTER);\r\n    }\r\n\r\n    // Helper method to create buttons with icons and styling\r\n    private JButton createButton(String text, String iconPath) {\r\n        JButton button = new JButton(text);\r\n        button.setIcon(new ImageIcon(iconPath)); // Set the button icon\r\n        button.setBackground(new Color(221, 160, 221)); // Light Purple\r\n        button.setFont(new Font(\"Arial\", Font.BOLD, 14)); // Bold font\r\n        button.setFocusPainted(false);\r\n        button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2)); // Button border\r\n        return button;\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n        // Launch the form\r\n        new Framuser().setVisible(true);  // Make sure to call the correct class\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/Framuser.java b/onlinestore-IS-master/src/Framuser.java
+--- a/onlinestore-IS-master/src/Framuser.java	(revision 5dfbfa407d873b23f93d23640d208138e392277a)
++++ b/onlinestore-IS-master/src/Framuser.java	(date 1745673892387)
+@@ -7,7 +7,7 @@
+         // Set the title and size of the window
+         setTitle("پنل مدیریت");
+         setSize(500, 400);
+-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
++        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+ 
+         // Set the background color of the frame
+         getContentPane().setBackground(new Color(255, 182, 193)); // Light Pink
+Index: onlinestore-IS-master/src/frmMain.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\n\r\npublic class frmMain extends JFrame {\r\n    public frmMain() {\r\n        setTitle(\"پنل اصلی\");\r\n        setSize(500, 400);\r\n        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\r\n\r\n        // Set background color\r\n        getContentPane().setBackground(new Color(255, 182, 193)); // Light Pink\r\n\r\n        // Create panel\r\n        JPanel panel = new JPanel();\r\n        panel.setLayout(new GridLayout(1, 2, 10, 10)); // 1 row, 2 columns\r\n        panel.setBackground(new Color(255, 182, 193));\r\n\r\n        // Create buttons\r\n        JButton btnManager = createButton(\"مدیر\", \"path/to/manager_icon.png\");\r\n        JButton btnCustomer = createButton(\"مشتری\", \"path/to/customer_icon.png\");\r\n\r\n        // Button actions\r\n        btnManager.addActionListener(e -> {\r\n            new FrmUser().setVisible(true);  // Admin Login form\r\n            dispose();\r\n        });\r\n\r\n        btnCustomer.addActionListener(e -> {\r\n            new frmCustomerRegistration().setVisible(true);  // Customer Registration form\r\n            dispose();\r\n        });\r\n\r\n        panel.add(btnManager);\r\n        panel.add(btnCustomer);\r\n\r\n        // Add panel to the center of the frame\r\n        add(panel, BorderLayout.CENTER);\r\n\r\n        // Exit button at the bottom\r\n        JButton btnBack = new JButton(\"خروج\");\r\n        btnBack.setFont(new Font(\"Arial\", Font.BOLD, 14));\r\n        btnBack.setBackground(new Color(221, 160, 221)); // Purple\r\n        btnBack.setFocusPainted(false);\r\n        btnBack.addActionListener(e -> System.exit(0)); // Exit the program\r\n\r\n        // Add the Exit button to the bottom of the frame\r\n        add(btnBack, BorderLayout.SOUTH);\r\n    }\r\n\r\n    // Helper method to create buttons with icons\r\n    private JButton createButton(String text, String iconPath) {\r\n        JButton button = new JButton(text);\r\n        button.setIcon(new ImageIcon(iconPath)); // Set the button icon\r\n        button.setBackground(new Color(221, 160, 221)); // Purple\r\n        button.setFont(new Font(\"Arial\", Font.BOLD, 14)); // Bold font\r\n        button.setFocusPainted(false);\r\n        button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));\r\n        return button;\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n        new frmMain().setVisible(true);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/frmMain.java b/onlinestore-IS-master/src/frmMain.java
+--- a/onlinestore-IS-master/src/frmMain.java	(revision 5dfbfa407d873b23f93d23640d208138e392277a)
++++ b/onlinestore-IS-master/src/frmMain.java	(date 1745673684094)
+@@ -6,7 +6,7 @@
+     public frmMain() {
+         setTitle("پنل اصلی");
+         setSize(500, 400);
+-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
++        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+ 
+         // Set background color
+         getContentPane().setBackground(new Color(255, 182, 193)); // Light Pink
+Index: onlinestore-IS-master/src/frmCustomerRegistration.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>//import javax.swing.*;\r\n//import java.awt.*;\r\n//import java.awt.event.*;\r\n//\r\n//public class frmCustomerRegistration extends JFrame {\r\n//    public frmCustomerRegistration() {\r\n//        setTitle(\"پنل ثبت\u200Cنام مشتری\");\r\n//        setSize(400, 300);\r\n//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\r\n//\r\n//        // پنل برای نمایش آیکون\u200Cها\r\n//        JPanel panel = new JPanel();\r\n//        panel.setLayout(new GridLayout(2, 2));  // ۲ ردیف و ۲ ستون\r\n//\r\n//        // ساخت دکمه\u200Cها برای ورود به هر فرم\r\n//        JButton btnCustomer = new JButton(\"ثبت\u200Cنام مشتری\");\r\n//        JButton btnReview = new JButton(\"بازخورد\");\r\n//        JButton btnOrder = new JButton(\"سفارشات\");\r\n//        JButton btnBack = new JButton(\"بازگشت\");\r\n//\r\n//        // تنظیم آیکون\u200Cها (مسیرها رو باید تغییر بدید به آیکون\u200Cهای واقعی)\r\n//        btnCustomer.setIcon(new ImageIcon(\"path/to/customer_icon.png\"));\r\n//        btnReview.setIcon(new ImageIcon(\"path/to/review_icon.png\"));\r\n//        btnOrder.setIcon(new ImageIcon(\"path/to/order_icon.png\"));\r\n//        btnBack.setIcon(new ImageIcon(\"path/to/back_icon.png\"));\r\n//\r\n//        // افزودن اکشن برای دکمه\u200Cها\r\n//        btnCustomer.addActionListener(new ActionListener() {\r\n//            public void actionPerformed(ActionEvent e) {\r\n//                new frmCustomer().setVisible(true);  // فرم ثبت\u200Cنام مشتری\r\n//                dispose();\r\n//            }\r\n//        });\r\n//\r\n//        btnReview.addActionListener(new ActionListener() {\r\n//            public void actionPerformed(ActionEvent e) {\r\n//                new frmReview().setVisible(true);  // فرم بازخورد مشتری\r\n//                dispose();\r\n//            }\r\n//        });\r\n//\r\n//        btnOrder.addActionListener(new ActionListener() {\r\n//            public void actionPerformed(ActionEvent e) {\r\n//                new frmOrderCustomer().setVisible(true);  // فرم سفارشات مشتری\r\n//                dispose();\r\n//            }\r\n//        });\r\n//\r\n//        btnBack.addActionListener(new ActionListener() {\r\n//            public void actionPerformed(ActionEvent e) {\r\n//                new frmMain().setVisible(true);  // بازگشت به فرم اصلی\r\n//                dispose();\r\n//            }\r\n//        });\r\n//\r\n//        // افزودن دکمه\u200Cها به پنل\r\n//        panel.add(btnCustomer);\r\n//        panel.add(btnReview);\r\n//        panel.add(btnOrder);\r\n//        panel.add(btnBack);\r\n//\r\n//        // افزودن پنل به فریم\r\n//        add(panel, BorderLayout.CENTER);\r\n//    }\r\n//\r\n//    public static void main(String[] args) {\r\n//        new frmCustomerRegistration().setVisible(true);\r\n//    }\r\n//}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\n\r\npublic class frmCustomerRegistration extends JFrame {\r\n    public frmCustomerRegistration() {\r\n        setTitle(\"پنل ثبت\u200Cنام مشتری\");\r\n        setSize(500, 400);\r\n        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\r\n\r\n        // Set the background color of the frame\r\n        getContentPane().setBackground(new Color(255, 182, 193)); // Light Pink\r\n\r\n        // Create panel with GridLayout\r\n        JPanel panel = new JPanel();\r\n        panel.setLayout(new GridLayout(2, 2, 10, 10));  // ۲ ردیف و ۲ ستون\r\n        panel.setBackground(new Color(255, 182, 193));\r\n\r\n        // Create Buttons for different actions\r\n        JButton btnCustomer = createButton(\"ثبت\u200Cنام مشتری\", \"path/to/customer_icon.png\");\r\n        JButton btnReview = createButton(\"بازخورد\", \"path/to/review_icon.png\");\r\n        JButton btnOrder = createButton(\"سفارشات\", \"path/to/order_icon.png\");\r\n        JButton btnBack = createButton(\"بازگشت\", \"path/to/back_icon.png\");\r\n\r\n        // Adding ActionListeners to the buttons\r\n        btnCustomer.addActionListener(e -> {\r\n            new frmCustomer().setVisible(true);\r\n            dispose();\r\n        });\r\n\r\n        btnReview.addActionListener(e -> {\r\n            new frmReview().setVisible(true);\r\n            dispose();\r\n        });\r\n\r\n        btnOrder.addActionListener(e -> {\r\n            new frmOrderCustomer().setVisible(true);\r\n            dispose();\r\n        });\r\n\r\n        btnBack.addActionListener(e -> {\r\n            new frmMain().setVisible(true);\r\n            dispose();\r\n        });\r\n\r\n        // Adding buttons to the panel\r\n        panel.add(btnCustomer);\r\n        panel.add(btnReview);\r\n        panel.add(btnOrder);\r\n        panel.add(btnBack);\r\n\r\n        // Add the panel to the frame\r\n        add(panel, BorderLayout.CENTER);\r\n    }\r\n\r\n    // Helper method to create buttons with icons\r\n    private JButton createButton(String text, String iconPath) {\r\n        JButton button = new JButton(text);\r\n        button.setIcon(new ImageIcon(iconPath)); // Set the button icon\r\n        button.setBackground(new Color(221, 160, 221)); // Purple\r\n        button.setFont(new Font(\"Arial\", Font.BOLD, 14)); // Bold font\r\n        button.setFocusPainted(false);\r\n        button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));\r\n        return button;\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n        new frmCustomerRegistration().setVisible(true);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/frmCustomerRegistration.java b/onlinestore-IS-master/src/frmCustomerRegistration.java
+--- a/onlinestore-IS-master/src/frmCustomerRegistration.java	(revision 5dfbfa407d873b23f93d23640d208138e392277a)
++++ b/onlinestore-IS-master/src/frmCustomerRegistration.java	(date 1745683225144)
+@@ -1,93 +1,3 @@
+-//import javax.swing.*;
+-//import java.awt.*;
+-//import java.awt.event.*;
+-//
+-//public class frmCustomerRegistration extends JFrame {
+-//    public frmCustomerRegistration() {
+-//        setTitle("پنل ثبت‌نام مشتری");
+-//        setSize(400, 300);
+-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+-//
+-//        // پنل برای نمایش آیکون‌ها
+-//        JPanel panel = new JPanel();
+-//        panel.setLayout(new GridLayout(2, 2));  // ۲ ردیف و ۲ ستون
+-//
+-//        // ساخت دکمه‌ها برای ورود به هر فرم
+-//        JButton btnCustomer = new JButton("ثبت‌نام مشتری");
+-//        JButton btnReview = new JButton("بازخورد");
+-//        JButton btnOrder = new JButton("سفارشات");
+-//        JButton btnBack = new JButton("بازگشت");
+-//
+-//        // تنظیم آیکون‌ها (مسیرها رو باید تغییر بدید به آیکون‌های واقعی)
+-//        btnCustomer.setIcon(new ImageIcon("path/to/customer_icon.png"));
+-//        btnReview.setIcon(new ImageIcon("path/to/review_icon.png"));
+-//        btnOrder.setIcon(new ImageIcon("path/to/order_icon.png"));
+-//        btnBack.setIcon(new ImageIcon("path/to/back_icon.png"));
+-//
+-//        // افزودن اکشن برای دکمه‌ها
+-//        btnCustomer.addActionListener(new ActionListener() {
+-//            public void actionPerformed(ActionEvent e) {
+-//                new frmCustomer().setVisible(true);  // فرم ثبت‌نام مشتری
+-//                dispose();
+-//            }
+-//        });
+-//
+-//        btnReview.addActionListener(new ActionListener() {
+-//            public void actionPerformed(ActionEvent e) {
+-//                new frmReview().setVisible(true);  // فرم بازخورد مشتری
+-//                dispose();
+-//            }
+-//        });
+-//
+-//        btnOrder.addActionListener(new ActionListener() {
+-//            public void actionPerformed(ActionEvent e) {
+-//                new frmOrderCustomer().setVisible(true);  // فرم سفارشات مشتری
+-//                dispose();
+-//            }
+-//        });
+-//
+-//        btnBack.addActionListener(new ActionListener() {
+-//            public void actionPerformed(ActionEvent e) {
+-//                new frmMain().setVisible(true);  // بازگشت به فرم اصلی
+-//                dispose();
+-//            }
+-//        });
+-//
+-//        // افزودن دکمه‌ها به پنل
+-//        panel.add(btnCustomer);
+-//        panel.add(btnReview);
+-//        panel.add(btnOrder);
+-//        panel.add(btnBack);
+-//
+-//        // افزودن پنل به فریم
+-//        add(panel, BorderLayout.CENTER);
+-//    }
+-//
+-//    public static void main(String[] args) {
+-//        new frmCustomerRegistration().setVisible(true);
+-//    }
+-//}
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+ 
+ 
+ 
+@@ -99,7 +9,7 @@
+     public frmCustomerRegistration() {
+         setTitle("پنل ثبت‌نام مشتری");
+         setSize(500, 400);
+-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
++        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+ 
+         // Set the background color of the frame
+         getContentPane().setBackground(new Color(255, 182, 193)); // Light Pink

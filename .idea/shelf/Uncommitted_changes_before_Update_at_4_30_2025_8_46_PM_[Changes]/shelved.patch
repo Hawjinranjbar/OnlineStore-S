@@ -1,0 +1,265 @@
+Index: onlinestore-IS-master/src/ui/frmShowProducts.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\npackage ui;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\nimport managers.ProductManager;\r\nimport managers.CartManager;\r\nimport common.Product;\r\nimport common.Cart;\r\n\r\npublic class frmShowProducts extends JFrame {\r\n    private JComboBox<String> cmbCategory;\r\n    private JTextField txtSearch;\r\n    private JPanel panelProducts;\r\n    private JLabel lblResultCount;\r\n    private ProductManager pm;\r\n    private Font emojiFont = new Font(\"Segoe UI Emoji\", Font.PLAIN, 16);\r\n\r\n    public frmShowProducts(String selectedCategory) {\r\n        setTitle(\"\uD83D\uDC8B Beauty Shop - View Products\");\r\n        setSize(900, 700);\r\n        setLocationRelativeTo(null);\r\n        setDefaultCloseOperation(EXIT_ON_CLOSE);\r\n        setLayout(new BorderLayout(10, 10));\r\n        getContentPane().setBackground(new Color(255, 228, 240));\r\n\r\n        pm = new ProductManager();\r\n\r\n        JPanel topPanel = new JPanel(new BorderLayout(10, 10));\r\n        topPanel.setBackground(new Color(255, 228, 240));\r\n\r\n        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));\r\n        searchPanel.setBackground(new Color(255, 228, 240));\r\n\r\n        txtSearch = new JTextField(20);\r\n        txtSearch.setFont(emojiFont);\r\n\r\n        JButton btnSearch = new JButton(\"\uD83D\uDD0D Search\");\r\n        btnSearch.setBackground(new Color(255, 182, 193));\r\n        btnSearch.setFont(emojiFont);\r\n\r\n        cmbCategory = new JComboBox<>(new String[]{\"All\", \"Skincare\", \"Makeup\", \"Haircare\", \"Bodycare\"});\r\n        cmbCategory.setFont(emojiFont);\r\n\r\n        searchPanel.add(txtSearch);\r\n        searchPanel.add(btnSearch);\r\n        searchPanel.add(cmbCategory);\r\n\r\n        lblResultCount = new JLabel(\" \");\r\n        lblResultCount.setHorizontalAlignment(SwingConstants.CENTER);\r\n        lblResultCount.setForeground(Color.DARK_GRAY);\r\n        lblResultCount.setFont(emojiFont);\r\n\r\n        topPanel.add(searchPanel, BorderLayout.CENTER);\r\n        topPanel.add(lblResultCount, BorderLayout.SOUTH);\r\n\r\n        panelProducts = new JPanel(new GridLayout(0, 2, 10, 10));\r\n        panelProducts.setBackground(new Color(255, 228, 240));\r\n\r\n        JScrollPane scrollPane = new JScrollPane(panelProducts);\r\n        scrollPane.setBorder(BorderFactory.createTitledBorder(\"✨ Available Beauty Products\"));\r\n\r\n        add(topPanel, BorderLayout.NORTH);\r\n        add(scrollPane, BorderLayout.CENTER);\r\n\r\n        // Actions\r\n        btnSearch.addActionListener(e -> searchProducts());\r\n        cmbCategory.addActionListener(e -> searchProducts());\r\n\r\n        // Initial category\r\n        cmbCategory.setSelectedItem(selectedCategory);\r\n        searchProducts();\r\n\r\n        setVisible(true);\r\n    }\r\n\r\n    private void searchProducts() {\r\n        String keyword = txtSearch.getText().trim().toLowerCase();\r\n        String selectedCategory = cmbCategory.getSelectedItem().toString();\r\n\r\n        Product[] products = pm.SelectAll();\r\n        panelProducts.removeAll();\r\n        int count = 0;\r\n\r\n        for (Product p : products) {\r\n            if (p != null) {\r\n                boolean matchKeyword = keyword.isEmpty() || p.getName().toLowerCase().contains(keyword);\r\n                boolean matchCategory = selectedCategory.equals(\"All\") || p.getCategory().equalsIgnoreCase(selectedCategory);\r\n\r\n                if (matchKeyword && matchCategory) {\r\n                    panelProducts.add(createProductCard(p));\r\n                    count++;\r\n                }\r\n            }\r\n        }\r\n\r\n        if (count == 0) {\r\n            JLabel lbl = new JLabel(\"\uD83E\uDD7A No products found.\");\r\n            lbl.setFont(emojiFont);\r\n            lbl.setHorizontalAlignment(SwingConstants.CENTER);\r\n            panelProducts.add(lbl);\r\n        }\r\n\r\n        lblResultCount.setText(count + \" products found.\");\r\n        panelProducts.revalidate();\r\n        panelProducts.repaint();\r\n    }\r\n\r\n    private JPanel createProductCard(Product p) {\r\n        JPanel card = new JPanel();\r\n        card.setLayout(new BorderLayout(5, 5));\r\n        card.setBackground(Color.WHITE);\r\n        card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));\r\n        card.setPreferredSize(new Dimension(250, 340));\r\n\r\n        JLabel lblImage = new JLabel();\r\n        try {\r\n            ImageIcon icon = new ImageIcon(\"images/\" + p.getImageFileName());\r\n            Image image = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);\r\n            lblImage.setIcon(new ImageIcon(image));\r\n        } catch (Exception e) {\r\n            lblImage.setText(\"\uD83D\uDDBC\uFE0F\");\r\n            lblImage.setFont(emojiFont);\r\n            lblImage.setHorizontalAlignment(SwingConstants.CENTER);\r\n        }\r\n\r\n        JLabel lblName = new JLabel(\"\uD83C\uDF38 \" + p.getName(), SwingConstants.CENTER);\r\n        lblName.setFont(emojiFont);\r\n\r\n        JLabel lblPrice = new JLabel(String.format(\"%,.0f Toman\", p.getPrice()), SwingConstants.CENTER);\r\n        lblPrice.setFont(emojiFont);\r\n\r\n        JLabel lblCategory = new JLabel(\"Category: \" + p.getCategory(), SwingConstants.CENTER);\r\n        lblCategory.setFont(new Font(\"Segoe UI Emoji\", Font.ITALIC, 14));\r\n\r\n        JPanel infoPanel = new JPanel(new GridLayout(3, 1));\r\n        infoPanel.setBackground(Color.WHITE);\r\n        infoPanel.add(lblName);\r\n        infoPanel.add(lblPrice);\r\n        infoPanel.add(lblCategory);\r\n\r\n        JButton btnAddToCart = new JButton(\"➕ Add to Cart\");\r\n        btnAddToCart.setFont(new Font(\"Segoe UI Emoji\", Font.PLAIN, 13));\r\n        btnAddToCart.setBackground(new Color(255, 204, 229));\r\n\r\n        btnAddToCart.addActionListener(e -> {\r\n            try {\r\n                CartManager cm = new CartManager();\r\n                Cart c = new Cart(p.getId(), 1);\r\n                cm.Insert(c);\r\n                JOptionPane.showMessageDialog(frmShowProducts.this, \"\uD83D\uDED2 Product added to cart!\");\r\n            } catch (Exception ex) {\r\n                JOptionPane.showMessageDialog(frmShowProducts.this, \"❌ Error adding product to cart.\");\r\n            }\r\n        });\r\n\r\n        card.add(lblImage, BorderLayout.NORTH);\r\n        card.add(infoPanel, BorderLayout.CENTER);\r\n        card.add(btnAddToCart, BorderLayout.SOUTH);\r\n\r\n        return card;\r\n    }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n//package ui;\r\n//\r\n//import javax.swing.*;\r\n//import java.awt.*;\r\n//import java.awt.event.*;\r\n//import managers.ProductManager;\r\n//import managers.CartManager;\r\n//import common.Product;\r\n//import common.Cart;\r\n//import java.text.NumberFormat;\r\n//import java.util.Locale;\r\n\r\n//public class frmShowProducts extends JFrame {\r\n//    private JTextField txtSearch;\r\n//    private JButton btnSearch;\r\n//    private JComboBox<String> cmbCategory;\r\n//    private ProductManager pm;\r\n//    private JLabel lblResultCount;\r\n//    private JPanel panelProducts;\r\n//    private JScrollPane scrollPane;\r\n//    private Font emojiFont = new Font(\"Segoe UI Emoji\", Font.PLAIN, 16);\r\n//\r\n//    public frmShowProducts() {\r\n//        setTitle(\"\uD83D\uDC8B Beauty Shop - View Products\");\r\n//        setSize(900, 700);\r\n//        setLocationRelativeTo(null);\r\n//        setDefaultCloseOperation(EXIT_ON_CLOSE);\r\n//        setLayout(new BorderLayout(10, 10));\r\n//        getContentPane().setBackground(new Color(255, 228, 240));\r\n//\r\n//        pm = new ProductManager();\r\n//\r\n//        JPanel topPanel = new JPanel(new BorderLayout(10, 10));\r\n//        topPanel.setBackground(new Color(255, 228, 240));\r\n//\r\n//        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));\r\n//        searchPanel.setBackground(new Color(255, 228, 240));\r\n//\r\n//        txtSearch = new JTextField(20);\r\n//        txtSearch.setFont(emojiFont);\r\n//\r\n//        btnSearch = new JButton(\"\uD83D\uDD0D Search\");\r\n//        btnSearch.setBackground(new Color(255, 182, 193));\r\n//        btnSearch.setFont(emojiFont);\r\n//\r\n//        cmbCategory = new JComboBox<>(new String[]{\"All\", \"Skincare\", \"Makeup\", \"Haircare\", \"Bodycare\"});\r\n//        cmbCategory.setFont(emojiFont);\r\n//\r\n//        searchPanel.add(txtSearch);\r\n//        searchPanel.add(btnSearch);\r\n//        searchPanel.add(cmbCategory);\r\n//\r\n//        lblResultCount = new JLabel(\" \");\r\n//        lblResultCount.setHorizontalAlignment(SwingConstants.CENTER);\r\n//        lblResultCount.setForeground(Color.DARK_GRAY);\r\n//        lblResultCount.setFont(emojiFont);\r\n//\r\n//        topPanel.add(searchPanel, BorderLayout.CENTER);\r\n//        topPanel.add(lblResultCount, BorderLayout.SOUTH);\r\n//\r\n//        panelProducts = new JPanel();\r\n//        panelProducts.setLayout(new GridLayout(0, 2, 10, 10)); // دو ستونه\r\n//        panelProducts.setBackground(new Color(255, 228, 240));\r\n//\r\n//        scrollPane = new JScrollPane(panelProducts);\r\n//        scrollPane.setBorder(BorderFactory.createTitledBorder(\"\\u2728 Available Beauty Products\"));\r\n//\r\n//        add(topPanel, BorderLayout.NORTH);\r\n//        add(scrollPane, BorderLayout.CENTER);\r\n//\r\n//        btnSearch.addActionListener(new ActionListener() {\r\n//            public void actionPerformed(ActionEvent e) {\r\n//                searchProducts();\r\n//            }\r\n//        });\r\n//\r\n//        cmbCategory.addActionListener(new ActionListener() {\r\n//            public void actionPerformed(ActionEvent e) {\r\n//                searchProducts();\r\n//            }\r\n//        });\r\n//\r\n//        refreshProductList(pm.SelectAll());\r\n//        setVisible(true);\r\n//    }\r\n//\r\n//    private void searchProducts() {\r\n//        String keyword = txtSearch.getText().trim().toLowerCase();\r\n//        String selectedCategory = cmbCategory.getSelectedItem().toString();\r\n//\r\n//        Product[] products = pm.SelectAll();\r\n//        panelProducts.removeAll();\r\n//        int count = 0;\r\n//\r\n//        for (Product p : products) {\r\n//            if (p != null) {\r\n//                boolean matchKeyword = keyword.isEmpty() || p.getName().toLowerCase().contains(keyword);\r\n//                boolean matchCategory = selectedCategory.equals(\"All\") || p.getCategory().equalsIgnoreCase(selectedCategory);\r\n//\r\n//                if (matchKeyword && matchCategory) {\r\n//                    panelProducts.add(createProductCard(p));\r\n//                    count++;\r\n//                }\r\n//            }\r\n//        }\r\n//\r\n//        if (count == 0) {\r\n//            JLabel lbl = new JLabel(\"\uD83E\uDD7A No products found.\");\r\n//            lbl.setFont(emojiFont);\r\n//            lbl.setHorizontalAlignment(SwingConstants.CENTER);\r\n//            panelProducts.add(lbl);\r\n//        }\r\n//\r\n//        lblResultCount.setText(count + \" products found.\");\r\n//        panelProducts.revalidate();\r\n//        panelProducts.repaint();\r\n//    }\r\n//\r\n//    private void refreshProductList(Product[] products) {\r\n//        panelProducts.removeAll();\r\n//        for (Product p : products) {\r\n//            if (p != null) {\r\n//                panelProducts.add(createProductCard(p));\r\n//            }\r\n//        }\r\n//        panelProducts.revalidate();\r\n//        panelProducts.repaint();\r\n//    }\r\n//\r\n//    private JPanel createProductCard(Product p) {\r\n//        JPanel card = new JPanel();\r\n//        card.setLayout(new BorderLayout(5, 5));\r\n//        card.setBackground(Color.WHITE);\r\n//        card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));\r\n//        card.setPreferredSize(new Dimension(250, 340)); // چون دکمه هم اضافه شده\r\n//\r\n//        JLabel lblImage = new JLabel();\r\n//        try {\r\n//            ImageIcon icon = new ImageIcon(\"images/\" + p.getImageFileName());\r\n//            Image image = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);\r\n//            lblImage.setIcon(new ImageIcon(image));\r\n//        } catch (Exception e) {\r\n//            lblImage.setText(\"\uD83D\uDDBC\uFE0F\");\r\n//            lblImage.setFont(emojiFont);\r\n//            lblImage.setHorizontalAlignment(SwingConstants.CENTER);\r\n//        }\r\n//        lblImage.setHorizontalAlignment(SwingConstants.CENTER);\r\n//\r\n//        JLabel lblName = new JLabel(\"\uD83C\uDF38 \" + p.getName(), SwingConstants.CENTER);\r\n//        lblName.setFont(emojiFont);\r\n//\r\n//        JLabel lblPrice = new JLabel(formatPrice(p.getPrice()) + \" Toman\", SwingConstants.CENTER);\r\n//        lblPrice.setFont(emojiFont);\r\n//\r\n//        JLabel lblCategory = new JLabel(\"Category: \" + p.getCategory(), SwingConstants.CENTER);\r\n//        lblCategory.setFont(new Font(\"Segoe UI Emoji\", Font.ITALIC, 14));\r\n//\r\n//        JPanel infoPanel = new JPanel(new GridLayout(3, 1));\r\n//        infoPanel.setBackground(Color.WHITE);\r\n//        infoPanel.add(lblName);\r\n//        infoPanel.add(lblPrice);\r\n//        infoPanel.add(lblCategory);\r\n//\r\n//        JButton btnAddToCart = new JButton(\"➕ Add to Cart\");\r\n//        btnAddToCart.setFont(new Font(\"Segoe UI Emoji\", Font.PLAIN, 13));\r\n//        btnAddToCart.setBackground(new Color(255, 204, 229));\r\n//\r\n//        btnAddToCart.addActionListener(new ActionListener() {\r\n//            public void actionPerformed(ActionEvent e) {\r\n//                try {\r\n//                    CartManager cm = new CartManager();\r\n//                    Cart c = new Cart(p.getId(), 1);\r\n//                    cm.Insert(c);\r\n//                    JOptionPane.showMessageDialog(frmShowProducts.this, \"\uD83D\uDED2 Product added to cart!\");\r\n//                } catch (Exception ex) {\r\n//                    JOptionPane.showMessageDialog(frmShowProducts.this, \"❌ Error adding product to cart.\");\r\n//                }\r\n//            }\r\n//        });\r\n//\r\n//        card.add(lblImage, BorderLayout.NORTH);\r\n//        card.add(infoPanel, BorderLayout.CENTER);\r\n//        card.add(btnAddToCart, BorderLayout.SOUTH);\r\n//\r\n//        return card;\r\n//    }\r\n//\r\n//    private String formatPrice(double price) {\r\n//        NumberFormat nf = NumberFormat.getNumberInstance(new Locale(\"en\", \"US\"));\r\n//        return nf.format(price);\r\n//    }\r\n//\r\n//    public static void main(String[] args) {\r\n//        new frmShowProducts();\r\n//    }\r\n//}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmShowProducts.java b/onlinestore-IS-master/src/ui/frmShowProducts.java
+--- a/onlinestore-IS-master/src/ui/frmShowProducts.java	(revision 11b4ca93af9b3c217e448aaf24b2a596a0f88e8a)
++++ b/onlinestore-IS-master/src/ui/frmShowProducts.java	(date 1746070855800)
+@@ -163,209 +163,3 @@
+     }
+ }
+ 
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-//package ui;
+-//
+-//import javax.swing.*;
+-//import java.awt.*;
+-//import java.awt.event.*;
+-//import managers.ProductManager;
+-//import managers.CartManager;
+-//import common.Product;
+-//import common.Cart;
+-//import java.text.NumberFormat;
+-//import java.util.Locale;
+-
+-//public class frmShowProducts extends JFrame {
+-//    private JTextField txtSearch;
+-//    private JButton btnSearch;
+-//    private JComboBox<String> cmbCategory;
+-//    private ProductManager pm;
+-//    private JLabel lblResultCount;
+-//    private JPanel panelProducts;
+-//    private JScrollPane scrollPane;
+-//    private Font emojiFont = new Font("Segoe UI Emoji", Font.PLAIN, 16);
+-//
+-//    public frmShowProducts() {
+-//        setTitle("💋 Beauty Shop - View Products");
+-//        setSize(900, 700);
+-//        setLocationRelativeTo(null);
+-//        setDefaultCloseOperation(EXIT_ON_CLOSE);
+-//        setLayout(new BorderLayout(10, 10));
+-//        getContentPane().setBackground(new Color(255, 228, 240));
+-//
+-//        pm = new ProductManager();
+-//
+-//        JPanel topPanel = new JPanel(new BorderLayout(10, 10));
+-//        topPanel.setBackground(new Color(255, 228, 240));
+-//
+-//        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+-//        searchPanel.setBackground(new Color(255, 228, 240));
+-//
+-//        txtSearch = new JTextField(20);
+-//        txtSearch.setFont(emojiFont);
+-//
+-//        btnSearch = new JButton("🔍 Search");
+-//        btnSearch.setBackground(new Color(255, 182, 193));
+-//        btnSearch.setFont(emojiFont);
+-//
+-//        cmbCategory = new JComboBox<>(new String[]{"All", "Skincare", "Makeup", "Haircare", "Bodycare"});
+-//        cmbCategory.setFont(emojiFont);
+-//
+-//        searchPanel.add(txtSearch);
+-//        searchPanel.add(btnSearch);
+-//        searchPanel.add(cmbCategory);
+-//
+-//        lblResultCount = new JLabel(" ");
+-//        lblResultCount.setHorizontalAlignment(SwingConstants.CENTER);
+-//        lblResultCount.setForeground(Color.DARK_GRAY);
+-//        lblResultCount.setFont(emojiFont);
+-//
+-//        topPanel.add(searchPanel, BorderLayout.CENTER);
+-//        topPanel.add(lblResultCount, BorderLayout.SOUTH);
+-//
+-//        panelProducts = new JPanel();
+-//        panelProducts.setLayout(new GridLayout(0, 2, 10, 10)); // دو ستونه
+-//        panelProducts.setBackground(new Color(255, 228, 240));
+-//
+-//        scrollPane = new JScrollPane(panelProducts);
+-//        scrollPane.setBorder(BorderFactory.createTitledBorder("\u2728 Available Beauty Products"));
+-//
+-//        add(topPanel, BorderLayout.NORTH);
+-//        add(scrollPane, BorderLayout.CENTER);
+-//
+-//        btnSearch.addActionListener(new ActionListener() {
+-//            public void actionPerformed(ActionEvent e) {
+-//                searchProducts();
+-//            }
+-//        });
+-//
+-//        cmbCategory.addActionListener(new ActionListener() {
+-//            public void actionPerformed(ActionEvent e) {
+-//                searchProducts();
+-//            }
+-//        });
+-//
+-//        refreshProductList(pm.SelectAll());
+-//        setVisible(true);
+-//    }
+-//
+-//    private void searchProducts() {
+-//        String keyword = txtSearch.getText().trim().toLowerCase();
+-//        String selectedCategory = cmbCategory.getSelectedItem().toString();
+-//
+-//        Product[] products = pm.SelectAll();
+-//        panelProducts.removeAll();
+-//        int count = 0;
+-//
+-//        for (Product p : products) {
+-//            if (p != null) {
+-//                boolean matchKeyword = keyword.isEmpty() || p.getName().toLowerCase().contains(keyword);
+-//                boolean matchCategory = selectedCategory.equals("All") || p.getCategory().equalsIgnoreCase(selectedCategory);
+-//
+-//                if (matchKeyword && matchCategory) {
+-//                    panelProducts.add(createProductCard(p));
+-//                    count++;
+-//                }
+-//            }
+-//        }
+-//
+-//        if (count == 0) {
+-//            JLabel lbl = new JLabel("🥺 No products found.");
+-//            lbl.setFont(emojiFont);
+-//            lbl.setHorizontalAlignment(SwingConstants.CENTER);
+-//            panelProducts.add(lbl);
+-//        }
+-//
+-//        lblResultCount.setText(count + " products found.");
+-//        panelProducts.revalidate();
+-//        panelProducts.repaint();
+-//    }
+-//
+-//    private void refreshProductList(Product[] products) {
+-//        panelProducts.removeAll();
+-//        for (Product p : products) {
+-//            if (p != null) {
+-//                panelProducts.add(createProductCard(p));
+-//            }
+-//        }
+-//        panelProducts.revalidate();
+-//        panelProducts.repaint();
+-//    }
+-//
+-//    private JPanel createProductCard(Product p) {
+-//        JPanel card = new JPanel();
+-//        card.setLayout(new BorderLayout(5, 5));
+-//        card.setBackground(Color.WHITE);
+-//        card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+-//        card.setPreferredSize(new Dimension(250, 340)); // چون دکمه هم اضافه شده
+-//
+-//        JLabel lblImage = new JLabel();
+-//        try {
+-//            ImageIcon icon = new ImageIcon("images/" + p.getImageFileName());
+-//            Image image = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+-//            lblImage.setIcon(new ImageIcon(image));
+-//        } catch (Exception e) {
+-//            lblImage.setText("🖼️");
+-//            lblImage.setFont(emojiFont);
+-//            lblImage.setHorizontalAlignment(SwingConstants.CENTER);
+-//        }
+-//        lblImage.setHorizontalAlignment(SwingConstants.CENTER);
+-//
+-//        JLabel lblName = new JLabel("🌸 " + p.getName(), SwingConstants.CENTER);
+-//        lblName.setFont(emojiFont);
+-//
+-//        JLabel lblPrice = new JLabel(formatPrice(p.getPrice()) + " Toman", SwingConstants.CENTER);
+-//        lblPrice.setFont(emojiFont);
+-//
+-//        JLabel lblCategory = new JLabel("Category: " + p.getCategory(), SwingConstants.CENTER);
+-//        lblCategory.setFont(new Font("Segoe UI Emoji", Font.ITALIC, 14));
+-//
+-//        JPanel infoPanel = new JPanel(new GridLayout(3, 1));
+-//        infoPanel.setBackground(Color.WHITE);
+-//        infoPanel.add(lblName);
+-//        infoPanel.add(lblPrice);
+-//        infoPanel.add(lblCategory);
+-//
+-//        JButton btnAddToCart = new JButton("➕ Add to Cart");
+-//        btnAddToCart.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 13));
+-//        btnAddToCart.setBackground(new Color(255, 204, 229));
+-//
+-//        btnAddToCart.addActionListener(new ActionListener() {
+-//            public void actionPerformed(ActionEvent e) {
+-//                try {
+-//                    CartManager cm = new CartManager();
+-//                    Cart c = new Cart(p.getId(), 1);
+-//                    cm.Insert(c);
+-//                    JOptionPane.showMessageDialog(frmShowProducts.this, "🛒 Product added to cart!");
+-//                } catch (Exception ex) {
+-//                    JOptionPane.showMessageDialog(frmShowProducts.this, "❌ Error adding product to cart.");
+-//                }
+-//            }
+-//        });
+-//
+-//        card.add(lblImage, BorderLayout.NORTH);
+-//        card.add(infoPanel, BorderLayout.CENTER);
+-//        card.add(btnAddToCart, BorderLayout.SOUTH);
+-//
+-//        return card;
+-//    }
+-//
+-//    private String formatPrice(double price) {
+-//        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("en", "US"));
+-//        return nf.format(price);
+-//    }
+-//
+-//    public static void main(String[] args) {
+-//        new frmShowProducts();
+-//    }
+-//}
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"53be4df2-84f7-4fa5-a84d-28b41497e51b\" name=\"Changes\" comment=\"push these\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmMain.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmMain.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;selmashj&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/Hawjinranjbar/OnlineStore-S.git&quot;,\r\n    &quot;accountId&quot;: &quot;838b17c0-85b8-4c29-a47a-33548c9d04d7&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;customColor&quot;: &quot;&quot;,\r\n  &quot;associatedIndex&quot;: 6\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2wGYPqdJb242WPkNQZEuRsgEZHi\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Application.Framuser.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.FrmUser.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.IconButtonTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.Main.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.ProductManager.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.Test.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmAddAddress.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmCart.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmCategory.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmCustomer.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmCustomerRegistration.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmDiscount.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmLoginCustomer.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmMain.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmMainTestImage.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmManageCustomers.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmOrder.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmOrderCustomer.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmProduct.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmRegisterCustomer.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmReview.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmShowProducts.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;main&quot;,\r\n    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,\r\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\asus\\IdeaProjects\\OnlineStore-S\\images\" />\r\n      <recent name=\"C:\\Users\\asus\\IdeaProjects\\OnlineStore-S\" />\r\n      <recent name=\"C:\\Users\\asus\\IdeaProjects\\OnlineStore-S\\onlinestore-IS-master\" />\r\n      <recent name=\"C:\\Users\\asus\\IdeaProjects\\OnlineStore-S\\onlinestore-IS-master\\src\\ui\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27\" />\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"53be4df2-84f7-4fa5-a84d-28b41497e51b\" name=\"Changes\" comment=\"\" />\r\n      <created>1745669356395</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1745669356395</updated>\r\n      <workItem from=\"1745669357952\" duration=\"3131000\" />\r\n      <workItem from=\"1745778318894\" duration=\"60000\" />\r\n      <workItem from=\"1745778450504\" duration=\"31000\" />\r\n      <workItem from=\"1745820629252\" duration=\"53000\" />\r\n      <workItem from=\"1745826549832\" duration=\"3053000\" />\r\n      <workItem from=\"1745841057230\" duration=\"1471000\" />\r\n      <workItem from=\"1745871464107\" duration=\"447000\" />\r\n      <workItem from=\"1745872281441\" duration=\"14000\" />\r\n      <workItem from=\"1745934424925\" duration=\"962000\" />\r\n      <workItem from=\"1745936573161\" duration=\"13196000\" />\r\n      <workItem from=\"1746003577653\" duration=\"659000\" />\r\n      <workItem from=\"1746055169185\" duration=\"7715000\" />\r\n      <workItem from=\"1746070345872\" duration=\"507000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745670039560</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745670039560</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745671572747</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745671572747</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745671625123</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745671625123</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745826580408</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745826580408</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745841746100</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745841746100</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745842034182</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745842034182</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745938311850</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745938311850</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745940115922</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745940115922</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745940340296</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745940340296</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745941441618</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745941441618</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745943806925</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745943806925</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745944677815</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745944677815</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745949229948</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745949229948</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00014\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745950522389</created>\r\n      <option name=\"number\" value=\"00014\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745950522390</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"15\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"push these\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"push these\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 11b4ca93af9b3c217e448aaf24b2a596a0f88e8a)
++++ b/.idea/workspace.xml	(date 1746071166726)
+@@ -5,8 +5,6 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmMain.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+@@ -119,7 +117,7 @@
+       <workItem from="1745936573161" duration="13196000" />
+       <workItem from="1746003577653" duration="659000" />
+       <workItem from="1746055169185" duration="7715000" />
+-      <workItem from="1746070345872" duration="507000" />
++      <workItem from="1746070345872" duration="815000" />
+     </task>
+     <task id="LOCAL-00001" summary="push these">
+       <option name="closed" value="true" />
+@@ -233,7 +231,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1745950522390</updated>
+     </task>
+-    <option name="localTasksCounter" value="15" />
++    <task id="LOCAL-00015" summary="push these">
++      <option name="closed" value="true" />
++      <created>1746070868155</created>
++      <option name="number" value="00015" />
++      <option name="presentableId" value="LOCAL-00015" />
++      <option name="project" value="LOCAL" />
++      <updated>1746070868155</updated>
++    </task>
++    <option name="localTasksCounter" value="16" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
