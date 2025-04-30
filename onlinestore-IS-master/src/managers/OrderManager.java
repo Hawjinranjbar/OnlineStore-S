@@ -5,29 +5,36 @@ import filemanager.txtFileManager;
 
 public class OrderManager {
     private txtFileManager fm;
-    private String fileName = "Order.txt";
 
     public OrderManager() {
-        fm = new txtFileManager(fileName);
+        fm = new txtFileManager("order.txt");
     }
 
-    // ➕ ثبت سفارش
     public void Insert(Order o) {
         fm.AppendRow(o.toString());
     }
 
-    // 📋 نمایش همه سفارش‌ها (برای مدیر)
     public Order[] SelectAll() {
         String[] rows = fm.GetArray();
         Order[] orders = new Order[rows.length];
-        for (int i = 0; i < rows.length; i++) {
-            orders[i] = Order.fromString(rows[i]);
-        }
-        return orders;
-    }
 
-    // 📌 گرفتن تعداد سفارش‌ها
-    public int SelectCount() {
-        return fm.SelectCount();
+        for (int i = 0; i < rows.length; i++) {
+            if (rows[i] != null) {
+                String[] parts = rows[i].split(";");
+                if (parts.length == 7) {
+                    orders[i] = new Order(
+                            Integer.parseInt(parts[0]),
+                            Integer.parseInt(parts[1]),
+                            Integer.parseInt(parts[2]),
+                            Double.parseDouble(parts[3]),
+                            parts[4],
+                            parts[5],
+                            parts[6]
+                    );
+                }
+            }
+        }
+
+        return orders;
     }
 }

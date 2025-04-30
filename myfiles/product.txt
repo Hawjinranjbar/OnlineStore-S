@@ -28,3 +28,4 @@
 28;Cleansing Balm;Banila Co;Gentle makeup remover balm;1044500;40;Skincare;All;true;img28.jpg
 29;Whipped Body Butter;The Body Shop;Richly moisturizing body butter;1126950;50;Bodycare;Dry;true;img29.jpg
 30;Setting Spray;Urban Decay;All-nighter long-lasting makeup setting spray;1814450;20;Makeup;All;false;img30.jpg
+100;ANUA Niacinamide 10 + TXA 4 Serum;ANUA;;1780000.0;10;skincare;All;true;img32.jpg

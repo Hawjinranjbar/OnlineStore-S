@@ -5,8 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
+      <change afterPath="$PROJECT_DIR$/images/img32.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmOrder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmAddAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmAddAddress.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/img31.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/images/img31.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myfiles/cart.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/cart.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myfiles/product.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/product.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/OrderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/OrderManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmOrderCustomer.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +63,7 @@
     "Application.frmDiscount.executor": "Run",
     "Application.frmLoginCustomer.executor": "Run",
     "Application.frmManageCustomers.executor": "Run",
+    "Application.frmOrder.executor": "Run",
     "Application.frmOrderCustomer.executor": "Run",
     "Application.frmProduct.executor": "Run",
     "Application.frmRegisterCustomer.executor": "Run",
@@ -77,6 +85,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\asus\IdeaProjects\OnlineStore-S\images" />
       <recent name="C:\Users\asus\IdeaProjects\OnlineStore-S" />
       <recent name="C:\Users\asus\IdeaProjects\OnlineStore-S\onlinestore-IS-master" />
       <recent name="C:\Users\asus\IdeaProjects\OnlineStore-S\onlinestore-IS-master\src\ui" />
@@ -107,7 +116,8 @@
       <workItem from="1745871464107" duration="447000" />
       <workItem from="1745872281441" duration="14000" />
       <workItem from="1745934424925" duration="962000" />
-      <workItem from="1745936573161" duration="11634000" />
+      <workItem from="1745936573161" duration="13196000" />
+      <workItem from="1746003577653" duration="659000" />
     </task>
     <task id="LOCAL-00001" summary="push these">
       <option name="closed" value="true" />
@@ -213,7 +223,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745949229948</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="push these">
+      <option name="closed" value="true" />
+      <created>1745950522389</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1745950522390</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
