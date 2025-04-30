@@ -1,3 +1,5 @@
+
+
 package ui;
 
 import javax.swing.*;
@@ -20,7 +22,7 @@ public class frmShowProducts extends JFrame {
     private JScrollPane scrollPane;
     private Font emojiFont = new Font("Segoe UI Emoji", Font.PLAIN, 16);
 
-    public frmShowProducts() {
+    public frmShowProducts(String categoryName) {
         setTitle("💋 Beauty Shop - View Products");
         setSize(900, 700);
         setLocationRelativeTo(null);
@@ -46,6 +48,7 @@ public class frmShowProducts extends JFrame {
 
         cmbCategory = new JComboBox<>(new String[]{"All", "Skincare", "Makeup", "Haircare", "Bodycare"});
         cmbCategory.setFont(emojiFont);
+        cmbCategory.setSelectedItem(categoryName);
         cmbCategory.addActionListener(new CategoryChangeListener());
 
         searchPanel.add(txtSearch);
@@ -60,8 +63,7 @@ public class frmShowProducts extends JFrame {
         topPanel.add(searchPanel, BorderLayout.CENTER);
         topPanel.add(lblResultCount, BorderLayout.SOUTH);
 
-        panelProducts = new JPanel();
-        panelProducts.setLayout(new GridLayout(0, 2, 10, 10));
+        panelProducts = new JPanel(new GridLayout(0, 2, 10, 10));
         panelProducts.setBackground(new Color(255, 228, 240));
 
         scrollPane = new JScrollPane(panelProducts);
@@ -70,11 +72,8 @@ public class frmShowProducts extends JFrame {
         add(topPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
 
-        refreshProductList(pm.SelectAll());
+        searchProducts();
         setVisible(true);
-    }
-
-    public frmShowProducts(String categoryName) {
     }
 
     private void searchProducts() {
@@ -85,8 +84,7 @@ public class frmShowProducts extends JFrame {
         panelProducts.removeAll();
         int count = 0;
 
-        for (int i = 0; i < products.length; i++) {
-            Product p = products[i];
+        for (Product p : products) {
             if (p != null) {
                 boolean matchKeyword = keyword.isEmpty() || p.getName().toLowerCase().contains(keyword);
                 boolean matchCategory = selectedCategory.equals("All") || p.getCategory().equalsIgnoreCase(selectedCategory);
@@ -110,20 +108,8 @@ public class frmShowProducts extends JFrame {
         panelProducts.repaint();
     }
 
-    private void refreshProductList(Product[] products) {
-        panelProducts.removeAll();
-        for (int i = 0; i < products.length; i++) {
-            if (products[i] != null) {
-                panelProducts.add(createProductCard(products[i]));
-            }
-        }
-        panelProducts.revalidate();
-        panelProducts.repaint();
-    }
-
     private JPanel createProductCard(Product p) {
-        JPanel card = new JPanel();
-        card.setLayout(new BorderLayout(5, 5));
+        JPanel card = new JPanel(new BorderLayout(5, 5));
         card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
         card.setPreferredSize(new Dimension(250, 340));
@@ -172,11 +158,6 @@ public class frmShowProducts extends JFrame {
         return nf.format(price);
     }
 
-    public static void main(String[] args) {
-        new frmShowProducts();
-    }
-
-    // 🔻 کلاس داخلی برای دکمه "Add to Cart"
     private class AddToCartListener implements ActionListener {
         private Product product;
 
@@ -188,35 +169,26 @@ public class frmShowProducts extends JFrame {
             try {
                 CartManager cm = new CartManager();
                 Cart[] current = cm.SelectAll();
-                boolean alreadyExists = false;
-                for (int i = 0; i < current.length; i++) {
-                    if (current[i] != null && current[i].getProductId() == product.getId()) {
-                        alreadyExists = true;
-                        break;
+                for (Cart c : current) {
+                    if (c != null && c.getProductId() == product.getId()) {
+                        JOptionPane.showMessageDialog(frmShowProducts.this, "⚠️ Product already in cart.");
+                        return;
                     }
                 }
-
-                if (alreadyExists) {
-                    JOptionPane.showMessageDialog(frmShowProducts.this, "⚠️ Product already in cart.");
-                } else {
-                    Cart c = new Cart(product.getId(), 1);
-                    cm.Insert(c);
-                    JOptionPane.showMessageDialog(frmShowProducts.this, "🛒 Product added to cart!");
-                }
+                cm.Insert(new Cart(product.getId(), 1));
+                JOptionPane.showMessageDialog(frmShowProducts.this, "🛒 Product added to cart!");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(frmShowProducts.this, "❌ Error adding product to cart.");
             }
         }
     }
 
-    // 🔻 کلاس داخلی برای دکمه Search
     private class SearchButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             searchProducts();
         }
     }
 
-    // 🔻 کلاس داخلی برای تغییر دسته‌بندی
     private class CategoryChangeListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             searchProducts();

@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these" />
+    <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -105,8 +111,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
-        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
@@ -129,6 +135,7 @@
       <workItem from="1745934424925" duration="962000" />
       <workItem from="1745936573161" duration="13196000" />
       <workItem from="1746003577653" duration="10929000" />
+      <workItem from="1746088427512" duration="889000" />
     </task>
     <task id="LOCAL-00001" summary="push these">
       <option name="closed" value="true" />
@@ -274,7 +281,23 @@
       <option name="project" value="LOCAL" />
       <updated>1746017504375</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="push these">
+      <option name="closed" value="true" />
+      <created>1746072326876</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1746072326876</updated>
+    </task>
+    <task id="LOCAL-00020" summary="push these">
+      <option name="closed" value="true" />
+      <created>1746072368536</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1746072368536</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
