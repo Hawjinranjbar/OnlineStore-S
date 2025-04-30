@@ -3,6 +3,8 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import managers.OrderManager;
 import managers.AddressManager;
@@ -42,6 +44,7 @@ public class frmOrder extends JFrame {
         btnRefresh = new JButton("🔄 Refresh Orders");
         btnRefresh.setFont(font);
         btnRefresh.setBackground(new Color(204, 229, 255));
+        btnRefresh.addActionListener(new RefreshButtonListener());
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(new Color(255, 240, 245));
@@ -49,8 +52,6 @@ public class frmOrder extends JFrame {
 
         add(scrollPane, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
-
-        btnRefresh.addActionListener(e -> refreshOrderList());
 
         refreshOrderList();
         setVisible(true);
@@ -71,18 +72,18 @@ public class frmOrder extends JFrame {
                 if (o != null) {
                     // گرفتن اطلاعات مشتری
                     Customer customer = null;
-                    for (Customer c : customers) {
-                        if (c != null && c.getId() == o.getCustomerId()) {
-                            customer = c;
+                    for (int j = 0; j < customers.length; j++) {
+                        if (customers[j] != null && customers[j].getId() == o.getCustomerId()) {
+                            customer = customers[j];
                             break;
                         }
                     }
 
                     // گرفتن اطلاعات آدرس
                     Address address = null;
-                    for (Address a : addresses) {
-                        if (a != null && a.getId() == o.getAddressId()) {
-                            address = a;
+                    for (int j = 0; j < addresses.length; j++) {
+                        if (addresses[j] != null && addresses[j].getId() == o.getAddressId()) {
+                            address = addresses[j];
                             break;
                         }
                     }
@@ -108,7 +109,10 @@ public class frmOrder extends JFrame {
                         sb.append("🏠 Address ID: ").append(o.getAddressId()).append(" (Not Found)\n");
                     }
 
-                    sb.append("💰 Total: ").append(o.getTotalAmount()).append(" Toman\n")
+                    // ✅ تبدیل قیمت به تومان با فرمت مناسب
+                    String formattedPrice = formatPrice(o.getTotalAmount());
+
+                    sb.append("💰 Total: ").append(formattedPrice).append(" Toman\n")
                             .append("🎟️ Discount Code: ").append(o.getDiscountCode()).append("\n")
                             .append("🛒 Items: ").append(o.getCartItems()).append("\n")
                             .append("🕓 Date: ").append(o.getOrderDate()).append("\n")
@@ -118,6 +122,19 @@ public class frmOrder extends JFrame {
         }
 
         txtOrderList.setText(sb.toString());
+    }
+
+    // ✅ فرمت‌دهنده‌ی قیمت به تومان
+    private String formatPrice(double price) {
+        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("en", "US"));
+        return nf.format(price); // خروجی: 85,000
+    }
+
+    // ✅ کلاس داخلی به جای lambda برای دکمه Refresh
+    private class RefreshButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            refreshOrderList();
+        }
     }
 
     public static void main(String[] args) {
