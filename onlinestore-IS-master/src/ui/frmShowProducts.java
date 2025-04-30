@@ -1,5 +1,3 @@
-
-
 package ui;
 
 import javax.swing.*;
@@ -38,6 +36,12 @@ public class frmShowProducts extends JFrame {
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         searchPanel.setBackground(new Color(255, 228, 240));
 
+        // 🔙 دکمه برگشت
+        JButton btnBack = new JButton("🔙 Back to Categories");
+        btnBack.setFont(emojiFont);
+        btnBack.setBackground(new Color(204, 255, 255));
+        btnBack.addActionListener(new BackButtonListener());
+
         txtSearch = new JTextField(20);
         txtSearch.setFont(emojiFont);
 
@@ -51,6 +55,7 @@ public class frmShowProducts extends JFrame {
         cmbCategory.setSelectedItem(categoryName);
         cmbCategory.addActionListener(new CategoryChangeListener());
 
+        searchPanel.add(btnBack); // اضافه کردن دکمه برگشت
         searchPanel.add(txtSearch);
         searchPanel.add(btnSearch);
         searchPanel.add(cmbCategory);
@@ -158,6 +163,7 @@ public class frmShowProducts extends JFrame {
         return nf.format(price);
     }
 
+    // کلاس داخلی: افزودن به سبد
     private class AddToCartListener implements ActionListener {
         private Product product;
 
@@ -183,15 +189,25 @@ public class frmShowProducts extends JFrame {
         }
     }
 
+    // کلاس داخلی: جستجو
     private class SearchButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             searchProducts();
         }
     }
 
+    // کلاس داخلی: تغییر دسته‌بندی
     private class CategoryChangeListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             searchProducts();
+        }
+    }
+
+    // 🆕 کلاس داخلی: دکمه برگشت به frmMain
+    private class BackButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            new frmMain();
         }
     }
 }

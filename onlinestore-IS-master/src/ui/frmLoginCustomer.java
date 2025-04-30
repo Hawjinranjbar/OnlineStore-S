@@ -11,16 +11,14 @@ public class frmLoginCustomer extends JFrame {
 
     private JTextField txtEmail;
     private JPasswordField txtPassword;
-    private JButton btnLogin;
+    private JButton btnLogin, btnBack;
     private CustomerManager cm;
-    private String source; // 👈 مشخص می‌کنه از کجا اومده
+    private String source;
 
-    // کانستراکتور پیش‌فرض
     public frmLoginCustomer() {
         this("default");
     }
 
-    // کانستراکتور با ورودی (مثلاً "cart")
     public frmLoginCustomer(String source) {
         this.source = source;
 
@@ -48,41 +46,51 @@ public class frmLoginCustomer extends JFrame {
         btnLogin = new JButton("🔓 Login");
         btnLogin.setBackground(new Color(204, 255, 204));
         btnLogin.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
+        btnLogin.addActionListener(new LoginButtonListener());
+
+        btnBack = new JButton("🔙 Back to Menu");
+        btnBack.setBackground(new Color(255, 229, 204));
+        btnBack.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
+        btnBack.addActionListener(new BackButtonListener());
 
         JPanel btnPanel = new JPanel();
         btnPanel.setBackground(new Color(255, 240, 245));
         btnPanel.add(btnLogin);
+        btnPanel.add(btnBack);
 
         add(panel, BorderLayout.CENTER);
         add(btnPanel, BorderLayout.SOUTH);
 
-        btnLogin.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                login();
-            }
-        });
-
         setVisible(true);
     }
 
-    private void login() {
-        String email = txtEmail.getText();
-        String password = new String(txtPassword.getPassword());
+    private class LoginButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            String email = txtEmail.getText();
+            String password = new String(txtPassword.getPassword());
 
-        Customer customer = cm.findByEmailAndPassword(email, password);
+            Customer customer = cm.findByEmailAndPassword(email, password);
 
-        if (customer != null) {
-            loggedInCustomer = customer;
-            JOptionPane.showMessageDialog(this, "✅ Login successful!\nWelcome, " + customer.getName());
-            dispose();
+            if (customer != null) {
+                loggedInCustomer = customer;
+                JOptionPane.showMessageDialog(frmLoginCustomer.this,
+                        "✅ Login successful!\nWelcome, " + customer.getName());
 
-            // اگر از سبد خرید اومده بود، برش گردون اونجا
-            if (source.equalsIgnoreCase("cart")) {
-                new frmCart();
+                dispose();
+
+                if (source.equalsIgnoreCase("cart")) {
+                    new frmCart();
+                }
+            } else {
+                JOptionPane.showMessageDialog(frmLoginCustomer.this, "❌ Invalid email or password.");
             }
+        }
+    }
 
-        } else {
-            JOptionPane.showMessageDialog(this, "❌ Invalid email or password.");
+    private class BackButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            new frmMain();
         }
     }
 

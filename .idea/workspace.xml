@@ -6,10 +6,19 @@
   <component name="ChangeListManager">
     <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmDiscount.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmDiscount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmLoginCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmLoginCustomer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmRegisterCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmRegisterCustomer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmLoginCustomer$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmLoginCustomer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmLoginCustomer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmRegisterCustomer$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmRegisterCustomer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmRegisterCustomer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$AddToCartListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$AddToCartListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$CategoryChangeListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$CategoryChangeListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$SearchButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$SearchButtonListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

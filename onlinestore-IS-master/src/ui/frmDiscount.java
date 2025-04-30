@@ -8,7 +8,7 @@ import common.Discount;
 
 public class frmDiscount extends JFrame {
     private JTextField txtCode, txtPercent, txtIsActive;
-    private JButton btnAdd, btnUpdate, btnDelete;
+    private JButton btnAdd, btnUpdate, btnDelete, btnBack;
     private JTextArea txtList;
     private DiscountManager dm;
 
@@ -42,20 +42,24 @@ public class frmDiscount extends JFrame {
         btnAdd = new JButton("➕ Add");
         btnUpdate = new JButton("✏️ Update");
         btnDelete = new JButton("❌ Delete");
+        btnBack = new JButton("🔙 Back to Menu");
 
-        btnAdd.setFont(font);
-        btnUpdate.setFont(font);
-        btnDelete.setFont(font);
+        JButton[] buttons = {btnAdd, btnUpdate, btnDelete, btnBack};
+        for (JButton b : buttons) {
+            b.setFont(font);
+        }
 
         btnAdd.setBackground(new Color(204, 255, 204));
         btnUpdate.setBackground(new Color(255, 255, 153));
         btnDelete.setBackground(new Color(255, 204, 204));
+        btnBack.setBackground(new Color(204, 229, 255));
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setBackground(new Color(255, 240, 245));
         buttonPanel.add(btnAdd);
         buttonPanel.add(btnUpdate);
         buttonPanel.add(btnDelete);
+        buttonPanel.add(btnBack); // 🔙 اضافه شد
 
         txtList = new JTextArea();
         txtList.setEditable(false);
@@ -68,47 +72,10 @@ public class frmDiscount extends JFrame {
         add(buttonPanel, BorderLayout.CENTER);
         add(scrollPane, BorderLayout.SOUTH);
 
-        btnAdd.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Discount d = getDiscountFromInput();
-                    dm.Insert(d);
-                    refreshList();
-                    clearFields();
-                    JOptionPane.showMessageDialog(frmDiscount.this, "✅ Discount added!");
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmDiscount.this, "❌ Error: " + ex.getMessage());
-                }
-            }
-        });
-
-        btnUpdate.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int row = Integer.parseInt(JOptionPane.showInputDialog("Enter row number to update:"));
-                    Discount d = getDiscountFromInput();
-                    dm.Update(d, row);
-                    refreshList();
-                    clearFields();
-                    JOptionPane.showMessageDialog(frmDiscount.this, "✏️ Discount updated!");
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmDiscount.this, "❌ Error updating discount.");
-                }
-            }
-        });
-
-        btnDelete.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int row = Integer.parseInt(JOptionPane.showInputDialog("Enter row number to delete:"));
-                    dm.Delete(row);
-                    refreshList();
-                    JOptionPane.showMessageDialog(frmDiscount.this, "❌ Discount deleted!");
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmDiscount.this, "❌ Error deleting discount.");
-                }
-            }
-        });
+        btnAdd.addActionListener(new AddDiscountListener());
+        btnUpdate.addActionListener(new UpdateDiscountListener());
+        btnDelete.addActionListener(new DeleteDiscountListener());
+        btnBack.addActionListener(new BackButtonListener()); // 🔙 وصل شد
 
         refreshList();
         setVisible(true);
@@ -159,6 +126,55 @@ public class frmDiscount extends JFrame {
         txtCode.setText("");
         txtPercent.setText("");
         txtIsActive.setText("");
+    }
+
+    private class AddDiscountListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            try {
+                Discount d = getDiscountFromInput();
+                dm.Insert(d);
+                refreshList();
+                clearFields();
+                JOptionPane.showMessageDialog(frmDiscount.this, "✅ Discount added!");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frmDiscount.this, "❌ Error: " + ex.getMessage());
+            }
+        }
+    }
+
+    private class UpdateDiscountListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            try {
+                int row = Integer.parseInt(JOptionPane.showInputDialog("Enter row number to update:"));
+                Discount d = getDiscountFromInput();
+                dm.Update(d, row);
+                refreshList();
+                clearFields();
+                JOptionPane.showMessageDialog(frmDiscount.this, "✏️ Discount updated!");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frmDiscount.this, "❌ Error updating discount.");
+            }
+        }
+    }
+
+    private class DeleteDiscountListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            try {
+                int row = Integer.parseInt(JOptionPane.showInputDialog("Enter row number to delete:"));
+                dm.Delete(row);
+                refreshList();
+                JOptionPane.showMessageDialog(frmDiscount.this, "❌ Discount deleted!");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frmDiscount.this, "❌ Error deleting discount.");
+            }
+        }
+    }
+
+    private class BackButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            new frmMain(); // برگشت به frmMain
+        }
     }
 
     public static void main(String[] args) {

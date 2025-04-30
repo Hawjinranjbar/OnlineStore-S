@@ -8,7 +8,7 @@ import common.Address;
 
 public class frmAddAddress extends JFrame {
     private JTextField txtId, txtCity, txtStreet, txtPostalCode, txtDetails;
-    private JButton btnSave, btnReturnToCart;
+    private JButton btnSave, btnReturnToCart, btnBackToMenu;
     private AddressManager am;
 
     public frmAddAddress() {
@@ -44,52 +44,62 @@ public class frmAddAddress extends JFrame {
         btnSave = new JButton("💾 Save Address");
         btnSave.setBackground(new Color(204, 255, 204));
         btnSave.setFont(font);
+        btnSave.addActionListener(new SaveAddressListener());
 
         btnReturnToCart = new JButton("↩️ Return to Cart");
         btnReturnToCart.setBackground(new Color(255, 229, 204));
         btnReturnToCart.setFont(font);
-        btnReturnToCart.setVisible(false); // اول مخفیه
+        btnReturnToCart.setVisible(false); // مخفی تا زمانی که آدرس ثبت شود
+        btnReturnToCart.addActionListener(new ReturnToCartListener());
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        btnBackToMenu = new JButton("🔙 Back to Menu");
+        btnBackToMenu.setBackground(new Color(204, 229, 255));
+        btnBackToMenu.setFont(font);
+        btnBackToMenu.addActionListener(new BackButtonListener());
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         buttonPanel.setBackground(new Color(255, 240, 245));
         buttonPanel.add(btnSave);
         buttonPanel.add(btnReturnToCart);
+        buttonPanel.add(btnBackToMenu);
 
         add(inputPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        btnSave.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                saveAddress();
-            }
-        });
-
-        btnReturnToCart.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new frmCart(); // رفتن به سبد خرید
-                dispose(); // این فرم رو ببند
-            }
-        });
-
         setVisible(true);
     }
 
-    private void saveAddress() {
-        try {
-            Address address = new Address(
-                    Integer.parseInt(txtId.getText()),
-                    txtCity.getText(),
-                    txtStreet.getText(),
-                    txtPostalCode.getText(),
-                    txtDetails.getText()
-            );
-            am.Insert(address);
-            JOptionPane.showMessageDialog(this, "✅ Address saved successfully!");
+    private class SaveAddressListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            try {
+                Address address = new Address(
+                        Integer.parseInt(txtId.getText()),
+                        txtCity.getText(),
+                        txtStreet.getText(),
+                        txtPostalCode.getText(),
+                        txtDetails.getText()
+                );
+                am.Insert(address);
+                JOptionPane.showMessageDialog(frmAddAddress.this, "✅ Address saved successfully!");
+                clearFields();
+                btnReturnToCart.setVisible(true);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frmAddAddress.this, "❌ Error saving address: " + ex.getMessage());
+            }
+        }
+    }
 
-            clearFields();
-            btnReturnToCart.setVisible(true); // دکمه بازگشت رو نشون بده
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "❌ Error saving address: " + ex.getMessage());
+    private class ReturnToCartListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            new frmCart();
+            dispose();
+        }
+    }
+
+    private class BackButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            new frmMain();
         }
     }
 
