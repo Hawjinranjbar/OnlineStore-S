@@ -1,0 +1,815 @@
+Index: onlinestore-IS-master/src/ui/frmShowProducts.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ui;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\nimport managers.ProductManager;\r\nimport managers.CartManager;\r\nimport common.Product;\r\nimport common.Cart;\r\nimport java.text.NumberFormat;\r\nimport java.util.Locale;\r\n\r\npublic class frmShowProducts extends JFrame {\r\n    private JTextField txtSearch;\r\n    private JButton btnSearch;\r\n    private JComboBox<String> cmbCategory;\r\n    private ProductManager pm;\r\n    private JLabel lblResultCount;\r\n    private JPanel panelProducts;\r\n    private JScrollPane scrollPane;\r\n    private Font emojiFont = new Font(\"Segoe UI Emoji\", Font.PLAIN, 16);\r\n\r\n    public frmShowProducts() {\r\n        setTitle(\"\uD83D\uDC8B Beauty Shop - View Products\");\r\n        setSize(900, 700);\r\n        setLocationRelativeTo(null);\r\n        setDefaultCloseOperation(EXIT_ON_CLOSE);\r\n        setLayout(new BorderLayout(10, 10));\r\n        getContentPane().setBackground(new Color(255, 228, 240));\r\n\r\n        pm = new ProductManager();\r\n\r\n        JPanel topPanel = new JPanel(new BorderLayout(10, 10));\r\n        topPanel.setBackground(new Color(255, 228, 240));\r\n\r\n        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));\r\n        searchPanel.setBackground(new Color(255, 228, 240));\r\n\r\n        txtSearch = new JTextField(20);\r\n        txtSearch.setFont(emojiFont);\r\n\r\n        btnSearch = new JButton(\"\uD83D\uDD0D Search\");\r\n        btnSearch.setBackground(new Color(255, 182, 193));\r\n        btnSearch.setFont(emojiFont);\r\n\r\n        cmbCategory = new JComboBox<>(new String[]{\"All\", \"Skincare\", \"Makeup\", \"Haircare\", \"Bodycare\"});\r\n        cmbCategory.setFont(emojiFont);\r\n\r\n        searchPanel.add(txtSearch);\r\n        searchPanel.add(btnSearch);\r\n        searchPanel.add(cmbCategory);\r\n\r\n        lblResultCount = new JLabel(\" \");\r\n        lblResultCount.setHorizontalAlignment(SwingConstants.CENTER);\r\n        lblResultCount.setForeground(Color.DARK_GRAY);\r\n        lblResultCount.setFont(emojiFont);\r\n\r\n        topPanel.add(searchPanel, BorderLayout.CENTER);\r\n        topPanel.add(lblResultCount, BorderLayout.SOUTH);\r\n\r\n        panelProducts = new JPanel();\r\n        panelProducts.setLayout(new GridLayout(0, 2, 10, 10)); // دو ستونه\r\n        panelProducts.setBackground(new Color(255, 228, 240));\r\n\r\n        scrollPane = new JScrollPane(panelProducts);\r\n        scrollPane.setBorder(BorderFactory.createTitledBorder(\"\\u2728 Available Beauty Products\"));\r\n\r\n        add(topPanel, BorderLayout.NORTH);\r\n        add(scrollPane, BorderLayout.CENTER);\r\n\r\n        btnSearch.addActionListener(new ActionListener() {\r\n            public void actionPerformed(ActionEvent e) {\r\n                searchProducts();\r\n            }\r\n        });\r\n\r\n        cmbCategory.addActionListener(new ActionListener() {\r\n            public void actionPerformed(ActionEvent e) {\r\n                searchProducts();\r\n            }\r\n        });\r\n\r\n        refreshProductList(pm.SelectAll());\r\n        setVisible(true);\r\n    }\r\n\r\n    private void searchProducts() {\r\n        String keyword = txtSearch.getText().trim().toLowerCase();\r\n        String selectedCategory = cmbCategory.getSelectedItem().toString();\r\n\r\n        Product[] products = pm.SelectAll();\r\n        panelProducts.removeAll();\r\n        int count = 0;\r\n\r\n        for (Product p : products) {\r\n            if (p != null) {\r\n                boolean matchKeyword = keyword.isEmpty() || p.getName().toLowerCase().contains(keyword);\r\n                boolean matchCategory = selectedCategory.equals(\"All\") || p.getCategory().equalsIgnoreCase(selectedCategory);\r\n\r\n                if (matchKeyword && matchCategory) {\r\n                    panelProducts.add(createProductCard(p));\r\n                    count++;\r\n                }\r\n            }\r\n        }\r\n\r\n        if (count == 0) {\r\n            JLabel lbl = new JLabel(\"\uD83E\uDD7A No products found.\");\r\n            lbl.setFont(emojiFont);\r\n            lbl.setHorizontalAlignment(SwingConstants.CENTER);\r\n            panelProducts.add(lbl);\r\n        }\r\n\r\n        lblResultCount.setText(count + \" products found.\");\r\n        panelProducts.revalidate();\r\n        panelProducts.repaint();\r\n    }\r\n\r\n    private void refreshProductList(Product[] products) {\r\n        panelProducts.removeAll();\r\n        for (Product p : products) {\r\n            if (p != null) {\r\n                panelProducts.add(createProductCard(p));\r\n            }\r\n        }\r\n        panelProducts.revalidate();\r\n        panelProducts.repaint();\r\n    }\r\n\r\n    private JPanel createProductCard(Product p) {\r\n        JPanel card = new JPanel();\r\n        card.setLayout(new BorderLayout(5, 5));\r\n        card.setBackground(Color.WHITE);\r\n        card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));\r\n        card.setPreferredSize(new Dimension(250, 340)); // چون دکمه هم اضافه شده\r\n\r\n        JLabel lblImage = new JLabel();\r\n        try {\r\n            ImageIcon icon = new ImageIcon(\"images/\" + p.getImageFileName());\r\n            Image image = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);\r\n            lblImage.setIcon(new ImageIcon(image));\r\n        } catch (Exception e) {\r\n            lblImage.setText(\"\uD83D\uDDBC\uFE0F\");\r\n            lblImage.setFont(emojiFont);\r\n            lblImage.setHorizontalAlignment(SwingConstants.CENTER);\r\n        }\r\n        lblImage.setHorizontalAlignment(SwingConstants.CENTER);\r\n\r\n        JLabel lblName = new JLabel(\"\uD83C\uDF38 \" + p.getName(), SwingConstants.CENTER);\r\n        lblName.setFont(emojiFont);\r\n\r\n        JLabel lblPrice = new JLabel(formatPrice(p.getPrice()) + \" Toman\", SwingConstants.CENTER);\r\n        lblPrice.setFont(emojiFont);\r\n\r\n        JLabel lblCategory = new JLabel(\"Category: \" + p.getCategory(), SwingConstants.CENTER);\r\n        lblCategory.setFont(new Font(\"Segoe UI Emoji\", Font.ITALIC, 14));\r\n\r\n        JPanel infoPanel = new JPanel(new GridLayout(3, 1));\r\n        infoPanel.setBackground(Color.WHITE);\r\n        infoPanel.add(lblName);\r\n        infoPanel.add(lblPrice);\r\n        infoPanel.add(lblCategory);\r\n\r\n        JButton btnAddToCart = new JButton(\"➕ Add to Cart\");\r\n        btnAddToCart.setFont(new Font(\"Segoe UI Emoji\", Font.PLAIN, 13));\r\n        btnAddToCart.setBackground(new Color(255, 204, 229));\r\n\r\n        btnAddToCart.addActionListener(new ActionListener() {\r\n            public void actionPerformed(ActionEvent e) {\r\n                try {\r\n                    CartManager cm = new CartManager();\r\n                    Cart c = new Cart(p.getId(), 1);\r\n                    cm.Insert(c);\r\n                    JOptionPane.showMessageDialog(frmShowProducts.this, \"\uD83D\uDED2 Product added to cart!\");\r\n                } catch (Exception ex) {\r\n                    JOptionPane.showMessageDialog(frmShowProducts.this, \"❌ Error adding product to cart.\");\r\n                }\r\n            }\r\n        });\r\n\r\n        card.add(lblImage, BorderLayout.NORTH);\r\n        card.add(infoPanel, BorderLayout.CENTER);\r\n        card.add(btnAddToCart, BorderLayout.SOUTH);\r\n\r\n        return card;\r\n    }\r\n\r\n    private String formatPrice(double price) {\r\n        NumberFormat nf = NumberFormat.getNumberInstance(new Locale(\"en\", \"US\"));\r\n        return nf.format(price);\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n        new frmShowProducts();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmShowProducts.java b/onlinestore-IS-master/src/ui/frmShowProducts.java
+--- a/onlinestore-IS-master/src/ui/frmShowProducts.java	(revision ea96cecb5c8dc4f3ddff60622bc43f317248f59c)
++++ b/onlinestore-IS-master/src/ui/frmShowProducts.java	(date 1746047184121)
+@@ -1,3 +1,4 @@
++
+ package ui;
+ 
+ import javax.swing.*;
+@@ -7,20 +8,16 @@
+ import managers.CartManager;
+ import common.Product;
+ import common.Cart;
+-import java.text.NumberFormat;
+-import java.util.Locale;
+ 
+ public class frmShowProducts extends JFrame {
+-    private JTextField txtSearch;
+-    private JButton btnSearch;
+     private JComboBox<String> cmbCategory;
++    private JTextField txtSearch;
++    private JPanel panelProducts;
++    private JLabel lblResultCount;
+     private ProductManager pm;
+-    private JLabel lblResultCount;
+-    private JPanel panelProducts;
+-    private JScrollPane scrollPane;
+     private Font emojiFont = new Font("Segoe UI Emoji", Font.PLAIN, 16);
+ 
+-    public frmShowProducts() {
++    public frmShowProducts(String selectedCategory) {
+         setTitle("💋 Beauty Shop - View Products");
+         setSize(900, 700);
+         setLocationRelativeTo(null);
+@@ -39,7 +36,7 @@
+         txtSearch = new JTextField(20);
+         txtSearch.setFont(emojiFont);
+ 
+-        btnSearch = new JButton("🔍 Search");
++        JButton btnSearch = new JButton("🔍 Search");
+         btnSearch.setBackground(new Color(255, 182, 193));
+         btnSearch.setFont(emojiFont);
+ 
+@@ -58,29 +55,23 @@
+         topPanel.add(searchPanel, BorderLayout.CENTER);
+         topPanel.add(lblResultCount, BorderLayout.SOUTH);
+ 
+-        panelProducts = new JPanel();
+-        panelProducts.setLayout(new GridLayout(0, 2, 10, 10)); // دو ستونه
++        panelProducts = new JPanel(new GridLayout(0, 2, 10, 10));
+         panelProducts.setBackground(new Color(255, 228, 240));
+ 
+-        scrollPane = new JScrollPane(panelProducts);
+-        scrollPane.setBorder(BorderFactory.createTitledBorder("\u2728 Available Beauty Products"));
++        JScrollPane scrollPane = new JScrollPane(panelProducts);
++        scrollPane.setBorder(BorderFactory.createTitledBorder("✨ Available Beauty Products"));
+ 
+         add(topPanel, BorderLayout.NORTH);
+         add(scrollPane, BorderLayout.CENTER);
+ 
+-        btnSearch.addActionListener(new ActionListener() {
+-            public void actionPerformed(ActionEvent e) {
+-                searchProducts();
+-            }
+-        });
++        // Actions
++        btnSearch.addActionListener(e -> searchProducts());
++        cmbCategory.addActionListener(e -> searchProducts());
+ 
+-        cmbCategory.addActionListener(new ActionListener() {
+-            public void actionPerformed(ActionEvent e) {
+-                searchProducts();
+-            }
+-        });
++        // Initial category
++        cmbCategory.setSelectedItem(selectedCategory);
++        searchProducts();
+ 
+-        refreshProductList(pm.SelectAll());
+         setVisible(true);
+     }
+ 
+@@ -116,23 +107,12 @@
+         panelProducts.repaint();
+     }
+ 
+-    private void refreshProductList(Product[] products) {
+-        panelProducts.removeAll();
+-        for (Product p : products) {
+-            if (p != null) {
+-                panelProducts.add(createProductCard(p));
+-            }
+-        }
+-        panelProducts.revalidate();
+-        panelProducts.repaint();
+-    }
+-
+     private JPanel createProductCard(Product p) {
+         JPanel card = new JPanel();
+         card.setLayout(new BorderLayout(5, 5));
+         card.setBackground(Color.WHITE);
+         card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+-        card.setPreferredSize(new Dimension(250, 340)); // چون دکمه هم اضافه شده
++        card.setPreferredSize(new Dimension(250, 340));
+ 
+         JLabel lblImage = new JLabel();
+         try {
+@@ -144,12 +124,11 @@
+             lblImage.setFont(emojiFont);
+             lblImage.setHorizontalAlignment(SwingConstants.CENTER);
+         }
+-        lblImage.setHorizontalAlignment(SwingConstants.CENTER);
+ 
+         JLabel lblName = new JLabel("🌸 " + p.getName(), SwingConstants.CENTER);
+         lblName.setFont(emojiFont);
+ 
+-        JLabel lblPrice = new JLabel(formatPrice(p.getPrice()) + " Toman", SwingConstants.CENTER);
++        JLabel lblPrice = new JLabel(String.format("%,.0f Toman", p.getPrice()), SwingConstants.CENTER);
+         lblPrice.setFont(emojiFont);
+ 
+         JLabel lblCategory = new JLabel("Category: " + p.getCategory(), SwingConstants.CENTER);
+@@ -165,16 +144,14 @@
+         btnAddToCart.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 13));
+         btnAddToCart.setBackground(new Color(255, 204, 229));
+ 
+-        btnAddToCart.addActionListener(new ActionListener() {
+-            public void actionPerformed(ActionEvent e) {
+-                try {
+-                    CartManager cm = new CartManager();
+-                    Cart c = new Cart(p.getId(), 1);
+-                    cm.Insert(c);
+-                    JOptionPane.showMessageDialog(frmShowProducts.this, "🛒 Product added to cart!");
+-                } catch (Exception ex) {
+-                    JOptionPane.showMessageDialog(frmShowProducts.this, "❌ Error adding product to cart.");
+-                }
++        btnAddToCart.addActionListener(e -> {
++            try {
++                CartManager cm = new CartManager();
++                Cart c = new Cart(p.getId(), 1);
++                cm.Insert(c);
++                JOptionPane.showMessageDialog(frmShowProducts.this, "🛒 Product added to cart!");
++            } catch (Exception ex) {
++                JOptionPane.showMessageDialog(frmShowProducts.this, "❌ Error adding product to cart.");
+             }
+         });
+ 
+@@ -184,13 +161,211 @@
+ 
+         return card;
+     }
++}
++
++
+ 
+-    private String formatPrice(double price) {
+-        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("en", "US"));
+-        return nf.format(price);
+-    }
++
+ 
+-    public static void main(String[] args) {
+-        new frmShowProducts();
+-    }
+-}
++
++
++
++
++
++
++//package ui;
++//
++//import javax.swing.*;
++//import java.awt.*;
++//import java.awt.event.*;
++//import managers.ProductManager;
++//import managers.CartManager;
++//import common.Product;
++//import common.Cart;
++//import java.text.NumberFormat;
++//import java.util.Locale;
++
++//public class frmShowProducts extends JFrame {
++//    private JTextField txtSearch;
++//    private JButton btnSearch;
++//    private JComboBox<String> cmbCategory;
++//    private ProductManager pm;
++//    private JLabel lblResultCount;
++//    private JPanel panelProducts;
++//    private JScrollPane scrollPane;
++//    private Font emojiFont = new Font("Segoe UI Emoji", Font.PLAIN, 16);
++//
++//    public frmShowProducts() {
++//        setTitle("💋 Beauty Shop - View Products");
++//        setSize(900, 700);
++//        setLocationRelativeTo(null);
++//        setDefaultCloseOperation(EXIT_ON_CLOSE);
++//        setLayout(new BorderLayout(10, 10));
++//        getContentPane().setBackground(new Color(255, 228, 240));
++//
++//        pm = new ProductManager();
++//
++//        JPanel topPanel = new JPanel(new BorderLayout(10, 10));
++//        topPanel.setBackground(new Color(255, 228, 240));
++//
++//        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
++//        searchPanel.setBackground(new Color(255, 228, 240));
++//
++//        txtSearch = new JTextField(20);
++//        txtSearch.setFont(emojiFont);
++//
++//        btnSearch = new JButton("🔍 Search");
++//        btnSearch.setBackground(new Color(255, 182, 193));
++//        btnSearch.setFont(emojiFont);
++//
++//        cmbCategory = new JComboBox<>(new String[]{"All", "Skincare", "Makeup", "Haircare", "Bodycare"});
++//        cmbCategory.setFont(emojiFont);
++//
++//        searchPanel.add(txtSearch);
++//        searchPanel.add(btnSearch);
++//        searchPanel.add(cmbCategory);
++//
++//        lblResultCount = new JLabel(" ");
++//        lblResultCount.setHorizontalAlignment(SwingConstants.CENTER);
++//        lblResultCount.setForeground(Color.DARK_GRAY);
++//        lblResultCount.setFont(emojiFont);
++//
++//        topPanel.add(searchPanel, BorderLayout.CENTER);
++//        topPanel.add(lblResultCount, BorderLayout.SOUTH);
++//
++//        panelProducts = new JPanel();
++//        panelProducts.setLayout(new GridLayout(0, 2, 10, 10)); // دو ستونه
++//        panelProducts.setBackground(new Color(255, 228, 240));
++//
++//        scrollPane = new JScrollPane(panelProducts);
++//        scrollPane.setBorder(BorderFactory.createTitledBorder("\u2728 Available Beauty Products"));
++//
++//        add(topPanel, BorderLayout.NORTH);
++//        add(scrollPane, BorderLayout.CENTER);
++//
++//        btnSearch.addActionListener(new ActionListener() {
++//            public void actionPerformed(ActionEvent e) {
++//                searchProducts();
++//            }
++//        });
++//
++//        cmbCategory.addActionListener(new ActionListener() {
++//            public void actionPerformed(ActionEvent e) {
++//                searchProducts();
++//            }
++//        });
++//
++//        refreshProductList(pm.SelectAll());
++//        setVisible(true);
++//    }
++//
++//    private void searchProducts() {
++//        String keyword = txtSearch.getText().trim().toLowerCase();
++//        String selectedCategory = cmbCategory.getSelectedItem().toString();
++//
++//        Product[] products = pm.SelectAll();
++//        panelProducts.removeAll();
++//        int count = 0;
++//
++//        for (Product p : products) {
++//            if (p != null) {
++//                boolean matchKeyword = keyword.isEmpty() || p.getName().toLowerCase().contains(keyword);
++//                boolean matchCategory = selectedCategory.equals("All") || p.getCategory().equalsIgnoreCase(selectedCategory);
++//
++//                if (matchKeyword && matchCategory) {
++//                    panelProducts.add(createProductCard(p));
++//                    count++;
++//                }
++//            }
++//        }
++//
++//        if (count == 0) {
++//            JLabel lbl = new JLabel("🥺 No products found.");
++//            lbl.setFont(emojiFont);
++//            lbl.setHorizontalAlignment(SwingConstants.CENTER);
++//            panelProducts.add(lbl);
++//        }
++//
++//        lblResultCount.setText(count + " products found.");
++//        panelProducts.revalidate();
++//        panelProducts.repaint();
++//    }
++//
++//    private void refreshProductList(Product[] products) {
++//        panelProducts.removeAll();
++//        for (Product p : products) {
++//            if (p != null) {
++//                panelProducts.add(createProductCard(p));
++//            }
++//        }
++//        panelProducts.revalidate();
++//        panelProducts.repaint();
++//    }
++//
++//    private JPanel createProductCard(Product p) {
++//        JPanel card = new JPanel();
++//        card.setLayout(new BorderLayout(5, 5));
++//        card.setBackground(Color.WHITE);
++//        card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
++//        card.setPreferredSize(new Dimension(250, 340)); // چون دکمه هم اضافه شده
++//
++//        JLabel lblImage = new JLabel();
++//        try {
++//            ImageIcon icon = new ImageIcon("images/" + p.getImageFileName());
++//            Image image = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
++//            lblImage.setIcon(new ImageIcon(image));
++//        } catch (Exception e) {
++//            lblImage.setText("🖼️");
++//            lblImage.setFont(emojiFont);
++//            lblImage.setHorizontalAlignment(SwingConstants.CENTER);
++//        }
++//        lblImage.setHorizontalAlignment(SwingConstants.CENTER);
++//
++//        JLabel lblName = new JLabel("🌸 " + p.getName(), SwingConstants.CENTER);
++//        lblName.setFont(emojiFont);
++//
++//        JLabel lblPrice = new JLabel(formatPrice(p.getPrice()) + " Toman", SwingConstants.CENTER);
++//        lblPrice.setFont(emojiFont);
++//
++//        JLabel lblCategory = new JLabel("Category: " + p.getCategory(), SwingConstants.CENTER);
++//        lblCategory.setFont(new Font("Segoe UI Emoji", Font.ITALIC, 14));
++//
++//        JPanel infoPanel = new JPanel(new GridLayout(3, 1));
++//        infoPanel.setBackground(Color.WHITE);
++//        infoPanel.add(lblName);
++//        infoPanel.add(lblPrice);
++//        infoPanel.add(lblCategory);
++//
++//        JButton btnAddToCart = new JButton("➕ Add to Cart");
++//        btnAddToCart.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 13));
++//        btnAddToCart.setBackground(new Color(255, 204, 229));
++//
++//        btnAddToCart.addActionListener(new ActionListener() {
++//            public void actionPerformed(ActionEvent e) {
++//                try {
++//                    CartManager cm = new CartManager();
++//                    Cart c = new Cart(p.getId(), 1);
++//                    cm.Insert(c);
++//                    JOptionPane.showMessageDialog(frmShowProducts.this, "🛒 Product added to cart!");
++//                } catch (Exception ex) {
++//                    JOptionPane.showMessageDialog(frmShowProducts.this, "❌ Error adding product to cart.");
++//                }
++//            }
++//        });
++//
++//        card.add(lblImage, BorderLayout.NORTH);
++//        card.add(infoPanel, BorderLayout.CENTER);
++//        card.add(btnAddToCart, BorderLayout.SOUTH);
++//
++//        return card;
++//    }
++//
++//    private String formatPrice(double price) {
++//        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("en", "US"));
++//        return nf.format(price);
++//    }
++//
++//    public static void main(String[] args) {
++//        new frmShowProducts();
++//    }
++//}
+Index: onlinestore-IS-master/src/ui/frmMain.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmMain.java b/onlinestore-IS-master/src/ui/frmMain.java
+--- a/onlinestore-IS-master/src/ui/frmMain.java	(revision ea96cecb5c8dc4f3ddff60622bc43f317248f59c)
++++ b/onlinestore-IS-master/src/ui/frmMain.java	(date 1746047309288)
+@@ -1,1 +1,113 @@
++// updated frmMain.java with click-to-open frmShowProducts
++package ui;
++
++import javax.swing.*;
++import java.awt.*;
++import java.awt.event.*;
++import java.io.*;
++
++public class frmMain extends JFrame {
++    private JPanel panelCategories;
++
++    public frmMain() {
++        setTitle("💋 Beauty Shop - Home");
++        setSize(1200, 800);
++        setLocationRelativeTo(null);
++        setDefaultCloseOperation(EXIT_ON_CLOSE);
++        setLayout(new BorderLayout(10, 10));
++        getContentPane().setBackground(new Color(255, 228, 240));
++
++        JMenuBar menuBar = new JMenuBar();
++        menuBar.setBackground(new Color(255, 192, 203));
++        JMenu menuActions = new JMenu("🧭 Menu");
++
++        JMenuItem menuCart = new JMenuItem("🛒 View Cart");
++        JMenuItem menuDiscount = new JMenuItem("🎟️ Manage Discounts");
++        JMenuItem menuLogin = new JMenuItem("👤 Customer Login");
++        JMenuItem menuRegister = new JMenuItem("📝 Register Customer");
++
++        menuCart.addActionListener(e -> new frmCart());
++        menuDiscount.addActionListener(e -> new frmDiscount());
++        menuLogin.addActionListener(e -> new frmLoginCustomer());
++        menuRegister.addActionListener(e -> new frmRegisterCustomer());
++
++        menuActions.add(menuCart);
++        menuActions.add(menuDiscount);
++        menuActions.add(menuLogin);
++        menuActions.add(menuRegister);
++        menuBar.add(menuActions);
++        setJMenuBar(menuBar);
++
++        panelCategories = new JPanel();
++        panelCategories.setLayout(new BoxLayout(panelCategories, BoxLayout.Y_AXIS));
++        panelCategories.setBackground(new Color(255, 228, 240));
++
++        JScrollPane scrollCategories = new JScrollPane(panelCategories);
++        scrollCategories.setPreferredSize(new Dimension(1200, 400));
++        scrollCategories.setBorder(BorderFactory.createTitledBorder("📂 Categories"));
++        add(scrollCategories, BorderLayout.CENTER);
++
++        loadFixedCategories();
++        setVisible(true);
++    }
++
++    private void loadFixedCategories() {
++        String[] names = {"All", "Makeup", "Skincare", "Haircare", "Bodycare"};
++        String[] images = {
++                "images/all.png", "images/makeup.png", "images/skincare.png",
++                "images/haircare.png", "images/bodycare.png"
++        };
++
++        for (int i = 0; i < names.length; i++) {
++            JPanel row = new JPanel(new BorderLayout());
++            row.setPreferredSize(new Dimension(1100, 160));
++            row.setMaximumSize(new Dimension(1100, 160));
++            row.setBackground(Color.PINK);
++
++            JLabel lblImage = new JLabel();
++            try {
++                ImageIcon icon = new ImageIcon(images[i]);
++                Image scaled = icon.getImage().getScaledInstance(160, 160, Image.SCALE_SMOOTH);
++                lblImage.setIcon(new ImageIcon(scaled));
++            } catch (Exception e) {
++                lblImage.setText("🖼️");
++                lblImage.setHorizontalAlignment(SwingConstants.CENTER);
++            }
++
++            JButton btnCategory = new JButton("📂 " + names[i]);
++            btnCategory.setFont(new Font("Segoe UI Emoji", Font.BOLD, 20));
++            btnCategory.setFocusPainted(false);
++            btnCategory.setContentAreaFilled(false);
++            btnCategory.setBorderPainted(false);
++            btnCategory.setHorizontalAlignment(SwingConstants.LEFT);
++
++            String categoryName = names[i];
++            btnCategory.addActionListener(ev -> new frmShowProducts(categoryName));
++
++            row.add(lblImage, BorderLayout.WEST);
++            row.add(btnCategory, BorderLayout.CENTER);
++            row.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
++            panelCategories.add(row);
++        }
++        panelCategories.revalidate();
++        panelCategories.repaint();
++    }
++
++    public static void main(String[] args) {
++        new frmMain();
++    }
++}
++
++
++
++
++
++
++
++
++
++
++
++
++
+ 
+Index: onlinestore-IS-master/src/ui/frmCategory.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmCategory.java b/onlinestore-IS-master/src/ui/frmCategory.java
+new file mode 100644
+--- /dev/null	(date 1746004257290)
++++ b/onlinestore-IS-master/src/ui/frmCategory.java	(date 1746004257290)
+@@ -0,0 +1,163 @@
++package ui;
++
++
++
++import javax.swing.*;
++import java.awt.*;
++import java.awt.event.*;
++import common.Category;
++import managers.CategoryManager;
++
++public class frmCategory extends JFrame {
++    private JTextField txtId, txtName, txtParentId, txtImageFileName;
++    private JTextArea txtDescription, txtList;
++    private JButton btnInsert, btnUpdate, btnDelete, btnChooseImage;
++    private CategoryManager cm;
++
++    public frmCategory() {
++        setTitle("📂 Category Management");
++        setSize(900, 650);
++        setLocationRelativeTo(null);
++        setDefaultCloseOperation(EXIT_ON_CLOSE);
++        setLayout(new BorderLayout(10, 10));
++        cm = new CategoryManager();
++
++        // پنل ورودی
++        JPanel inputPanel = new JPanel(new GridLayout(5, 2, 10, 10));
++        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
++        inputPanel.setBackground(Color.WHITE);
++
++        txtId = new JTextField();
++        txtName = new JTextField();
++        txtDescription = new JTextArea(2, 20);
++        txtParentId = new JTextField();
++        txtImageFileName = new JTextField();
++        btnChooseImage = new JButton("📷 Choose Image");
++
++        inputPanel.add(new JLabel("Category ID:"));
++        inputPanel.add(txtId);
++        inputPanel.add(new JLabel("Category Name:"));
++        inputPanel.add(txtName);
++        inputPanel.add(new JLabel("Description:"));
++        inputPanel.add(new JScrollPane(txtDescription));
++        inputPanel.add(new JLabel("Parent ID (0 if none):"));
++        inputPanel.add(txtParentId);
++        inputPanel.add(new JLabel("Image File Name:"));
++
++        JPanel imagePanel = new JPanel(new BorderLayout());
++        imagePanel.add(txtImageFileName, BorderLayout.CENTER);
++        imagePanel.add(btnChooseImage, BorderLayout.EAST);
++        inputPanel.add(imagePanel);
++
++        // دکمه‌ها
++        btnInsert = new JButton("➕ Insert Category");
++        btnUpdate = new JButton("✏️ Update Category");
++        btnDelete = new JButton("❌ Delete Category");
++
++        btnInsert.setBackground(new Color(0xD4EDDA));
++        btnUpdate.setBackground(new Color(0xFFF3CD));
++        btnDelete.setBackground(new Color(0xF8D7DA));
++
++        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
++        buttonPanel.add(btnInsert);
++        buttonPanel.add(btnUpdate);
++        buttonPanel.add(btnDelete);
++
++        // لیست دسته‌بندی‌ها
++        txtList = new JTextArea(15, 60);
++        txtList.setEditable(false);
++        txtList.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
++        JScrollPane scrollPane = new JScrollPane(txtList);
++        scrollPane.setBorder(BorderFactory.createTitledBorder("📋 Category List"));
++        scrollPane.setPreferredSize(new Dimension(850, 300));
++
++        add(inputPanel, BorderLayout.NORTH);
++        add(buttonPanel, BorderLayout.CENTER);
++        add(scrollPane, BorderLayout.SOUTH);
++
++        // اکشن‌ها
++        btnChooseImage.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                JFileChooser fileChooser = new JFileChooser();
++                int result = fileChooser.showOpenDialog(frmCategory.this);
++                if (result == JFileChooser.APPROVE_OPTION) {
++                    String path = fileChooser.getSelectedFile().getPath();
++                    txtImageFileName.setText(path);
++                }
++            }
++        });
++
++        btnInsert.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                try {
++                    Category c = getCategoryFromInput();
++                    cm.Insert(c);
++                    refreshList();
++                    JOptionPane.showMessageDialog(frmCategory.this, "✅ Category inserted.");
++                } catch (Exception ex) {
++                    JOptionPane.showMessageDialog(frmCategory.this, "❌ Insertion error.");
++                }
++            }
++        });
++
++        btnUpdate.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                try {
++                    int row = Integer.parseInt(JOptionPane.showInputDialog("Row number to update:"));
++                    Category c = getCategoryFromInput();
++                    cm.Update(c, row);
++                    refreshList();
++                    JOptionPane.showMessageDialog(frmCategory.this, "✅ Category updated.");
++                } catch (Exception ex) {
++                    JOptionPane.showMessageDialog(frmCategory.this, "❌ Update error.");
++                }
++            }
++        });
++
++        btnDelete.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                try {
++                    int row = Integer.parseInt(JOptionPane.showInputDialog("Row number to delete:"));
++                    cm.Delete(row);
++                    refreshList();
++                    JOptionPane.showMessageDialog(frmCategory.this, "✅ Category deleted.");
++                } catch (Exception ex) {
++                    JOptionPane.showMessageDialog(frmCategory.this, "❌ Deletion error.");
++                }
++            }
++        });
++
++        refreshList();
++        setVisible(true);
++    }
++
++    private Category getCategoryFromInput() {
++        int id = Integer.parseInt(txtId.getText());
++        String name = txtName.getText();
++        String description = txtDescription.getText();
++        int parentId = Integer.parseInt(txtParentId.getText());
++        String imageFileName = txtImageFileName.getText();
++        return new Category(id, name, description, parentId, imageFileName);
++    }
++
++    private void refreshList() {
++        Category[] categories = cm.SelectAll();
++        StringBuilder s = new StringBuilder();
++        for (int i = 0; i < categories.length; i++) {
++            Category c = categories[i];
++            if (c != null) {
++                s.append(i).append(". ")
++                        .append(c.getName())
++                        .append(" | 📝 ").append(c.getDescription())
++                        .append(" | 📂 Parent ID: ").append(c.getParentId())
++                        .append(" | 🖼 ").append(c.getImageFileName())
++                        .append("\n\n");
++            }
++        }
++        txtList.setText(s.toString());
++    }
++
++    public static void main(String[] args) {
++        new frmCategory();
++    }
++}
+Index: onlinestore-IS-master/src/managers/CategoryManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/managers/CategoryManager.java b/onlinestore-IS-master/src/managers/CategoryManager.java
+new file mode 100644
+--- /dev/null	(date 1745995890205)
++++ b/onlinestore-IS-master/src/managers/CategoryManager.java	(date 1745995890205)
+@@ -0,0 +1,53 @@
++package managers;
++
++import common.Category;
++import filemanager.txtFileManager;
++
++public class CategoryManager {
++    private txtFileManager fm;
++
++    public CategoryManager() {
++        fm = new txtFileManager("category.txt");
++    }
++
++    public void Insert(Category c) {
++        fm.AppendRow(c.toString());
++    }
++
++    public void Update(Category c, int row) {
++        fm.UpdateRow(c.toString(), row);
++    }
++
++    public void Delete(int row) {
++        fm.DeleteRow(row);
++    }
++
++    public Category[] SelectAll() {
++        String[] rows = fm.GetArray();
++        if (rows == null || rows.length == 0) {
++            return new Category[0];
++        }
++
++        Category[] categories = new Category[rows.length];
++        for (int i = 0; i < rows.length; i++) {
++            try {
++                if (rows[i] != null && !rows[i].trim().isEmpty()) {
++                    String[] parts = rows[i].split(";");
++                    if (parts.length == 5) {
++                        int id = Integer.parseInt(parts[0]);
++                        String name = parts[1];
++                        String description = parts[2];
++                        int parentId = Integer.parseInt(parts[3]);
++                        String imageFileName = parts[4];
++
++                        categories[i] = new Category(id, name, description, parentId, imageFileName);
++                    }
++                }
++            } catch (Exception ex) {
++                System.out.println("❌ Error reading category at row " + i + ": " + ex.getMessage());
++                categories[i] = null;
++            }
++        }
++        return categories;
++    }
++}
+Index: onlinestore-IS-master/src/common/Category.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/common/Category.java b/onlinestore-IS-master/src/common/Category.java
+new file mode 100644
+--- /dev/null	(date 1745995836037)
++++ b/onlinestore-IS-master/src/common/Category.java	(date 1745995836037)
+@@ -0,0 +1,58 @@
++package common;
++
++public class Category {
++    private int id;
++    private String name;
++    private String description;
++    private int parentId;
++    private String imageFileName;
++
++    public Category(int id, String name, String description, int parentId, String imageFileName) {
++        this.id = id;
++        this.name = name;
++        this.description = description;
++        this.parentId = parentId;
++        this.imageFileName = imageFileName;
++    }
++
++    public int getId() {
++        return id;
++    }
++
++    public String getName() {
++        return name;
++    }
++
++    public String getDescription() {
++        return description;
++    }
++
++    public int getParentId() {
++        return parentId;
++    }
++
++    public String getImageFileName() {
++        return imageFileName;
++    }
++
++    public void setName(String name) {
++        this.name = name;
++    }
++
++    public void setDescription(String description) {
++        this.description = description;
++    }
++
++    public void setParentId(int parentId) {
++        this.parentId = parentId;
++    }
++
++    public void setImageFileName(String imageFileName) {
++        this.imageFileName = imageFileName;
++    }
++
++    @Override
++    public String toString() {
++        return id + ";" + name + ";" + description + ";" + parentId + ";" + imageFileName;
++    }
++}
+Index: myfiles/category.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/myfiles/category.txt b/myfiles/category.txt
+new file mode 100644
+--- /dev/null	(date 1746046421184)
++++ b/myfiles/category.txt	(date 1746046421184)
+@@ -0,0 +1,5 @@
++0;Skincare;;0;C:\Users\natas\OneDrive\Documents\GitHub\OnlineStore-S\onlinestore-IS-master\ImagesCTG\skincare.jpg
++1;Haircare;;0;C:\Users\natas\OneDrive\Documents\GitHub\OnlineStore-S\onlinestore-IS-master\ImagesCTG\haircare.jpg
++2;Makeup;;0;C:\Users\natas\OneDrive\Documents\GitHub\OnlineStore-S\onlinestore-IS-master\ImagesCTG\makeup.jpg
++3;Bodycare;;0;C:\Users\natas\OneDrive\Documents\GitHub\OnlineStore-S\onlinestore-IS-master\ImagesCTG\bodycare.jpg
++4;All;;0;C:\Users\natas\OneDrive\Documents\GitHub\OnlineStore-S\onlinestore-IS-master\ImagesCTG\ALL.jpg
