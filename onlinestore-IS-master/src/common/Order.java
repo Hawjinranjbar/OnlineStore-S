@@ -6,10 +6,21 @@ public class Order {
     private int addressId;
     private double totalAmount;
     private String discountCode;
-    private String cartItems; // مثلا: 2xLipstick, 1xCream
+    private String cartItems;
     private String orderDate;
 
-    public Order(int orderId, int customerId, int addressId, double totalAmount, String discountCode, String cartItems, String orderDate) {
+    // 🔽 فیلدهای اضافی برای نمایش (نه برای ذخیره در فایل)
+    private String customerName;
+    private String customerEmail;
+    private String customerPhone;
+
+    private String city;
+    private String street;
+    private String postalCode;
+    private String details;
+
+    public Order(int orderId, int customerId, int addressId, double totalAmount,
+                 String discountCode, String cartItems, String orderDate) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.addressId = addressId;
@@ -19,6 +30,7 @@ public class Order {
         this.orderDate = orderDate;
     }
 
+    // 🟢 Getter و Setter های اصلی
     public int getOrderId() { return orderId; }
     public int getCustomerId() { return customerId; }
     public int getAddressId() { return addressId; }
@@ -27,8 +39,26 @@ public class Order {
     public String getCartItems() { return cartItems; }
     public String getOrderDate() { return orderDate; }
 
-    public String toString() {
-        return orderId + ";" + customerId + ";" + addressId + ";" + totalAmount + ";" +
-                discountCode + ";" + cartItems + ";" + orderDate;
-    }
+    // 🟠 Getter و Setter برای اطلاعات مشتری
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }
+
+    public String getCustomerEmail() { return customerEmail; }
+    public void setCustomerEmail(String customerEmail) { this.customerEmail = customerEmail; }
+
+    public String getCustomerPhone() { return customerPhone; }
+    public void setCustomerPhone(String customerPhone) { this.customerPhone = customerPhone; }
+
+    // 🟡 Getter و Setter برای اطلاعات آدرس
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
+
+    public String getStreet() { return street; }
+    public void setStreet(String street) { this.street = street; }
+
+    public String getPostalCode() { return postalCode; }
+    public void setPostalCode(String postalCode) { this.postalCode = postalCode; }
+
+    public String getDetails() { return details; }
+    public void setDetails(String details) { this.details = details; }
 }

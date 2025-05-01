@@ -21,6 +21,9 @@ public class CartManager {
     public void Delete(int row) {
         fm.DeleteRow(row);
     }
+    public void ClearAll() {
+        fm.Clear();
+    }
 
     public Cart[] SelectAll() {
         String[] rows = fm.GetArray();
