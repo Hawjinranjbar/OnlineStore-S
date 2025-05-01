@@ -131,6 +131,7 @@ public class frmMain extends JFrame {
     }
 
     public static void main(String[] args) {
+
         new frmMain();
     }
 }
@@ -387,7 +388,3 @@ public class frmMain extends JFrame {
 //        new frmMain();
 //    }
 //}
-//
-//
-//
-
