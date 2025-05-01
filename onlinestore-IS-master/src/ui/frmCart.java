@@ -13,7 +13,7 @@ public class frmCart extends JFrame {
     private JLabel lblTotalPrice;
     private JLabel lblDiscountInfo;
     private JTextField txtDiscountCode;
-    private JButton btnApplyDiscount, btnFinalizeOrder, btnDeleteProduct, btnGoToLogin;
+    private JButton btnApplyDiscount, btnFinalizeOrder, btnDeleteProduct, btnGoToLogin, btnBackToMenu;
 
     private CartManager cartManager = new CartManager();
     private ProductManager productManager = new ProductManager();
@@ -64,13 +64,17 @@ public class frmCart extends JFrame {
         btnGoToLogin.setBackground(new Color(255, 204, 229));
         btnGoToLogin.setVisible(false);
 
+        btnBackToMenu = new JButton("🔙 Back to Menu");
+        btnBackToMenu.setFont(font);
+        btnBackToMenu.setBackground(new Color(204, 229, 255));
+
         JPanel discountPanel = new JPanel();
         discountPanel.setBackground(new Color(255, 240, 245));
         discountPanel.add(new JLabel("Enter Discount Code:"));
         discountPanel.add(txtDiscountCode);
         discountPanel.add(btnApplyDiscount);
 
-        JPanel bottomPanel = new JPanel(new GridLayout(6, 1, 5, 5));
+        JPanel bottomPanel = new JPanel(new GridLayout(7, 1, 5, 5));
         bottomPanel.setBackground(new Color(255, 240, 245));
         bottomPanel.add(lblDiscountInfo);
         bottomPanel.add(discountPanel);
@@ -78,17 +82,16 @@ public class frmCart extends JFrame {
         bottomPanel.add(btnFinalizeOrder);
         bottomPanel.add(btnDeleteProduct);
         bottomPanel.add(btnGoToLogin);
+        bottomPanel.add(btnBackToMenu);
 
         add(scrollPane, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        btnApplyDiscount.addActionListener(e -> applyDiscountManually());
-        btnFinalizeOrder.addActionListener(e -> finalizeOrder());
-        btnDeleteProduct.addActionListener(e -> deleteProductFromCart());
-        btnGoToLogin.addActionListener(e -> {
-            new frmLoginCustomer("cart");
-            dispose();
-        });
+        btnApplyDiscount.addActionListener(new ApplyDiscountListener());
+        btnFinalizeOrder.addActionListener(new FinalizeOrderListener());
+        btnDeleteProduct.addActionListener(new DeleteProductListener());
+        btnGoToLogin.addActionListener(new GoToLoginListener());
+        btnBackToMenu.addActionListener(new BackButtonListener());
 
         loadCart();
         setVisible(true);
@@ -119,7 +122,8 @@ public class frmCart extends JFrame {
         if (appliedDiscount != null) {
             double discountAmount = (appliedDiscount.getDiscountPercent() / 100.0) * totalPrice;
             totalPrice -= discountAmount;
-            lblDiscountInfo.setText("🎟️ Discount Applied: " + appliedDiscount.getDiscountCode() + " (" + appliedDiscount.getDiscountPercent() + "% OFF)");
+            lblDiscountInfo.setText("🎟️ Discount Applied: " + appliedDiscount.getDiscountCode()
+                    + " (" + appliedDiscount.getDiscountPercent() + "% OFF)");
         } else {
             lblDiscountInfo.setText("🎟️ Discount: None");
         }
@@ -128,96 +132,116 @@ public class frmCart extends JFrame {
         txtCartList.setText(sb.toString());
     }
 
-    private void applyDiscountManually() {
-        String code = txtDiscountCode.getText().trim();
-        if (code.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "❌ Please enter a discount code.");
-            return;
-        }
-
-        Discount[] discounts = discountManager.SelectAll();
-        for (Discount d : discounts) {
-            if (d != null && d.getDiscountCode().equalsIgnoreCase(code) && d.isActive()) {
-                appliedDiscount = d;
-                JOptionPane.showMessageDialog(this, "✅ Discount applied successfully!");
-                loadCart();
+    private class ApplyDiscountListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            String code = txtDiscountCode.getText().trim();
+            if (code.isEmpty()) {
+                JOptionPane.showMessageDialog(frmCart.this, "❌ Please enter a discount code.");
                 return;
             }
-        }
 
-        JOptionPane.showMessageDialog(this, "❌ Invalid or inactive discount code.");
-    }
-
-    private void finalizeOrder() {
-        if (frmLoginCustomer.loggedInCustomer == null) {
-            JOptionPane.showMessageDialog(this, "❌ You must login first!");
-            btnGoToLogin.setVisible(true);
-            return;
-        }
-
-        Cart[] carts = cartManager.SelectAll();
-        if (carts.length == 0) {
-            JOptionPane.showMessageDialog(this, "🛒 Your cart is empty!");
-            return;
-        }
-
-        int customerId = frmLoginCustomer.loggedInCustomer.getId();
-        AddressManager am = new AddressManager();
-        Address[] addresses = am.SelectAll();
-        Address customerAddress = null;
-        for (Address a : addresses) {
-            if (a != null && a.getId() == customerId) {
-                customerAddress = a;
-                break;
-            }
-        }
-
-        if (customerAddress == null) {
-            JOptionPane.showMessageDialog(this, "❌ No address found for this customer!");
-            return;
-        }
-
-        double totalAmount = 0;
-        StringBuilder itemsText = new StringBuilder();
-        Product[] products = productManager.SelectAll();
-        for (Cart c : carts) {
-            for (Product p : products) {
-                if (p != null && p.getId() == c.getProductId()) {
-                    totalAmount += p.getPrice() * c.getQuantity();
-                    itemsText.append(c.getQuantity()).append("x").append(p.getName()).append(", ");
+            Discount[] discounts = discountManager.SelectAll();
+            for (Discount d : discounts) {
+                if (d != null && d.getDiscountCode().equalsIgnoreCase(code) && d.isActive()) {
+                    appliedDiscount = d;
+                    JOptionPane.showMessageDialog(frmCart.this, "✅ Discount applied successfully!");
+                    loadCart();
+                    return;
                 }
             }
+
+            JOptionPane.showMessageDialog(frmCart.this, "❌ Invalid or inactive discount code.");
         }
-
-        if (appliedDiscount != null) {
-            double discountAmount = (appliedDiscount.getDiscountPercent() / 100.0) * totalAmount;
-            totalAmount -= discountAmount;
-        }
-
-        int orderId = (int) (System.currentTimeMillis() % 100000);
-        String date = LocalDate.now().toString();
-        String discountCode = (appliedDiscount != null) ? appliedDiscount.getDiscountCode() : "None";
-
-        Order order = new Order(orderId, customerId, customerAddress.getId(), totalAmount, discountCode, itemsText.toString(), date);
-        new OrderManager().Insert(order);
-        cartManager.ClearAll();
-
-        JOptionPane.showMessageDialog(this, "✅ Order finalized and saved!\n🧾 Order ID: " + orderId);
-        new frmOrder();
-        dispose();
     }
 
-    private void deleteProductFromCart() {
-        try {
-            String input = JOptionPane.showInputDialog(this, "Enter row number to delete:");
-            if (input != null && !input.isEmpty()) {
-                int row = Integer.parseInt(input.trim());
-                cartManager.Delete(row);
-                JOptionPane.showMessageDialog(this, "✅ Product deleted from cart!");
-                loadCart();
+    private class FinalizeOrderListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            if (frmLoginCustomer.loggedInCustomer == null) {
+                JOptionPane.showMessageDialog(frmCart.this, "❌ You must login first!");
+                btnGoToLogin.setVisible(true);
+                return;
             }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "❌ Error deleting product.");
+
+            Cart[] carts = cartManager.SelectAll();
+            if (carts.length == 0) {
+                JOptionPane.showMessageDialog(frmCart.this, "🛒 Your cart is empty!");
+                return;
+            }
+
+            int customerId = frmLoginCustomer.loggedInCustomer.getId();
+            AddressManager am = new AddressManager();
+            Address[] addresses = am.SelectAll();
+            Address customerAddress = null;
+            for (Address a : addresses) {
+                if (a != null && a.getId() == customerId) {
+                    customerAddress = a;
+                    break;
+                }
+            }
+
+            if (customerAddress == null) {
+                JOptionPane.showMessageDialog(frmCart.this, "❌ No address found for this customer!");
+                return;
+            }
+
+            double totalAmount = 0;
+            StringBuilder itemsText = new StringBuilder();
+            Product[] products = productManager.SelectAll();
+            for (Cart c : carts) {
+                for (Product p : products) {
+                    if (p != null && p.getId() == c.getProductId()) {
+                        totalAmount += p.getPrice() * c.getQuantity();
+                        itemsText.append(c.getQuantity()).append("x").append(p.getName()).append(", ");
+                    }
+                }
+            }
+
+            if (appliedDiscount != null) {
+                double discountAmount = (appliedDiscount.getDiscountPercent() / 100.0) * totalAmount;
+                totalAmount -= discountAmount;
+            }
+
+            int orderId = (int) (System.currentTimeMillis() % 100000);
+            String date = LocalDate.now().toString();
+            String discountCode = (appliedDiscount != null) ? appliedDiscount.getDiscountCode() : "None";
+
+            Order order = new Order(orderId, customerId, customerAddress.getId(), totalAmount, discountCode, itemsText.toString(), date);
+            new OrderManager().Insert(order);
+            cartManager.ClearAll();
+
+            JOptionPane.showMessageDialog(frmCart.this, "✅ Order finalized and saved!\n🧾 Order ID: " + orderId);
+            new frmOrder();
+            dispose();
+        }
+    }
+
+    private class DeleteProductListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            try {
+                String input = JOptionPane.showInputDialog(frmCart.this, "Enter row number to delete:");
+                if (input != null && !input.isEmpty()) {
+                    int row = Integer.parseInt(input.trim());
+                    cartManager.Delete(row);
+                    JOptionPane.showMessageDialog(frmCart.this, "✅ Product deleted from cart!");
+                    loadCart();
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frmCart.this, "❌ Error deleting product.");
+            }
+        }
+    }
+
+    private class GoToLoginListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            new frmLoginCustomer("cart");
+            dispose();
+        }
+    }
+
+    private class BackButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            new frmMain();
         }
     }
 

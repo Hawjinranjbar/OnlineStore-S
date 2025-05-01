@@ -1,0 +1,19 @@
+<changelist name="Uncommitted_changes_before_Update_at_5_1_2025_1_03_AM_[Changes]" date="1746048780672" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_1_2025_1_03_AM_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/1/2025 1:03 AM [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$AddToCartListener.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$AddToCartListener.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_1_2025_1_03_AM_[Changes]/frmShowProducts$AddToCartListener.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$SearchButtonListener.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$SearchButtonListener.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_1_2025_1_03_AM_[Changes]/frmShowProducts$SearchButtonListener.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$CategoryChangeListener.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$CategoryChangeListener.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_1_2025_1_03_AM_[Changes]/frmShowProducts$CategoryChangeListener.class" />
+  </binary>
+</changelist>

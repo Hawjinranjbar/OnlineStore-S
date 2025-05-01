@@ -1,0 +1,115 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"53be4df2-84f7-4fa5-a84d-28b41497e51b\" name=\"Changes\" comment=\"push these\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/myfiles/Order.txt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/myfiles/Order.txt\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;selmashj&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/Hawjinranjbar/OnlineStore-S.git&quot;,\r\n    &quot;accountId&quot;: &quot;d5fa6f59-c6f0-4c22-8049-0889a14809a9&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;customColor&quot;: &quot;&quot;,\r\n  &quot;associatedIndex&quot;: 6\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2wGYPqdJb242WPkNQZEuRsgEZHi\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"Application.Framuser.executor\": \"Run\",\r\n    \"Application.FrmUser.executor\": \"Run\",\r\n    \"Application.Main.executor\": \"Run\",\r\n    \"Application.frmAddAddress.executor\": \"Run\",\r\n    \"Application.frmCart.executor\": \"Run\",\r\n    \"Application.frmCustomer.executor\": \"Run\",\r\n    \"Application.frmCustomerRegistration.executor\": \"Run\",\r\n    \"Application.frmDiscount.executor\": \"Run\",\r\n    \"Application.frmLoginCustomer.executor\": \"Run\",\r\n    \"Application.frmManageCustomers.executor\": \"Run\",\r\n    \"Application.frmOrder.executor\": \"Run\",\r\n    \"Application.frmOrderCustomer.executor\": \"Run\",\r\n    \"Application.frmProduct.executor\": \"Run\",\r\n    \"Application.frmRegisterCustomer.executor\": \"Run\",\r\n    \"Application.frmReview.executor\": \"Run\",\r\n    \"Application.frmShowProducts.executor\": \"Run\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"RunOnceActivity.git.unshallow\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"git-widget-placeholder\": \"main\",\r\n    \"ignore.virus.scanning.warn.message\": \"true\",\r\n    \"kotlin-language-version-configured\": \"true\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\asus\\IdeaProjects\\OnlineStore-S\\images\" />\r\n      <recent name=\"C:\\Users\\asus\\IdeaProjects\\OnlineStore-S\" />\r\n      <recent name=\"C:\\Users\\asus\\IdeaProjects\\OnlineStore-S\\onlinestore-IS-master\" />\r\n      <recent name=\"C:\\Users\\asus\\IdeaProjects\\OnlineStore-S\\onlinestore-IS-master\\src\\ui\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435\" />\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"53be4df2-84f7-4fa5-a84d-28b41497e51b\" name=\"Changes\" comment=\"\" />\r\n      <created>1745669356395</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1745669356395</updated>\r\n      <workItem from=\"1745669357952\" duration=\"3131000\" />\r\n      <workItem from=\"1745778318894\" duration=\"60000\" />\r\n      <workItem from=\"1745778450504\" duration=\"31000\" />\r\n      <workItem from=\"1745820629252\" duration=\"53000\" />\r\n      <workItem from=\"1745826549832\" duration=\"3053000\" />\r\n      <workItem from=\"1745841057230\" duration=\"1471000\" />\r\n      <workItem from=\"1745871464107\" duration=\"447000\" />\r\n      <workItem from=\"1745872281441\" duration=\"14000\" />\r\n      <workItem from=\"1745934424925\" duration=\"962000\" />\r\n      <workItem from=\"1745936573161\" duration=\"13196000\" />\r\n      <workItem from=\"1746003577653\" duration=\"10929000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745670039560</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745670039560</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745671572747</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745671572747</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745671625123</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745671625123</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745826580408</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745826580408</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745841746100</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745841746100</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745842034182</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745842034182</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745938311850</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745938311850</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745940115922</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745940115922</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745940340296</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745940340296</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745941441618</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745941441618</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745943806925</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745943806925</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745944677815</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745944677815</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745949229948</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745949229948</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00014\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745950522389</created>\r\n      <option name=\"number\" value=\"00014\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745950522390</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00015\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746004347485</created>\r\n      <option name=\"number\" value=\"00015\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00015\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746004347485</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00016\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746007497987</created>\r\n      <option name=\"number\" value=\"00016\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00016\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746007497987</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00017\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746017219374</created>\r\n      <option name=\"number\" value=\"00017\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00017\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746017219374</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00018\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746017504375</created>\r\n      <option name=\"number\" value=\"00018\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00018\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746017504375</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"19\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"push these\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"push these\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 9326625b22ce8e40fb7b00526f8a70310cc4e127)
++++ b/.idea/workspace.xml	(date 1746044787336)
+@@ -6,7 +6,6 @@
+   <component name="ChangeListManager">
+     <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/myfiles/Order.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/Order.txt" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -44,38 +43,38 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Application.Framuser.executor": "Run",
+-    "Application.FrmUser.executor": "Run",
+-    "Application.Main.executor": "Run",
+-    "Application.frmAddAddress.executor": "Run",
+-    "Application.frmCart.executor": "Run",
+-    "Application.frmCustomer.executor": "Run",
+-    "Application.frmCustomerRegistration.executor": "Run",
+-    "Application.frmDiscount.executor": "Run",
+-    "Application.frmLoginCustomer.executor": "Run",
+-    "Application.frmManageCustomers.executor": "Run",
+-    "Application.frmOrder.executor": "Run",
+-    "Application.frmOrderCustomer.executor": "Run",
+-    "Application.frmProduct.executor": "Run",
+-    "Application.frmRegisterCustomer.executor": "Run",
+-    "Application.frmReview.executor": "Run",
+-    "Application.frmShowProducts.executor": "Run",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "RunOnceActivity.git.unshallow": "true",
+-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "git-widget-placeholder": "main",
+-    "ignore.virus.scanning.warn.message": "true",
+-    "kotlin-language-version-configured": "true",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "nodejs_package_manager_path": "npm",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Application.Framuser.executor&quot;: &quot;Run&quot;,
++    &quot;Application.FrmUser.executor&quot;: &quot;Run&quot;,
++    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmAddAddress.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmCart.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmCustomer.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmCustomerRegistration.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmDiscount.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmLoginCustomer.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmManageCustomers.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmOrder.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmOrderCustomer.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmProduct.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmRegisterCustomer.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmReview.executor&quot;: &quot;Run&quot;,
++    &quot;Application.frmShowProducts.executor&quot;: &quot;Run&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
++    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
++    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
++    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="MoveFile.RECENT_KEYS">
+       <recent name="C:\Users\asus\IdeaProjects\OnlineStore-S\images" />
+@@ -110,7 +109,8 @@
+       <workItem from="1745872281441" duration="14000" />
+       <workItem from="1745934424925" duration="962000" />
+       <workItem from="1745936573161" duration="13196000" />
+-      <workItem from="1746003577653" duration="10929000" />
++      <workItem from="1746003577653" duration="11186000" />
++      <workItem from="1746021898510" duration="935000" />
+     </task>
+     <task id="LOCAL-00001" summary="push these">
+       <option name="closed" value="true" />
+@@ -256,7 +256,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1746017504375</updated>
+     </task>
+-    <option name="localTasksCounter" value="19" />
++    <task id="LOCAL-00019" summary="push these">
++      <option name="closed" value="true" />
++      <created>1746018737490</created>
++      <option name="number" value="00019" />
++      <option name="presentableId" value="LOCAL-00019" />
++      <option name="project" value="LOCAL" />
++      <updated>1746018737490</updated>
++    </task>
++    <option name="localTasksCounter" value="20" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
