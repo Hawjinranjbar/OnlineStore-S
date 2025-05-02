@@ -1,4 +1,5 @@
 
+
 package ui;
 
 import javax.swing.*;
@@ -16,18 +17,18 @@ public class frmMain extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // 💗 منوی بالا با آیکن کوچک
+        // 💗 منوی بالا بدون آیکن
         JPanel menuPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 15));
         menuPanel.setBackground(new Color(255, 228, 240));
 
         Font font = new Font("Segoe UI", Font.PLAIN, 14);
 
-        JButton btnCart = new JButton("سبد خرید", loadIcon("images/cart.png"));
-        JButton btnDiscount = new JButton("تخفیف‌ها", loadIcon("images/discount.png"));
-        JButton btnLogin = new JButton("ورود مشتری", loadIcon("images/login.png"));
-        JButton btnRegister = new JButton("ثبت‌نام", loadIcon("images/register.png"));
+        JButton btnCart = new JButton("Cart");
+        JButton btnLogin = new JButton("Login");
+        JButton btnRegister = new JButton("Signup");
+        JButton btnAdminLogin = new JButton("Admin Login");
 
-        JButton[] buttons = {btnCart, btnDiscount, btnLogin, btnRegister};
+        JButton[] buttons = {btnCart, btnLogin, btnRegister, btnAdminLogin};
         for (JButton btn : buttons) {
             btn.setFont(font);
             btn.setFocusPainted(false);
@@ -37,19 +38,19 @@ public class frmMain extends JFrame {
         }
 
         btnCart.addActionListener(e -> new frmCart());
-        btnDiscount.addActionListener(e -> new frmDiscount());
         btnLogin.addActionListener(e -> new frmLoginCustomer());
         btnRegister.addActionListener(e -> new frmRegisterCustomer());
+        btnAdminLogin.addActionListener(e -> new frmLoginAdmin());
 
         add(menuPanel, BorderLayout.NORTH);
 
         // 💗 دسته‌بندی‌ها
-        JPanel categoryPanel = new JPanel(new GridLayout(1, 5, 10, 10));
+        JPanel categoryPanel = new JPanel(new GridLayout(1, 6, 10, 10));
         categoryPanel.setBackground(new Color(255, 228, 240));
         categoryPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        String[] categories = {"ALL", "Makeup", "Skincare", "Haircare", "Bodycare"};
-        String[] imageFiles = {"all.jpg", "makeup.jpg", "skincare.jpg", "haircare.jpg", "bodycare.jpg"};
+        String[] categories = {"ALL", "Makeup", "Skincare", "Haircare", "Bodycare", "Discounts"};
+        String[] imageFiles = {"all.jpg", "makeup.jpg", "skincare.jpg", "haircare.jpg", "bodycare.jpg", "discounts.jpg"};
 
         for (int i = 0; i < categories.length; i++) {
             int finalI = i;
@@ -103,7 +104,11 @@ public class frmMain extends JFrame {
 
             box.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    new frmShowProducts(categoryName);
+                    if (categoryName.equalsIgnoreCase("Discounts")) {
+                        new frmDiscountViewer();
+                    } else {
+                        new frmShowProducts(categoryName);
+                    }
                 }
             });
 
@@ -114,29 +119,7 @@ public class frmMain extends JFrame {
         setVisible(true);
     }
 
-    private ImageIcon loadIcon(String path) {
-        try {
-            ImageIcon icon = new ImageIcon(path);
-            Image img = icon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
-            return new ImageIcon(img);
-        } catch (Exception e) {
-            System.out.println("❌ Icon not found: " + path);
-            return null;
-        }
-    }
-
     public static void main(String[] args) {
-
         new frmMain();
     }
 }
-
-
-
-
-
-
-
-
-
-
