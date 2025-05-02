@@ -1,17 +1,15 @@
 package filemanager;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class txtFileManager {
     private String FileName;
 
     public txtFileManager(String FileName) {
-        this.FileName = "myFiles/" + FileName; // پوشه پیش‌فرض
+        this.FileName = "myFiles/" + FileName;
     }
 
-    // ساخت فایل جدید
     public void CreateFile() {
         try {
             PrintWriter out = new PrintWriter(this.FileName);
@@ -21,12 +19,10 @@ public class txtFileManager {
         }
     }
 
-    // پاک کردن محتویات فایل
     public void Clear() {
-        CreateFile(); // همون متد بالا فایل رو خالی می‌کنه
+        CreateFile();
     }
 
-    // اضافه کردن سطر به آخر فایل
     public void AppendRow(String NewRow) {
         try {
             FileWriter fw = new FileWriter(this.FileName, true);
@@ -37,27 +33,30 @@ public class txtFileManager {
         }
     }
 
-    // خواندن همه سطرها
     public String[] GetArray() {
-        ArrayList<String> list = new ArrayList<>();
         try {
-            Scanner sc = new Scanner(new File(this.FileName));
-            while (sc.hasNextLine()) {
-                list.add(sc.nextLine());
+            BufferedReader br = new BufferedReader(new FileReader(this.FileName));
+            int count = 0;
+            while (br.readLine() != null) count++;
+            br.close();
+
+            String[] result = new String[count];
+            BufferedReader br2 = new BufferedReader(new FileReader(this.FileName));
+            for (int i = 0; i < count; i++) {
+                result[i] = br2.readLine();
             }
-            sc.close();
-        } catch (FileNotFoundException e) {
+            br2.close();
+            return result;
+        } catch (IOException e) {
             e.printStackTrace();
+            return new String[0];
         }
-        return list.toArray(new String[0]);
     }
 
-    // شمارش تعداد سطرها
     public int SelectCount() {
         return GetArray().length;
     }
 
-    // گرفتن یک سطر خاص
     public String GetRow(int RowNumber) {
         String[] lines = GetArray();
         if (RowNumber >= 0 && RowNumber < lines.length) {
@@ -66,49 +65,49 @@ public class txtFileManager {
         return null;
     }
 
-    // حذف یک سطر خاص
     public void DeleteRow(int RowNumber) {
-        ArrayList<String> list = new ArrayList<>(ListFromArray());
-        if (RowNumber >= 0 && RowNumber < list.size()) {
-            list.remove(RowNumber);
-            SaveListToFile(list);
-        }
-    }
-
-    // ویرایش سطر خاص
-    public void UpdateRow(String NewRow, int RowNumber) {
-        ArrayList<String> list = new ArrayList<>(ListFromArray());
-        if (RowNumber >= 0 && RowNumber < list.size()) {
-            list.set(RowNumber, NewRow);
-            SaveListToFile(list);
-        }
-    }
-
-    // درج در سطر خاص
-    public void InsertRow(String NewRow, int RowNumber) {
-        ArrayList<String> list = new ArrayList<>(ListFromArray());
-        if (RowNumber >= 0 && RowNumber <= list.size()) {
-            list.add(RowNumber, NewRow);
-            SaveListToFile(list);
-        }
-    }
-
-    // کمک‌کننده: تبدیل آرایه به لیست
-    private ArrayList<String> ListFromArray() {
-        String[] arr = GetArray();
-        ArrayList<String> list = new ArrayList<>();
-        for (String s : arr) {
-            list.add(s);
-        }
-        return list;
-    }
-
-    // کمک‌کننده: ذخیره کل لیست در فایل
-    private void SaveListToFile(ArrayList<String> list) {
+        String[] lines = GetArray();
         try {
             PrintWriter pw = new PrintWriter(this.FileName);
-            for (String s : list) {
-                pw.println(s);
+            for (int i = 0; i < lines.length; i++) {
+                if (i != RowNumber) {
+                    pw.println(lines[i]);
+                }
+            }
+            pw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void UpdateRow(String NewRow, int RowNumber) {
+        String[] lines = GetArray();
+        try {
+            PrintWriter pw = new PrintWriter(this.FileName);
+            for (int i = 0; i < lines.length; i++) {
+                if (i == RowNumber) {
+                    pw.println(NewRow);
+                } else {
+                    pw.println(lines[i]);
+                }
+            }
+            pw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void InsertRow(String NewRow, int RowNumber) {
+        String[] lines = GetArray();
+        try {
+            PrintWriter pw = new PrintWriter(this.FileName);
+            for (int i = 0; i <= lines.length; i++) {
+                if (i == RowNumber) {
+                    pw.println(NewRow);
+                }
+                if (i < lines.length) {
+                    pw.println(lines[i]);
+                }
             }
             pw.close();
         } catch (FileNotFoundException e) {

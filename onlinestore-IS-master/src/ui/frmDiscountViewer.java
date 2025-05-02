@@ -1,9 +1,3 @@
-
-
-
-
-
-
 package ui;
 
 import javax.swing.*;

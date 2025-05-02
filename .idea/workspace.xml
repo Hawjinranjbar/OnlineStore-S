@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these" />
+    <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/filemanager/txtFileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/filemanager/txtFileManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/AddressManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/AdminManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/CartManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/CategoryManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/CustomerManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/DiscountManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/InventoryManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/OrderManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/ProductManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/ReviewManager.class" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -105,8 +118,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
       </set>
     </attachedChunks>
   </component>
@@ -130,6 +143,8 @@
       <workItem from="1745936573161" duration="13196000" />
       <workItem from="1746003577653" duration="10929000" />
       <workItem from="1746088427512" duration="889000" />
+      <workItem from="1746116477532" duration="1401000" />
+      <workItem from="1746172813578" duration="2319000" />
     </task>
     <task id="LOCAL-00001" summary="push these">
       <option name="closed" value="true" />
@@ -315,7 +330,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746050550078</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="push these">
+      <option name="closed" value="true" />
+      <created>1746051401805</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1746051401805</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
