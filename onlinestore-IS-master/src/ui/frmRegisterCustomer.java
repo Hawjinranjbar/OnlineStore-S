@@ -12,12 +12,15 @@ public class frmRegisterCustomer extends JFrame {
     private JButton btnRegister, btnBack;
     private JLabel lblResult;
     private CustomerManager cm;
+    private JFrame parent; // فرم اصلی
 
-    public frmRegisterCustomer() {
+    public frmRegisterCustomer(JFrame parent) {
+        this.parent = parent;
+
         setTitle("🧍 Customer Registration");
         setSize(500, 500);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         getContentPane().setBackground(new Color(255, 240, 245));
 
@@ -35,7 +38,9 @@ public class frmRegisterCustomer extends JFrame {
         txtPassword = new JPasswordField();
 
         JTextField[] fields = {txtId, txtName, txtPhone, txtEmail, txtPassword};
-        for (JTextField field : fields) field.setFont(font);
+        for (int i = 0; i < fields.length; i++) {
+            fields[i].setFont(font);
+        }
 
         inputPanel.add(new JLabel("🆔 ID:")); inputPanel.add(txtId);
         inputPanel.add(new JLabel("👤 Name:")); inputPanel.add(txtName);
@@ -83,8 +88,9 @@ public class frmRegisterCustomer extends JFrame {
                 cm.Insert(c);
                 JOptionPane.showMessageDialog(frmRegisterCustomer.this, "✅ Customer Registered!");
 
-                new frmAddAddress(); // بعد از ثبت‌نام، فرم آدرس باز میشه
-                dispose(); // فرم ثبت‌نام بسته میشه
+                new frmAddAddress(frmRegisterCustomer.this);
+                dispose(); // فرم ثبت‌نام رو ببند
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(frmRegisterCustomer.this, "❌ Error registering customer.");
             }
@@ -93,12 +99,14 @@ public class frmRegisterCustomer extends JFrame {
 
     private class BackButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            dispose();
-            new frmMain(); // بازگشت به منو
+            dispose(); // فرم ثبت‌نام بسته شه
+            if (parent != null) {
+                parent.setVisible(true); // برگشت به frmMain
+            }
         }
     }
 
     public static void main(String[] args) {
-        new frmRegisterCustomer();
+        new frmRegisterCustomer(null);
     }
 }

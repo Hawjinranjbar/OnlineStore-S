@@ -41,7 +41,7 @@ public class frmProduct extends JFrame {
         txtImageUrl = new JTextField();
 
         JComponent[] fields = {txtId, txtName, txtBrand, txtDescription, txtPrice, txtStock, cmbCategory, txtSkinType, txtIsOrganic, txtImageUrl};
-        for (JComponent comp : fields) comp.setFont(font);
+        for (int i = 0; i < fields.length; i++) fields[i].setFont(font);
 
         inputPanel.add(new JLabel("🆔 Product ID:")); inputPanel.add(txtId);
         inputPanel.add(new JLabel("📝 Name:")); inputPanel.add(txtName);
@@ -59,8 +59,8 @@ public class frmProduct extends JFrame {
         btnDelete = new JButton("❌ Delete");
 
         JButton[] buttons = {btnInsert, btnUpdate, btnDelete};
-        for (JButton b : buttons) {
-            b.setFont(font);
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setFont(font);
         }
 
         btnInsert.setBackground(new Color(204, 255, 204));
@@ -93,8 +93,8 @@ public class frmProduct extends JFrame {
                     pm.Insert(p);
                     refreshList();
                     JOptionPane.showMessageDialog(frmProduct.this, "✅ Product Inserted!");
-                    new frmShowProducts(p.getCategory());
-                    dispose();
+                    new frmShowProducts(frmProduct.this, p.getCategory()); // اصلاح شده
+                    setVisible(false); // مخفی شدن به جای بستن
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frmProduct.this, "❌ Error inserting product.");
                 }
@@ -126,7 +126,7 @@ public class frmProduct extends JFrame {
                     int row = Integer.parseInt(JOptionPane.showInputDialog("Enter row number to delete:"));
                     pm.Delete(row);
                     refreshList();
-                    JOptionPane.showMessageDialog(frmProduct.this, "❌ Product Deleted!");
+                    JOptionPane.showMessageDialog(frmProduct.this, "✅ Product Deleted!");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frmProduct.this, "❌ Error deleting product.");
                 }
@@ -139,7 +139,7 @@ public class frmProduct extends JFrame {
 
     private Product getProductFromInput() {
         String categoryRaw = cmbCategory.getSelectedItem().toString();
-        String categoryClean = categoryRaw.split(" ")[0]; // مثلاً "Makeup" از "Makeup 💄"
+        String categoryClean = categoryRaw.split(" ")[0]; // "Makeup" از "Makeup 💄"
         return new Product(
                 Integer.parseInt(txtId.getText()),
                 txtName.getText(),

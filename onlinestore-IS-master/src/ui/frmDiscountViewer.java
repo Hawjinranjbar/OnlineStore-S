@@ -2,14 +2,18 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import common.Discount;
 import managers.DiscountManager;
 
 public class frmDiscountViewer extends JFrame {
     private JTextArea txtList;
     private DiscountManager dm;
+    private JFrame parent;
 
-    public frmDiscountViewer() {
+    public frmDiscountViewer(JFrame parent) {
+        this.parent = parent;
+
         setTitle("🎟️ Available Discounts");
         setSize(700, 500);
         setLocationRelativeTo(null);
@@ -36,11 +40,28 @@ public class frmDiscountViewer extends JFrame {
         JButton btnRefresh = new JButton("🔄 Refresh");
         btnRefresh.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         btnRefresh.setBackground(new Color(204, 255, 229));
-        btnRefresh.addActionListener(e -> refreshList());
+        btnRefresh.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                refreshList();
+            }
+        });
+
+        JButton btnBack = new JButton("🔙 Back");
+        btnBack.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        btnBack.setBackground(new Color(204, 229, 255));
+        btnBack.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                if (parent != null) {
+                    parent.setVisible(true);
+                }
+            }
+        });
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(new Color(255, 240, 245));
         bottomPanel.add(btnRefresh);
+        bottomPanel.add(btnBack);
 
         add(lblTitle, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
@@ -73,10 +94,6 @@ public class frmDiscountViewer extends JFrame {
     }
 
     public static void main(String[] args) {
-        new frmDiscountViewer();
+        new frmDiscountViewer(null);
     }
 }
-
-
-
-
