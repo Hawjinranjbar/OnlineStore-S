@@ -1,8 +1,4 @@
 
-// ==========================
-// File: ui/frmWishlist.java
-// ==========================
-
 package ui;
 
 import javax.swing.*;
@@ -38,6 +34,9 @@ public class frmWishlist extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
         refreshWishlist();
         setVisible(true);
+    }
+
+    public frmWishlist(frmAdminDashboard frmAdminDashboard) {
     }
 
     private void refreshWishlist() {
@@ -120,4 +119,7 @@ public class frmWishlist extends JFrame {
         new frmWishlist();
     }
 }
+
+
+
 
