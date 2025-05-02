@@ -1,5 +1,3 @@
-
-
 package ui;
 
 import javax.swing.*;
@@ -68,6 +66,7 @@ public class frmInventory extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
+        // Actions
         btnAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 addStock();
@@ -94,7 +93,8 @@ public class frmInventory extends JFrame {
 
         btnGoToProducts.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new frmProduct();
+                setVisible(false); // برای Safe Back
+                new frmProduct(frmInventory.this); // به عنوان parent فرستاده میشه
             }
         });
 
@@ -180,4 +180,3 @@ public class frmInventory extends JFrame {
         new frmInventory();
     }
 }
-
