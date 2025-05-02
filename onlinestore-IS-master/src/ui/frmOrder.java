@@ -16,12 +16,15 @@ import common.Customer;
 
 public class frmOrder extends JFrame {
     private JTextArea txtOrderList;
-    private JButton btnRefresh;
+    private JButton btnRefresh, btnBack;
     private OrderManager om;
     private AddressManager am;
     private CustomerManager cm;
+    private JFrame parent; // 🔙 فرم قبل
 
-    public frmOrder() {
+    public frmOrder(JFrame parent) {
+        this.parent = parent;
+
         setTitle("📦 Orders List");
         setSize(800, 600);
         setLocationRelativeTo(null);
@@ -46,9 +49,15 @@ public class frmOrder extends JFrame {
         btnRefresh.setBackground(new Color(204, 229, 255));
         btnRefresh.addActionListener(new RefreshButtonListener());
 
+        btnBack = new JButton("🔙 Back");
+        btnBack.setFont(font);
+        btnBack.setBackground(new Color(255, 228, 240));
+        btnBack.addActionListener(new BackButtonListener());
+
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(new Color(255, 240, 245));
         bottomPanel.add(btnRefresh);
+        bottomPanel.add(btnBack);
 
         add(scrollPane, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
@@ -70,7 +79,6 @@ public class frmOrder extends JFrame {
             for (int i = 0; i < orders.length; i++) {
                 Order o = orders[i];
                 if (o != null) {
-                    // گرفتن اطلاعات مشتری
                     Customer customer = null;
                     for (int j = 0; j < customers.length; j++) {
                         if (customers[j] != null && customers[j].getId() == o.getCustomerId()) {
@@ -79,7 +87,6 @@ public class frmOrder extends JFrame {
                         }
                     }
 
-                    // گرفتن اطلاعات آدرس
                     Address address = null;
                     for (int j = 0; j < addresses.length; j++) {
                         if (addresses[j] != null && addresses[j].getId() == o.getAddressId()) {
@@ -109,7 +116,6 @@ public class frmOrder extends JFrame {
                         sb.append("🏠 Address ID: ").append(o.getAddressId()).append(" (Not Found)\n");
                     }
 
-                    // ✅ تبدیل قیمت به تومان با فرمت مناسب
                     String formattedPrice = formatPrice(o.getTotalAmount());
 
                     sb.append("💰 Total: ").append(formattedPrice).append(" Toman\n")
@@ -124,20 +130,27 @@ public class frmOrder extends JFrame {
         txtOrderList.setText(sb.toString());
     }
 
-    // ✅ فرمت‌دهنده‌ی قیمت به تومان
     private String formatPrice(double price) {
         NumberFormat nf = NumberFormat.getNumberInstance(new Locale("en", "US"));
-        return nf.format(price); // خروجی: 85,000
+        return nf.format(price);
     }
 
-    // ✅ کلاس داخلی به جای lambda برای دکمه Refresh
     private class RefreshButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             refreshOrderList();
         }
     }
 
+    private class BackButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            if (parent != null) {
+                parent.setVisible(true);
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        new frmOrder();
+        new frmOrder(null); // تست مستقل
     }
 }

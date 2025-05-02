@@ -8,10 +8,13 @@ import common.Customer;
 
 public class frmManageCustomers extends JFrame {
     private JTextArea txtCustomerList;
-    private JButton btnRefresh, btnUpdate, btnDelete;
+    private JButton btnRefresh, btnUpdate, btnDelete, btnBack;
     private CustomerManager cm;
+    private JFrame parent; // فرم قبلی
 
-    public frmManageCustomers() {
+    public frmManageCustomers(JFrame parent) {
+        this.parent = parent;
+
         setTitle("👑 Admin Panel - Manage Customers");
         setSize(700, 600);
         setLocationRelativeTo(null);
@@ -32,25 +35,27 @@ public class frmManageCustomers extends JFrame {
         btnRefresh = new JButton("🔄 Refresh");
         btnUpdate = new JButton("✏️ Update Customer");
         btnDelete = new JButton("❌ Delete Customer");
+        btnBack = new JButton("🔙 Back to Dashboard");
 
         btnRefresh.setBackground(new Color(204, 229, 255));
         btnUpdate.setBackground(new Color(255, 255, 153));
         btnDelete.setBackground(new Color(255, 204, 204));
+        btnBack.setBackground(new Color(204, 255, 229));
 
         btnRefresh.setFont(font);
         btnUpdate.setFont(font);
         btnDelete.setFont(font);
+        btnBack.setFont(font);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         buttonPanel.setBackground(new Color(255, 228, 240));
         buttonPanel.add(btnRefresh);
         buttonPanel.add(btnUpdate);
         buttonPanel.add(btnDelete);
+        buttonPanel.add(btnBack); // اضافه شده
 
         add(scrollPane, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
-
-        // No lambdas here ⛔️
 
         btnRefresh.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -98,6 +103,15 @@ public class frmManageCustomers extends JFrame {
             }
         });
 
+        btnBack.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                if (parent != null) {
+                    parent.setVisible(true);
+                }
+            }
+        });
+
         refreshList();
         setVisible(true);
     }
@@ -119,6 +133,6 @@ public class frmManageCustomers extends JFrame {
     }
 
     public static void main(String[] args) {
-        new frmManageCustomers();
+        new frmManageCustomers(null); // برای تست مستقل
     }
 }

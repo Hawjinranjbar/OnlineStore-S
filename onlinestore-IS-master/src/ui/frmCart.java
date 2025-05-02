@@ -67,7 +67,7 @@ public class frmCart extends JFrame {
         btnGoToLogin.setBackground(new Color(255, 204, 229));
         btnGoToLogin.setVisible(false);
 
-        btnBackToMenu = new JButton("🔙 Back to Menu");
+        btnBackToMenu = new JButton("💙 Back to Menu");
         btnBackToMenu.setFont(font);
         btnBackToMenu.setBackground(new Color(204, 229, 255));
 
@@ -218,8 +218,8 @@ public class frmCart extends JFrame {
             cartManager.ClearAll();
 
             JOptionPane.showMessageDialog(frmCart.this, "✅ Order finalized and saved!\n🧾 Order ID: " + orderId);
-            new frmOrder();
-            dispose();
+            new frmOrder(frmCart.this);
+            setVisible(false);
         }
     }
 
