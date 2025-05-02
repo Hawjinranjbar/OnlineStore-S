@@ -1,0 +1,878 @@
+Index: onlinestore-IS-master/src/ui/frmShowProducts.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ui;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\nimport managers.ProductManager;\r\nimport managers.CartManager;\r\nimport common.Product;\r\nimport common.Cart;\r\nimport java.text.NumberFormat;\r\nimport java.util.Locale;\r\n\r\npublic class frmShowProducts extends JFrame {\r\n    private JTextField txtSearch;\r\n    private JButton btnSearch;\r\n    private JComboBox<String> cmbCategory;\r\n    private ProductManager pm;\r\n    private JLabel lblResultCount;\r\n    private JPanel panelProducts;\r\n    private JScrollPane scrollPane;\r\n    private Font emojiFont = new Font(\"Segoe UI Emoji\", Font.PLAIN, 16);\r\n\r\n    public frmShowProducts(String categoryName) {\r\n        setTitle(\"\uD83D\uDC8B Beauty Shop - View Products\");\r\n        setSize(900, 700);\r\n        setLocationRelativeTo(null);\r\n        setDefaultCloseOperation(EXIT_ON_CLOSE);\r\n        setLayout(new BorderLayout(10, 10));\r\n        getContentPane().setBackground(new Color(255, 228, 240));\r\n\r\n        pm = new ProductManager();\r\n\r\n        JPanel topPanel = new JPanel(new BorderLayout(10, 10));\r\n        topPanel.setBackground(new Color(255, 228, 240));\r\n\r\n        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));\r\n        searchPanel.setBackground(new Color(255, 228, 240));\r\n\r\n        // \uD83D\uDD19 دکمه برگشت\r\n        JButton btnBack = new JButton(\"\uD83D\uDD19 Back to Categories\");\r\n        btnBack.setFont(emojiFont);\r\n        btnBack.setBackground(new Color(204, 255, 255));\r\n        btnBack.addActionListener(new BackButtonListener());\r\n\r\n        txtSearch = new JTextField(20);\r\n        txtSearch.setFont(emojiFont);\r\n\r\n        btnSearch = new JButton(\"\uD83D\uDD0D Search\");\r\n        btnSearch.setBackground(new Color(255, 182, 193));\r\n        btnSearch.setFont(emojiFont);\r\n        btnSearch.addActionListener(new SearchButtonListener());\r\n\r\n        cmbCategory = new JComboBox<>(new String[]{\"All\", \"Skincare\", \"Makeup\", \"Haircare\", \"Bodycare\"});\r\n        cmbCategory.setFont(emojiFont);\r\n        cmbCategory.setSelectedItem(categoryName);\r\n        cmbCategory.addActionListener(new CategoryChangeListener());\r\n\r\n        searchPanel.add(btnBack); // اضافه کردن دکمه برگشت\r\n        searchPanel.add(txtSearch);\r\n        searchPanel.add(btnSearch);\r\n        searchPanel.add(cmbCategory);\r\n\r\n        lblResultCount = new JLabel(\" \");\r\n        lblResultCount.setHorizontalAlignment(SwingConstants.CENTER);\r\n        lblResultCount.setForeground(Color.DARK_GRAY);\r\n        lblResultCount.setFont(emojiFont);\r\n\r\n        topPanel.add(searchPanel, BorderLayout.CENTER);\r\n        topPanel.add(lblResultCount, BorderLayout.SOUTH);\r\n\r\n        panelProducts = new JPanel(new GridLayout(0, 2, 10, 10));\r\n        panelProducts.setBackground(new Color(255, 228, 240));\r\n\r\n        scrollPane = new JScrollPane(panelProducts);\r\n        scrollPane.setBorder(BorderFactory.createTitledBorder(\"✨ Available Beauty Products\"));\r\n\r\n        add(topPanel, BorderLayout.NORTH);\r\n        add(scrollPane, BorderLayout.CENTER);\r\n\r\n        searchProducts();\r\n        setVisible(true);\r\n    }\r\n\r\n    private void searchProducts() {\r\n        String keyword = txtSearch.getText().trim().toLowerCase();\r\n        String selectedCategory = cmbCategory.getSelectedItem().toString();\r\n\r\n        Product[] products = pm.SelectAll();\r\n        panelProducts.removeAll();\r\n        int count = 0;\r\n\r\n        for (Product p : products) {\r\n            if (p != null) {\r\n                boolean matchKeyword = keyword.isEmpty() || p.getName().toLowerCase().contains(keyword);\r\n                boolean matchCategory = selectedCategory.equals(\"All\") || p.getCategory().equalsIgnoreCase(selectedCategory);\r\n\r\n                if (matchKeyword && matchCategory) {\r\n                    panelProducts.add(createProductCard(p));\r\n                    count++;\r\n                }\r\n            }\r\n        }\r\n\r\n        if (count == 0) {\r\n            JLabel lbl = new JLabel(\"\uD83E\uDD7A No products found.\");\r\n            lbl.setFont(emojiFont);\r\n            lbl.setHorizontalAlignment(SwingConstants.CENTER);\r\n            panelProducts.add(lbl);\r\n        }\r\n\r\n        lblResultCount.setText(count + \" products found.\");\r\n        panelProducts.revalidate();\r\n        panelProducts.repaint();\r\n    }\r\n\r\n    private JPanel createProductCard(Product p) {\r\n        JPanel card = new JPanel(new BorderLayout(5, 5));\r\n        card.setBackground(Color.WHITE);\r\n        card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));\r\n        card.setPreferredSize(new Dimension(250, 340));\r\n\r\n        JLabel lblImage = new JLabel();\r\n        try {\r\n            ImageIcon icon = new ImageIcon(\"images/\" + p.getImageFileName());\r\n            Image image = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);\r\n            lblImage.setIcon(new ImageIcon(image));\r\n        } catch (Exception e) {\r\n            lblImage.setText(\"\uD83D\uDDBC\uFE0F\");\r\n            lblImage.setFont(emojiFont);\r\n            lblImage.setHorizontalAlignment(SwingConstants.CENTER);\r\n        }\r\n        lblImage.setHorizontalAlignment(SwingConstants.CENTER);\r\n\r\n        JLabel lblName = new JLabel(\"\uD83C\uDF38 \" + p.getName(), SwingConstants.CENTER);\r\n        lblName.setFont(emojiFont);\r\n\r\n        JLabel lblPrice = new JLabel(formatPrice(p.getPrice()) + \" Toman\", SwingConstants.CENTER);\r\n        lblPrice.setFont(emojiFont);\r\n\r\n        JLabel lblCategory = new JLabel(\"Category: \" + p.getCategory(), SwingConstants.CENTER);\r\n        lblCategory.setFont(new Font(\"Segoe UI Emoji\", Font.ITALIC, 14));\r\n\r\n        JPanel infoPanel = new JPanel(new GridLayout(3, 1));\r\n        infoPanel.setBackground(Color.WHITE);\r\n        infoPanel.add(lblName);\r\n        infoPanel.add(lblPrice);\r\n        infoPanel.add(lblCategory);\r\n\r\n        JButton btnAddToCart = new JButton(\"➕ Add to Cart\");\r\n        btnAddToCart.setFont(new Font(\"Segoe UI Emoji\", Font.PLAIN, 13));\r\n        btnAddToCart.setBackground(new Color(255, 204, 229));\r\n        btnAddToCart.addActionListener(new AddToCartListener(p));\r\n\r\n        card.add(lblImage, BorderLayout.NORTH);\r\n        card.add(infoPanel, BorderLayout.CENTER);\r\n        card.add(btnAddToCart, BorderLayout.SOUTH);\r\n\r\n        return card;\r\n    }\r\n\r\n    private String formatPrice(double price) {\r\n        NumberFormat nf = NumberFormat.getNumberInstance(new Locale(\"en\", \"US\"));\r\n        return nf.format(price);\r\n    }\r\n\r\n    // کلاس داخلی: افزودن به سبد\r\n    private class AddToCartListener implements ActionListener {\r\n        private Product product;\r\n\r\n        public AddToCartListener(Product product) {\r\n            this.product = product;\r\n        }\r\n\r\n        public void actionPerformed(ActionEvent e) {\r\n            try {\r\n                CartManager cm = new CartManager();\r\n                Cart[] current = cm.SelectAll();\r\n                for (Cart c : current) {\r\n                    if (c != null && c.getProductId() == product.getId()) {\r\n                        JOptionPane.showMessageDialog(frmShowProducts.this, \"⚠\uFE0F Product already in cart.\");\r\n                        return;\r\n                    }\r\n                }\r\n                cm.Insert(new Cart(product.getId(), 1));\r\n                JOptionPane.showMessageDialog(frmShowProducts.this, \"\uD83D\uDED2 Product added to cart!\");\r\n            } catch (Exception ex) {\r\n                JOptionPane.showMessageDialog(frmShowProducts.this, \"❌ Error adding product to cart.\");\r\n            }\r\n        }\r\n    }\r\n\r\n    // کلاس داخلی: جستجو\r\n    private class SearchButtonListener implements ActionListener {\r\n        public void actionPerformed(ActionEvent e) {\r\n            searchProducts();\r\n        }\r\n    }\r\n\r\n    // کلاس داخلی: تغییر دسته\u200Cبندی\r\n    private class CategoryChangeListener implements ActionListener {\r\n        public void actionPerformed(ActionEvent e) {\r\n            searchProducts();\r\n        }\r\n    }\r\n\r\n    // \uD83C\uDD95 کلاس داخلی: دکمه برگشت به frmMain\r\n    private class BackButtonListener implements ActionListener {\r\n        public void actionPerformed(ActionEvent e) {\r\n            dispose();\r\n            new frmMain();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmShowProducts.java b/onlinestore-IS-master/src/ui/frmShowProducts.java
+--- a/onlinestore-IS-master/src/ui/frmShowProducts.java	(revision 2c6524e927b97561bad7664741c4a15d1b5625be)
++++ b/onlinestore-IS-master/src/ui/frmShowProducts.java	(date 1746241285612)
+@@ -1,3 +1,4 @@
++
+ package ui;
+ 
+ import javax.swing.*;
+@@ -5,8 +6,11 @@
+ import java.awt.event.*;
+ import managers.ProductManager;
+ import managers.CartManager;
++import managers.WishlistManager;
++import managers.CurrentCustomer;
+ import common.Product;
+ import common.Cart;
++import common.Wishlist;
+ import java.text.NumberFormat;
+ import java.util.Locale;
+ 
+@@ -36,12 +40,20 @@
+         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+         searchPanel.setBackground(new Color(255, 228, 240));
+ 
+-        // 🔙 دکمه برگشت
+         JButton btnBack = new JButton("🔙 Back to Categories");
+         btnBack.setFont(emojiFont);
+         btnBack.setBackground(new Color(204, 255, 255));
+         btnBack.addActionListener(new BackButtonListener());
+ 
++        JButton btnWishlistPanel = new JButton("💖 Wishlist");
++        btnWishlistPanel.setFont(emojiFont);
++        btnWishlistPanel.setBackground(new Color(255, 204, 229));
++        btnWishlistPanel.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                new frmWishlist();
++            }
++        });
++
+         txtSearch = new JTextField(20);
+         txtSearch.setFont(emojiFont);
+ 
+@@ -55,7 +67,8 @@
+         cmbCategory.setSelectedItem(categoryName);
+         cmbCategory.addActionListener(new CategoryChangeListener());
+ 
+-        searchPanel.add(btnBack); // اضافه کردن دکمه برگشت
++        searchPanel.add(btnBack);
++        searchPanel.add(btnWishlistPanel);
+         searchPanel.add(txtSearch);
+         searchPanel.add(btnSearch);
+         searchPanel.add(cmbCategory);
+@@ -117,7 +130,7 @@
+         JPanel card = new JPanel(new BorderLayout(5, 5));
+         card.setBackground(Color.WHITE);
+         card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+-        card.setPreferredSize(new Dimension(250, 340));
++        card.setPreferredSize(new Dimension(250, 400));
+ 
+         JLabel lblImage = new JLabel();
+         try {
+@@ -146,14 +159,33 @@
+         infoPanel.add(lblPrice);
+         infoPanel.add(lblCategory);
+ 
++        JPanel btnPanel = new JPanel(new GridLayout(3, 1));
++        btnPanel.setBackground(Color.WHITE);
++
+         JButton btnAddToCart = new JButton("➕ Add to Cart");
+         btnAddToCart.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 13));
+         btnAddToCart.setBackground(new Color(255, 204, 229));
+         btnAddToCart.addActionListener(new AddToCartListener(p));
+ 
++        JButton btnReview = new JButton("📝 Review");
++        btnReview.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 13));
++        btnReview.setBackground(new Color(229, 229, 255));
++        btnReview.addActionListener(new ReviewListener(p));
++
++        JButton btnWishlist = new JButton("🤍 Wishlist");
++        btnWishlist.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 13));
++        WishlistManager wm = new WishlistManager();
++        boolean alreadyInWishlist = wm.Exists(CurrentCustomer.getLoggedInCustomerId(), p.getId());
++        btnWishlist.setBackground(alreadyInWishlist ? new Color(255, 102, 153) : new Color(220, 220, 220));
++        btnWishlist.addActionListener(new WishlistListener(p, btnWishlist));
++
++        btnPanel.add(btnAddToCart);
++        btnPanel.add(btnReview);
++        btnPanel.add(btnWishlist);
++
+         card.add(lblImage, BorderLayout.NORTH);
+         card.add(infoPanel, BorderLayout.CENTER);
+-        card.add(btnAddToCart, BorderLayout.SOUTH);
++        card.add(btnPanel, BorderLayout.SOUTH);
+ 
+         return card;
+     }
+@@ -163,7 +195,6 @@
+         return nf.format(price);
+     }
+ 
+-    // کلاس داخلی: افزودن به سبد
+     private class AddToCartListener implements ActionListener {
+         private Product product;
+ 
+@@ -189,21 +220,54 @@
+         }
+     }
+ 
+-    // کلاس داخلی: جستجو
++    private class ReviewListener implements ActionListener {
++        private Product product;
++
++        public ReviewListener(Product product) {
++            this.product = product;
++        }
++
++        public void actionPerformed(ActionEvent e) {
++            new frmReviewPanel(product.getId()).setVisible(true);
++        }
++    }
++
++    private class WishlistListener implements ActionListener {
++        private Product product;
++        private JButton button;
++
++        public WishlistListener(Product product, JButton button) {
++            this.product = product;
++            this.button = button;
++        }
++
++        public void actionPerformed(ActionEvent e) {
++            WishlistManager wm = new WishlistManager();
++            int customerId = CurrentCustomer.getLoggedInCustomerId();
++            if (!wm.Exists(customerId, product.getId())) {
++                wm.Insert(new Wishlist(customerId, product.getId()));
++                button.setBackground(new Color(255, 102, 153));
++                JOptionPane.showMessageDialog(frmShowProducts.this, "💖 Added to wishlist!");
++            } else {
++                wm.Delete(customerId, product.getId());
++                button.setBackground(new Color(220, 220, 220));
++                JOptionPane.showMessageDialog(frmShowProducts.this, "❌ Removed from wishlist!");
++            }
++        }
++    }
++
+     private class SearchButtonListener implements ActionListener {
+         public void actionPerformed(ActionEvent e) {
+             searchProducts();
+         }
+     }
+ 
+-    // کلاس داخلی: تغییر دسته‌بندی
+     private class CategoryChangeListener implements ActionListener {
+         public void actionPerformed(ActionEvent e) {
+             searchProducts();
+         }
+     }
+ 
+-    // 🆕 کلاس داخلی: دکمه برگشت به frmMain
+     private class BackButtonListener implements ActionListener {
+         public void actionPerformed(ActionEvent e) {
+             dispose();
+@@ -211,3 +275,6 @@
+         }
+     }
+ }
++
++
++
+Index: onlinestore-IS-master/src/ui/frmMain.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\n\r\npackage ui;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\nimport java.awt.image.BufferedImage;\r\nimport java.io.File;\r\nimport javax.imageio.ImageIO;\r\n\r\npublic class frmMain extends JFrame {\r\n    public frmMain() {\r\n        setTitle(\"\uD83C\uDFE0 Online Shop - Main Menu\");\r\n        setSize(1200, 800);\r\n        setLocationRelativeTo(null);\r\n        setDefaultCloseOperation(EXIT_ON_CLOSE);\r\n        setLayout(new BorderLayout());\r\n\r\n        // \uD83D\uDC97 منوی بالا بدون آیکن\r\n        JPanel menuPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 15));\r\n        menuPanel.setBackground(new Color(255, 228, 240));\r\n\r\n        Font font = new Font(\"Segoe UI\", Font.PLAIN, 14);\r\n\r\n        JButton btnCart = new JButton(\"Cart\");\r\n        JButton btnLogin = new JButton(\"Login\");\r\n        JButton btnRegister = new JButton(\"Signup\");\r\n        JButton btnAdminLogin = new JButton(\"Admin Login\");\r\n\r\n        JButton[] buttons = {btnCart, btnLogin, btnRegister, btnAdminLogin};\r\n        for (JButton btn : buttons) {\r\n            btn.setFont(font);\r\n            btn.setFocusPainted(false);\r\n            btn.setBackground(new Color(255, 228, 240));\r\n            btn.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));\r\n            menuPanel.add(btn);\r\n        }\r\n\r\n        btnCart.addActionListener(e -> new frmCart());\r\n        btnLogin.addActionListener(e -> new frmLoginCustomer());\r\n        btnRegister.addActionListener(e -> new frmRegisterCustomer());\r\n        btnAdminLogin.addActionListener(e -> new frmLoginAdmin());\r\n\r\n        add(menuPanel, BorderLayout.NORTH);\r\n\r\n        // \uD83D\uDC97 دسته\u200Cبندی\u200Cها\r\n        JPanel categoryPanel = new JPanel(new GridLayout(1, 6, 10, 10));\r\n        categoryPanel.setBackground(new Color(255, 228, 240));\r\n        categoryPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));\r\n\r\n        String[] categories = {\"ALL\", \"Makeup\", \"Skincare\", \"Haircare\", \"Bodycare\", \"Discounts\"};\r\n        String[] imageFiles = {\"all.jpg\", \"makeup.jpg\", \"skincare.jpg\", \"haircare.jpg\", \"bodycare.jpg\", \"discounts.jpg\"};\r\n\r\n        for (int i = 0; i < categories.length; i++) {\r\n            int finalI = i;\r\n            String categoryName = categories[i];\r\n\r\n            JPanel box = new JPanel() {\r\n                BufferedImage bg = null;\r\n                {\r\n                    try {\r\n                        bg = ImageIO.read(new File(\"images/\" + imageFiles[finalI]));\r\n                    } catch (Exception e) {\r\n                        System.out.println(\"❌ Couldn't load \" + imageFiles[finalI]);\r\n                    }\r\n                }\r\n\r\n                @Override\r\n                protected void paintComponent(Graphics g) {\r\n                    super.paintComponent(g);\r\n                    if (bg != null) {\r\n                        g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);\r\n                    } else {\r\n                        g.setColor(Color.LIGHT_GRAY);\r\n                        g.fillRect(0, 0, getWidth(), getHeight());\r\n                    }\r\n\r\n                    // متن وسط با حاشیه مشکی\r\n                    Graphics2D g2 = (Graphics2D) g;\r\n                    g2.setFont(new Font(\"Segoe UI\", Font.BOLD, 18));\r\n                    FontMetrics fm = g2.getFontMetrics();\r\n                    int textWidth = fm.stringWidth(categoryName);\r\n                    int x = (getWidth() - textWidth) / 2;\r\n                    int y = getHeight() / 2;\r\n\r\n                    g2.setColor(Color.BLACK);\r\n                    for (int dx = -1; dx <= 1; dx++) {\r\n                        for (int dy = -1; dy <= 1; dy++) {\r\n                            if (dx != 0 || dy != 0) {\r\n                                g2.drawString(categoryName, x + dx, y + dy);\r\n                            }\r\n                        }\r\n                    }\r\n\r\n                    g2.setColor(Color.WHITE);\r\n                    g2.drawString(categoryName, x, y);\r\n                }\r\n            };\r\n\r\n            box.setPreferredSize(new Dimension(200, 180));\r\n            box.setBorder(BorderFactory.createLineBorder(Color.GRAY));\r\n            box.setLayout(null);\r\n\r\n            box.addMouseListener(new MouseAdapter() {\r\n                public void mouseClicked(MouseEvent e) {\r\n                    if (categoryName.equalsIgnoreCase(\"Discounts\")) {\r\n                        new frmDiscountViewer();\r\n                    } else {\r\n                        new frmShowProducts(categoryName);\r\n                    }\r\n                }\r\n            });\r\n\r\n            categoryPanel.add(box);\r\n        }\r\n\r\n        add(categoryPanel, BorderLayout.CENTER);\r\n        setVisible(true);\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n        new frmMain();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmMain.java b/onlinestore-IS-master/src/ui/frmMain.java
+--- a/onlinestore-IS-master/src/ui/frmMain.java	(revision 2c6524e927b97561bad7664741c4a15d1b5625be)
++++ b/onlinestore-IS-master/src/ui/frmMain.java	(date 1746219506883)
+@@ -1,5 +1,3 @@
+-
+-
+ package ui;
+ 
+ import javax.swing.*;
+@@ -10,6 +8,8 @@
+ import javax.imageio.ImageIO;
+ 
+ public class frmMain extends JFrame {
++    private JButton btnCart, btnLogin, btnRegister, btnAdminLogin;
++
+     public frmMain() {
+         setTitle("🏠 Online Shop - Main Menu");
+         setSize(1200, 800);
+@@ -17,34 +17,34 @@
+         setDefaultCloseOperation(EXIT_ON_CLOSE);
+         setLayout(new BorderLayout());
+ 
+-        // 💗 منوی بالا بدون آیکن
++        // منوی بالا
+         JPanel menuPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 15));
+         menuPanel.setBackground(new Color(255, 228, 240));
+ 
+         Font font = new Font("Segoe UI", Font.PLAIN, 14);
+ 
+-        JButton btnCart = new JButton("Cart");
+-        JButton btnLogin = new JButton("Login");
+-        JButton btnRegister = new JButton("Signup");
+-        JButton btnAdminLogin = new JButton("Admin Login");
++        btnCart = new JButton("Cart");
++        btnLogin = new JButton("Login");
++        btnRegister = new JButton("Signup");
++        btnAdminLogin = new JButton("Admin Login");
+ 
+         JButton[] buttons = {btnCart, btnLogin, btnRegister, btnAdminLogin};
+-        for (JButton btn : buttons) {
+-            btn.setFont(font);
+-            btn.setFocusPainted(false);
+-            btn.setBackground(new Color(255, 228, 240));
+-            btn.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+-            menuPanel.add(btn);
++        for (int i = 0; i < buttons.length; i++) {
++            buttons[i].setFont(font);
++            buttons[i].setFocusPainted(false);
++            buttons[i].setBackground(new Color(255, 228, 240));
++            buttons[i].setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
++            menuPanel.add(buttons[i]);
+         }
+ 
+-        btnCart.addActionListener(e -> new frmCart());
+-        btnLogin.addActionListener(e -> new frmLoginCustomer());
+-        btnRegister.addActionListener(e -> new frmRegisterCustomer());
+-        btnAdminLogin.addActionListener(e -> new frmLoginAdmin());
++        btnCart.addActionListener(new CartHandler());
++        btnLogin.addActionListener(new LoginHandler());
++        btnRegister.addActionListener(new RegisterHandler());
++        btnAdminLogin.addActionListener(new AdminLoginHandler());
+ 
+         add(menuPanel, BorderLayout.NORTH);
+ 
+-        // 💗 دسته‌بندی‌ها
++        // دسته‌بندی‌ها
+         JPanel categoryPanel = new JPanel(new GridLayout(1, 6, 10, 10));
+         categoryPanel.setBackground(new Color(255, 228, 240));
+         categoryPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+@@ -53,73 +53,100 @@
+         String[] imageFiles = {"all.jpg", "makeup.jpg", "skincare.jpg", "haircare.jpg", "bodycare.jpg", "discounts.jpg"};
+ 
+         for (int i = 0; i < categories.length; i++) {
+-            int finalI = i;
+-            String categoryName = categories[i];
++            categoryPanel.add(createCategoryBox(categories[i], imageFiles[i]));
++        }
+ 
+-            JPanel box = new JPanel() {
+-                BufferedImage bg = null;
+-                {
+-                    try {
+-                        bg = ImageIO.read(new File("images/" + imageFiles[finalI]));
+-                    } catch (Exception e) {
+-                        System.out.println("❌ Couldn't load " + imageFiles[finalI]);
+-                    }
+-                }
++        add(categoryPanel, BorderLayout.CENTER);
++        setVisible(true);
++    }
++
++    private JPanel createCategoryBox(final String categoryName, final String imageFileName) {
++        JPanel box = new JPanel() {
++            BufferedImage bg = null;
++
++            {
++                try {
++                    bg = ImageIO.read(new File("images/" + imageFileName));
++                } catch (Exception e) {
++                    System.out.println("❌ Couldn't load " + imageFileName);
++                }
++            }
+ 
+-                @Override
+-                protected void paintComponent(Graphics g) {
+-                    super.paintComponent(g);
+-                    if (bg != null) {
+-                        g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+-                    } else {
+-                        g.setColor(Color.LIGHT_GRAY);
+-                        g.fillRect(0, 0, getWidth(), getHeight());
+-                    }
++            @Override
++            protected void paintComponent(Graphics g) {
++                super.paintComponent(g);
++                if (bg != null) {
++                    g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
++                } else {
++                    g.setColor(Color.LIGHT_GRAY);
++                    g.fillRect(0, 0, getWidth(), getHeight());
++                }
+ 
+-                    // متن وسط با حاشیه مشکی
+-                    Graphics2D g2 = (Graphics2D) g;
+-                    g2.setFont(new Font("Segoe UI", Font.BOLD, 18));
+-                    FontMetrics fm = g2.getFontMetrics();
+-                    int textWidth = fm.stringWidth(categoryName);
+-                    int x = (getWidth() - textWidth) / 2;
+-                    int y = getHeight() / 2;
++                Graphics2D g2 = (Graphics2D) g;
++                g2.setFont(new Font("Segoe UI", Font.BOLD, 18));
++                FontMetrics fm = g2.getFontMetrics();
++                int textWidth = fm.stringWidth(categoryName);
++                int x = (getWidth() - textWidth) / 2;
++                int y = getHeight() / 2;
+ 
+-                    g2.setColor(Color.BLACK);
+-                    for (int dx = -1; dx <= 1; dx++) {
+-                        for (int dy = -1; dy <= 1; dy++) {
+-                            if (dx != 0 || dy != 0) {
+-                                g2.drawString(categoryName, x + dx, y + dy);
+-                            }
+-                        }
+-                    }
++                g2.setColor(Color.BLACK);
++                for (int dx = -1; dx <= 1; dx++) {
++                    for (int dy = -1; dy <= 1; dy++) {
++                        if (dx != 0 || dy != 0) {
++                            g2.drawString(categoryName, x + dx, y + dy);
++                        }
++                    }
++                }
+ 
+-                    g2.setColor(Color.WHITE);
+-                    g2.drawString(categoryName, x, y);
+-                }
+-            };
++                g2.setColor(Color.WHITE);
++                g2.drawString(categoryName, x, y);
++            }
++        };
+ 
+-            box.setPreferredSize(new Dimension(200, 180));
+-            box.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+-            box.setLayout(null);
++        box.setPreferredSize(new Dimension(200, 180));
++        box.setBorder(BorderFactory.createLineBorder(Color.GRAY));
++        box.setLayout(null);
+ 
+-            box.addMouseListener(new MouseAdapter() {
+-                public void mouseClicked(MouseEvent e) {
+-                    if (categoryName.equalsIgnoreCase("Discounts")) {
+-                        new frmDiscountViewer();
+-                    } else {
+-                        new frmShowProducts(categoryName);
+-                    }
+-                }
+-            });
++        box.addMouseListener(new MouseAdapter() {
++            public void mouseClicked(MouseEvent e) {
++                if (categoryName.equalsIgnoreCase("Discounts")) {
++                    new frmDiscountViewer();
++                } else {
++                    new frmShowProducts(categoryName);
++                }
++            }
++        });
+ 
+-            categoryPanel.add(box);
++        return box;
++    }
++
++    // 👇 کلاس‌های داخلی برای هر دکمه
++    private class CartHandler implements ActionListener {
++        public void actionPerformed(ActionEvent e) {
++            new frmCart();
+         }
++    }
++
++    private class LoginHandler implements ActionListener {
++        public void actionPerformed(ActionEvent e) {
++            new frmLoginCustomer();
++        }
++    }
+ 
+-        add(categoryPanel, BorderLayout.CENTER);
+-        setVisible(true);
++    private class RegisterHandler implements ActionListener {
++        public void actionPerformed(ActionEvent e) {
++            new frmRegisterCustomer();
++        }
++    }
++
++    private class AdminLoginHandler implements ActionListener {
++        public void actionPerformed(ActionEvent e) {
++            new frmLoginAdmin();
++        }
+     }
+ 
+     public static void main(String[] args) {
+         new frmMain();
+     }
+ }
++
+Index: onlinestore-IS-master/src/ui/frmAdminDashboard.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\n\r\npackage ui;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\n\r\npublic class frmAdminDashboard extends JFrame {\r\n    public frmAdminDashboard() {\r\n        setTitle(\"\uD83D\uDCCA Admin Dashboard\");\r\n        setSize(600, 400);\r\n        setLocationRelativeTo(null);\r\n        setDefaultCloseOperation(DISPOSE_ON_CLOSE);\r\n        getContentPane().setBackground(new Color(255, 240, 245));\r\n        setLayout(new BorderLayout(10, 10));\r\n\r\n        Font font = new Font(\"Segoe UI\", Font.BOLD, 16);\r\n\r\n        // ✅ پنل دکمه\u200Cها\r\n        JPanel gridPanel = new JPanel(new GridLayout(2, 2, 20, 20));\r\n        gridPanel.setBackground(new Color(255, 240, 245));\r\n        gridPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));\r\n\r\n        JButton btnOrders = createButton(\"\uD83D\uDCE6 View Orders\", font);\r\n        JButton btnDiscounts = createButton(\"\uD83C\uDF9F\uFE0F Manage Discounts\", font);\r\n        JButton btnInventory = createButton(\"\uD83D\uDCE6 Inventory\", font);\r\n        JButton btnBack = createButton(\"\uD83D\uDD19 Back\", font);\r\n\r\n        gridPanel.add(btnOrders);\r\n        gridPanel.add(btnDiscounts);\r\n        gridPanel.add(btnInventory);\r\n        gridPanel.add(btnBack);\r\n\r\n        add(gridPanel, BorderLayout.CENTER);\r\n\r\n        // ✅ اکشن\u200Cها\r\n        btnOrders.addActionListener(new OrdersHandler());\r\n        btnDiscounts.addActionListener(new DiscountsHandler());\r\n        btnInventory.addActionListener(new InventoryHandler());\r\n        btnBack.addActionListener(new BackHandler());\r\n\r\n        setVisible(true);\r\n    }\r\n\r\n    // \uD83C\uDFAF متد ساخت دکمه زیبا\r\n    private JButton createButton(String text, Font font) {\r\n        JButton btn = new JButton(text);\r\n        btn.setFont(font);\r\n        btn.setFocusPainted(false);\r\n        btn.setBackground(new Color(255, 228, 240));\r\n        return btn;\r\n    }\r\n\r\n    // \uD83D\uDD3B کلاس\u200Cهای هندل\u200Cکننده جداگانه\r\n    private class OrdersHandler implements ActionListener {\r\n        public void actionPerformed(ActionEvent e) {\r\n            new frmOrder();\r\n        }\r\n    }\r\n\r\n    private class DiscountsHandler implements ActionListener {\r\n        public void actionPerformed(ActionEvent e) {\r\n            new frmDiscount();\r\n        }\r\n    }\r\n\r\n    private class InventoryHandler implements ActionListener {\r\n        public void actionPerformed(ActionEvent e) {\r\n            new frmInventory();\r\n        }\r\n    }\r\n\r\n    private class BackHandler implements ActionListener {\r\n        public void actionPerformed(ActionEvent e) {\r\n            dispose();\r\n        }\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n        new frmAdminDashboard();\r\n    }\r\n}\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmAdminDashboard.java b/onlinestore-IS-master/src/ui/frmAdminDashboard.java
+--- a/onlinestore-IS-master/src/ui/frmAdminDashboard.java	(revision 2c6524e927b97561bad7664741c4a15d1b5625be)
++++ b/onlinestore-IS-master/src/ui/frmAdminDashboard.java	(date 1746241285608)
+@@ -1,4 +1,3 @@
+-
+ 
+ package ui;
+ 
+@@ -9,50 +8,68 @@
+ public class frmAdminDashboard extends JFrame {
+     public frmAdminDashboard() {
+         setTitle("📊 Admin Dashboard");
+-        setSize(600, 400);
++        setSize(600, 450);
+         setLocationRelativeTo(null);
+         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+-        getContentPane().setBackground(new Color(255, 240, 245));
++        getContentPane().setBackground(new Color(255, 245, 250));
+         setLayout(new BorderLayout(10, 10));
+ 
+         Font font = new Font("Segoe UI", Font.BOLD, 16);
+ 
+-        // ✅ پنل دکمه‌ها
+-        JPanel gridPanel = new JPanel(new GridLayout(2, 2, 20, 20));
+-        gridPanel.setBackground(new Color(255, 240, 245));
+-        gridPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
++        // 🪄 بنر خوش‌آمد بالا
++        JLabel lblBanner = new JLabel("✨ Welcome to Admin Panel ✨", SwingConstants.CENTER);
++        lblBanner.setFont(new Font("Segoe UI Emoji", Font.BOLD, 20));
++        lblBanner.setForeground(new Color(255, 105, 180));
++        lblBanner.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
++        add(lblBanner, BorderLayout.NORTH);
+ 
+-        JButton btnOrders = createButton("📦 View Orders", font);
+-        JButton btnDiscounts = createButton("🎟️ Manage Discounts", font);
+-        JButton btnInventory = createButton("📦 Inventory", font);
+-        JButton btnBack = createButton("🔙 Back", font);
++        JPanel gridPanel = new JPanel(new GridLayout(2, 3, 20, 20));
++        gridPanel.setBackground(new Color(255, 245, 250));
++        gridPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 30, 30));
++
++        JButton btnOrders = createButton("📦 View Orders", font, new Color(255, 204, 229));
++        JButton btnDiscounts = createButton("🎟️ Manage Discounts", font, new Color(255, 179, 218));
++        JButton btnInventory = createButton("📦 Inventory", font, new Color(255, 153, 204));
++        JButton btnCustomers = createButton("👤 Manage Customers", font, new Color(255, 204, 255));
++        JButton btnBack = createButton("🔙 Back", font, new Color(255, 230, 240));
+ 
+         gridPanel.add(btnOrders);
+         gridPanel.add(btnDiscounts);
+         gridPanel.add(btnInventory);
++        gridPanel.add(btnCustomers);
+         gridPanel.add(btnBack);
+ 
+         add(gridPanel, BorderLayout.CENTER);
+ 
+-        // ✅ اکشن‌ها
+         btnOrders.addActionListener(new OrdersHandler());
+         btnDiscounts.addActionListener(new DiscountsHandler());
+         btnInventory.addActionListener(new InventoryHandler());
++        btnCustomers.addActionListener(new CustomersHandler());
+         btnBack.addActionListener(new BackHandler());
+ 
+         setVisible(true);
+     }
+ 
+-    // 🎯 متد ساخت دکمه زیبا
+-    private JButton createButton(String text, Font font) {
++    private JButton createButton(String text, Font font, Color bgColor) {
+         JButton btn = new JButton(text);
+         btn.setFont(font);
+         btn.setFocusPainted(false);
+-        btn.setBackground(new Color(255, 228, 240));
++        btn.setBackground(bgColor);
++        btn.setBorder(BorderFactory.createLineBorder(new Color(255, 192, 203)));
++
++        // 🖱️ افکت hover
++        btn.addMouseListener(new java.awt.event.MouseAdapter() {
++            public void mouseEntered(java.awt.event.MouseEvent evt) {
++                btn.setBackground(bgColor.darker());
++            }
++            public void mouseExited(java.awt.event.MouseEvent evt) {
++                btn.setBackground(bgColor);
++            }
++        });
++
+         return btn;
+     }
+ 
+-    // 🔻 کلاس‌های هندل‌کننده جداگانه
+     private class OrdersHandler implements ActionListener {
+         public void actionPerformed(ActionEvent e) {
+             new frmOrder();
+@@ -71,6 +88,12 @@
+         }
+     }
+ 
++    private class CustomersHandler implements ActionListener {
++        public void actionPerformed(ActionEvent e) {
++            new frmManageCustomers();
++        }
++    }
++
+     private class BackHandler implements ActionListener {
+         public void actionPerformed(ActionEvent e) {
+             dispose();
+@@ -82,4 +105,3 @@
+     }
+ }
+ 
+-
+Index: onlinestore-IS-master/src/ui/frmProduct.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ui;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\nimport managers.ProductManager;\r\nimport common.Product;\r\n\r\npublic class frmProduct extends JFrame {\r\n    private JTextField txtId, txtName, txtBrand, txtDescription, txtPrice, txtStock, txtSkinType, txtIsOrganic, txtImageUrl;\r\n    private JComboBox<String> cmbCategory;\r\n    private JButton btnInsert, btnUpdate, btnDelete;\r\n    private JTextArea txtList;\r\n    private ProductManager pm;\r\n\r\n    public frmProduct() {\r\n        setTitle(\"\uD83D\uDC51 Admin Panel - Manage Products\");\r\n        setSize(900, 700);\r\n        setLocationRelativeTo(null);\r\n        setDefaultCloseOperation(EXIT_ON_CLOSE);\r\n        setLayout(new BorderLayout(10, 10));\r\n        getContentPane().setBackground(new Color(255, 240, 245));\r\n\r\n        pm = new ProductManager();\r\n\r\n        JPanel inputPanel = new JPanel(new GridLayout(10, 2, 10, 10));\r\n        inputPanel.setBorder(BorderFactory.createTitledBorder(\"\uD83D\uDEE0\uFE0F Product Details\"));\r\n        inputPanel.setBackground(new Color(255, 240, 245));\r\n\r\n        Font font = new Font(\"Segoe UI Emoji\", Font.PLAIN, 14);\r\n\r\n        txtId = new JTextField();\r\n        txtName = new JTextField();\r\n        txtBrand = new JTextField();\r\n        txtDescription = new JTextField();\r\n        txtPrice = new JTextField();\r\n        txtStock = new JTextField();\r\n        cmbCategory = new JComboBox<>(new String[]{\"Makeup \uD83D\uDC84\", \"Skincare \uD83C\uDF3F\", \"Haircare \uD83D\uDC87\u200D♀\uFE0F\", \"Bodycare \uD83E\uDDF4\"});\r\n        txtSkinType = new JTextField();\r\n        txtIsOrganic = new JTextField();\r\n        txtImageUrl = new JTextField();\r\n\r\n        JComponent[] fields = {txtId, txtName, txtBrand, txtDescription, txtPrice, txtStock, cmbCategory, txtSkinType, txtIsOrganic, txtImageUrl};\r\n        for (JComponent comp : fields) comp.setFont(font);\r\n\r\n        inputPanel.add(new JLabel(\"\uD83C\uDD94 Product ID:\")); inputPanel.add(txtId);\r\n        inputPanel.add(new JLabel(\"\uD83D\uDCDD Name:\")); inputPanel.add(txtName);\r\n        inputPanel.add(new JLabel(\"\uD83C\uDFF7\uFE0F Brand:\")); inputPanel.add(txtBrand);\r\n        inputPanel.add(new JLabel(\"\uD83D\uDDD2\uFE0F Description:\")); inputPanel.add(txtDescription);\r\n        inputPanel.add(new JLabel(\"\uD83D\uDCB0 Price:\")); inputPanel.add(txtPrice);\r\n        inputPanel.add(new JLabel(\"\uD83D\uDCE6 Stock:\")); inputPanel.add(txtStock);\r\n        inputPanel.add(new JLabel(\"\uD83D\uDCC2 Category:\")); inputPanel.add(cmbCategory);\r\n        inputPanel.add(new JLabel(\"\uD83E\uDDF4 Skin Type:\")); inputPanel.add(txtSkinType);\r\n        inputPanel.add(new JLabel(\"\uD83C\uDF43 Is Organic (true/false):\")); inputPanel.add(txtIsOrganic);\r\n        inputPanel.add(new JLabel(\"\uD83D\uDDBC\uFE0F Image URL:\")); inputPanel.add(txtImageUrl);\r\n\r\n        btnInsert = new JButton(\"➕ Insert\");\r\n        btnUpdate = new JButton(\"✏\uFE0F Update\");\r\n        btnDelete = new JButton(\"❌ Delete\");\r\n\r\n        JButton[] buttons = {btnInsert, btnUpdate, btnDelete};\r\n        for (JButton b : buttons) {\r\n            b.setFont(font);\r\n        }\r\n\r\n        btnInsert.setBackground(new Color(204, 255, 204));\r\n        btnUpdate.setBackground(new Color(255, 255, 153));\r\n        btnDelete.setBackground(new Color(255, 204, 204));\r\n\r\n        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));\r\n        buttonPanel.setBackground(new Color(255, 240, 245));\r\n        buttonPanel.add(btnInsert);\r\n        buttonPanel.add(btnUpdate);\r\n        buttonPanel.add(btnDelete);\r\n\r\n        txtList = new JTextArea();\r\n        txtList.setFont(font);\r\n        txtList.setEditable(false);\r\n\r\n        JScrollPane scrollPane = new JScrollPane(txtList);\r\n        scrollPane.setBorder(BorderFactory.createTitledBorder(\"\uD83D\uDCDA Product List\"));\r\n        scrollPane.setPreferredSize(new Dimension(850, 250));\r\n\r\n        add(inputPanel, BorderLayout.NORTH);\r\n        add(buttonPanel, BorderLayout.CENTER);\r\n        add(scrollPane, BorderLayout.SOUTH);\r\n\r\n        // Events\r\n        btnInsert.addActionListener(new ActionListener() {\r\n            public void actionPerformed(ActionEvent e) {\r\n                try {\r\n                    Product p = getProductFromInput();\r\n                    pm.Insert(p);\r\n                    refreshList();\r\n                    JOptionPane.showMessageDialog(frmProduct.this, \"✅ Product Inserted!\");\r\n                    new frmShowProducts(p.getCategory());\r\n                    dispose();\r\n                } catch (Exception ex) {\r\n                    JOptionPane.showMessageDialog(frmProduct.this, \"❌ Error inserting product.\");\r\n                }\r\n            }\r\n        });\r\n\r\n        btnUpdate.addActionListener(new ActionListener() {\r\n            public void actionPerformed(ActionEvent e) {\r\n                try {\r\n                    String input = JOptionPane.showInputDialog(\"Enter row number to update:\");\r\n                    if (input == null || input.trim().isEmpty()) {\r\n                        JOptionPane.showMessageDialog(frmProduct.this, \"❌ Row number is required!\");\r\n                        return;\r\n                    }\r\n                    int row = Integer.parseInt(input);\r\n                    Product p = getProductFromInput();\r\n                    pm.Update(p, row);\r\n                    refreshList();\r\n                    JOptionPane.showMessageDialog(frmProduct.this, \"✅ Product updated successfully!\");\r\n                } catch (Exception ex) {\r\n                    JOptionPane.showMessageDialog(frmProduct.this, \"❌ Error updating product.\");\r\n                }\r\n            }\r\n        });\r\n\r\n        btnDelete.addActionListener(new ActionListener() {\r\n            public void actionPerformed(ActionEvent e) {\r\n                try {\r\n                    int row = Integer.parseInt(JOptionPane.showInputDialog(\"Enter row number to delete:\"));\r\n                    pm.Delete(row);\r\n                    refreshList();\r\n                    JOptionPane.showMessageDialog(frmProduct.this, \"❌ Product Deleted!\");\r\n                } catch (Exception ex) {\r\n                    JOptionPane.showMessageDialog(frmProduct.this, \"❌ Error deleting product.\");\r\n                }\r\n            }\r\n        });\r\n\r\n        refreshList();\r\n        setVisible(true);\r\n    }\r\n\r\n    private Product getProductFromInput() {\r\n        String categoryRaw = cmbCategory.getSelectedItem().toString();\r\n        String categoryClean = categoryRaw.split(\" \")[0]; // مثلاً \"Makeup\" از \"Makeup \uD83D\uDC84\"\r\n        return new Product(\r\n                Integer.parseInt(txtId.getText()),\r\n                txtName.getText(),\r\n                txtBrand.getText(),\r\n                txtDescription.getText(),\r\n                Double.parseDouble(txtPrice.getText()),\r\n                Integer.parseInt(txtStock.getText()),\r\n                categoryClean,\r\n                txtSkinType.getText(),\r\n                Boolean.parseBoolean(txtIsOrganic.getText()),\r\n                txtImageUrl.getText()\r\n        );\r\n    }\r\n\r\n    private void refreshList() {\r\n        Product[] products = pm.SelectAll();\r\n        StringBuilder sb = new StringBuilder();\r\n        for (int i = 0; i < products.length; i++) {\r\n            Product p = products[i];\r\n            if (p != null) {\r\n                sb.append(i).append(\". \")\r\n                        .append(p.getName())\r\n                        .append(\" | \uD83D\uDCB0 \").append(p.getPrice())\r\n                        .append(\" | \uD83D\uDED2 Stock: \").append(p.getStock())\r\n                        .append(\" | \uD83D\uDD16 Category: \").append(p.getCategory())\r\n                        .append(\"\\n\\n\");\r\n            }\r\n        }\r\n        txtList.setText(sb.toString());\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n        new frmProduct();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmProduct.java b/onlinestore-IS-master/src/ui/frmProduct.java
+--- a/onlinestore-IS-master/src/ui/frmProduct.java	(revision 2c6524e927b97561bad7664741c4a15d1b5625be)
++++ b/onlinestore-IS-master/src/ui/frmProduct.java	(date 1746234234899)
+@@ -1,17 +1,35 @@
++
+ package ui;
+ 
+ import javax.swing.*;
+ import java.awt.*;
+ import java.awt.event.*;
+ import managers.ProductManager;
++import managers.ItemFeaturesManager;
+ import common.Product;
++import common.ItemFeatures;
+ 
+ public class frmProduct extends JFrame {
+-    private JTextField txtId, txtName, txtBrand, txtDescription, txtPrice, txtStock, txtSkinType, txtIsOrganic, txtImageUrl;
+-    private JComboBox<String> cmbCategory;
+-    private JButton btnInsert, btnUpdate, btnDelete;
+-    private JTextArea txtList;
+-    private ProductManager pm;
++    private JTextField txtId = new JTextField();
++    private JTextField txtName = new JTextField();
++    private JTextField txtBrand = new JTextField();
++    private JTextField txtDescription = new JTextField();
++    private JTextField txtPrice = new JTextField();
++    private JTextField txtStock = new JTextField();
++    private JTextField txtSkinType = new JTextField();
++    private JTextField txtIsOrganic = new JTextField();
++    private JTextField txtImageUrl = new JTextField();
++    private JComboBox<String> cmbCategory = new JComboBox<>(new String[]{"Makeup 💄", "Skincare 🌿", "Haircare 💇‍♀️", "Bodycare 🧴"});
++
++    private JButton btnInsert = new JButton("➕ Insert");
++    private JButton btnUpdate = new JButton("✏️ Update");
++    private JButton btnDelete = new JButton("❌ Delete");
++    private JButton btnLoadFeatures = new JButton("🔍 Load Features");
++    private JButton btnEditFeatures = new JButton("🔧 Edit Item Features");
++
++    private JTextArea txtList = new JTextArea();
++    private ProductManager pm = new ProductManager();
++    private ItemFeaturesManager ifm = new ItemFeaturesManager();
+ 
+     public frmProduct() {
+         setTitle("👑 Admin Panel - Manage Products");
+@@ -21,25 +39,11 @@
+         setLayout(new BorderLayout(10, 10));
+         getContentPane().setBackground(new Color(255, 240, 245));
+ 
+-        pm = new ProductManager();
+-
+         JPanel inputPanel = new JPanel(new GridLayout(10, 2, 10, 10));
+         inputPanel.setBorder(BorderFactory.createTitledBorder("🛠️ Product Details"));
+         inputPanel.setBackground(new Color(255, 240, 245));
+ 
+         Font font = new Font("Segoe UI Emoji", Font.PLAIN, 14);
+-
+-        txtId = new JTextField();
+-        txtName = new JTextField();
+-        txtBrand = new JTextField();
+-        txtDescription = new JTextField();
+-        txtPrice = new JTextField();
+-        txtStock = new JTextField();
+-        cmbCategory = new JComboBox<>(new String[]{"Makeup 💄", "Skincare 🌿", "Haircare 💇‍♀️", "Bodycare 🧴"});
+-        txtSkinType = new JTextField();
+-        txtIsOrganic = new JTextField();
+-        txtImageUrl = new JTextField();
+-
+         JComponent[] fields = {txtId, txtName, txtBrand, txtDescription, txtPrice, txtStock, cmbCategory, txtSkinType, txtIsOrganic, txtImageUrl};
+         for (JComponent comp : fields) comp.setFont(font);
+ 
+@@ -54,11 +58,7 @@
+         inputPanel.add(new JLabel("🍃 Is Organic (true/false):")); inputPanel.add(txtIsOrganic);
+         inputPanel.add(new JLabel("🖼️ Image URL:")); inputPanel.add(txtImageUrl);
+ 
+-        btnInsert = new JButton("➕ Insert");
+-        btnUpdate = new JButton("✏️ Update");
+-        btnDelete = new JButton("❌ Delete");
+-
+-        JButton[] buttons = {btnInsert, btnUpdate, btnDelete};
++        JButton[] buttons = {btnInsert, btnUpdate, btnDelete, btnLoadFeatures, btnEditFeatures};
+         for (JButton b : buttons) {
+             b.setFont(font);
+         }
+@@ -66,17 +66,15 @@
+         btnInsert.setBackground(new Color(204, 255, 204));
+         btnUpdate.setBackground(new Color(255, 255, 153));
+         btnDelete.setBackground(new Color(255, 204, 204));
++        btnLoadFeatures.setBackground(new Color(204, 229, 255));
++        btnEditFeatures.setBackground(new Color(204, 229, 255));
+ 
+         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+         buttonPanel.setBackground(new Color(255, 240, 245));
+-        buttonPanel.add(btnInsert);
+-        buttonPanel.add(btnUpdate);
+-        buttonPanel.add(btnDelete);
++        for (JButton b : buttons) buttonPanel.add(b);
+ 
+-        txtList = new JTextArea();
+         txtList.setFont(font);
+         txtList.setEditable(false);
+-
+         JScrollPane scrollPane = new JScrollPane(txtList);
+         scrollPane.setBorder(BorderFactory.createTitledBorder("📚 Product List"));
+         scrollPane.setPreferredSize(new Dimension(850, 250));
+@@ -85,7 +83,6 @@
+         add(buttonPanel, BorderLayout.CENTER);
+         add(scrollPane, BorderLayout.SOUTH);
+ 
+-        // Events
+         btnInsert.addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+                 try {
+@@ -104,12 +101,7 @@
+         btnUpdate.addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+                 try {
+-                    String input = JOptionPane.showInputDialog("Enter row number to update:");
+-                    if (input == null || input.trim().isEmpty()) {
+-                        JOptionPane.showMessageDialog(frmProduct.this, "❌ Row number is required!");
+-                        return;
+-                    }
+-                    int row = Integer.parseInt(input);
++                    int row = Integer.parseInt(JOptionPane.showInputDialog("Enter row number to update:"));
+                     Product p = getProductFromInput();
+                     pm.Update(p, row);
+                     refreshList();
+@@ -133,13 +125,44 @@
+             }
+         });
+ 
++        btnLoadFeatures.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                try {
++                    int id = Integer.parseInt(txtId.getText());
++                    ItemFeatures feature = ifm.SearchByProductId(id);
++                    if (feature != null) {
++                        txtBrand.setText(feature.getBrand());
++                        txtDescription.setText(feature.getDescription());
++                        txtSkinType.setText(feature.getSkinType());
++                        txtIsOrganic.setText(String.valueOf(feature.isOrganic()));
++                        JOptionPane.showMessageDialog(frmProduct.this, "✅ Features loaded.");
++                    } else {
++                        JOptionPane.showMessageDialog(frmProduct.this, "❌ No features found for this product.");
++                    }
++                } catch (Exception ex) {
++                    JOptionPane.showMessageDialog(frmProduct.this, "❌ Invalid ID.");
++                }
++            }
++        });
++
++        btnEditFeatures.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                try {
++                    int id = Integer.parseInt(txtId.getText());
++                    new frmItemFeatures(id, txtBrand, txtDescription, txtSkinType, txtIsOrganic).setVisible(true);
++                } catch (Exception ex) {
++                    JOptionPane.showMessageDialog(frmProduct.this, "❌ Enter valid product ID first.");
++                }
++            }
++        });
++
+         refreshList();
+         setVisible(true);
+     }
+ 
+     private Product getProductFromInput() {
+         String categoryRaw = cmbCategory.getSelectedItem().toString();
+-        String categoryClean = categoryRaw.split(" ")[0]; // مثلاً "Makeup" از "Makeup 💄"
++        String categoryClean = categoryRaw.split(" ")[0];
+         return new Product(
+                 Integer.parseInt(txtId.getText()),
+                 txtName.getText(),
+@@ -175,3 +198,5 @@
+         new frmProduct();
+     }
+ }
++
++
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"53be4df2-84f7-4fa5-a84d-28b41497e51b\" name=\"Changes\" comment=\"push these\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;selmashj&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/Hawjinranjbar/OnlineStore-S.git&quot;,\r\n    &quot;accountId&quot;: &quot;d5fa6f59-c6f0-4c22-8049-0889a14809a9&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;customColor&quot;: &quot;&quot;,\r\n  &quot;associatedIndex&quot;: 6\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2wGYPqdJb242WPkNQZEuRsgEZHi\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Application.Framuser.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.FrmUser.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.Main.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmAddAddress.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmCart.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmCustomer.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmCustomerRegistration.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmDiscount.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmLoginCustomer.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmMain.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmManageCustomers.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmOrder.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmOrderCustomer.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmProduct.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmRegisterCustomer.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmReview.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.frmShowProducts.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;main&quot;,\r\n    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,\r\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\asus\\IdeaProjects\\OnlineStore-S\\images\" />\r\n      <recent name=\"C:\\Users\\asus\\IdeaProjects\\OnlineStore-S\" />\r\n      <recent name=\"C:\\Users\\asus\\IdeaProjects\\OnlineStore-S\\onlinestore-IS-master\" />\r\n      <recent name=\"C:\\Users\\asus\\IdeaProjects\\OnlineStore-S\\onlinestore-IS-master\\src\\ui\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"frmMain\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"ui.frmMain\" />\r\n      <module name=\"OnlineStore-S\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"ui.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.frmMain\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27\" />\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"53be4df2-84f7-4fa5-a84d-28b41497e51b\" name=\"Changes\" comment=\"\" />\r\n      <created>1745669356395</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1745669356395</updated>\r\n      <workItem from=\"1745669357952\" duration=\"3131000\" />\r\n      <workItem from=\"1745778318894\" duration=\"60000\" />\r\n      <workItem from=\"1745778450504\" duration=\"31000\" />\r\n      <workItem from=\"1745820629252\" duration=\"53000\" />\r\n      <workItem from=\"1745826549832\" duration=\"3053000\" />\r\n      <workItem from=\"1745841057230\" duration=\"1471000\" />\r\n      <workItem from=\"1745871464107\" duration=\"447000\" />\r\n      <workItem from=\"1745872281441\" duration=\"14000\" />\r\n      <workItem from=\"1745934424925\" duration=\"962000\" />\r\n      <workItem from=\"1745936573161\" duration=\"13196000\" />\r\n      <workItem from=\"1746003577653\" duration=\"10929000\" />\r\n      <workItem from=\"1746088427512\" duration=\"889000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745670039560</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745670039560</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745671572747</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745671572747</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745671625123</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745671625123</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745826580408</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745826580408</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745841746100</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745841746100</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745842034182</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745842034182</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745938311850</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745938311850</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745940115922</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745940115922</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745940340296</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745940340296</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745941441618</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745941441618</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745943806925</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745943806925</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745944677815</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745944677815</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745949229948</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745949229948</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00014\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1745950522389</created>\r\n      <option name=\"number\" value=\"00014\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1745950522390</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00015\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746004347485</created>\r\n      <option name=\"number\" value=\"00015\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00015\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746004347485</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00016\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746007497987</created>\r\n      <option name=\"number\" value=\"00016\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00016\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746007497987</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00017\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746017219374</created>\r\n      <option name=\"number\" value=\"00017\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00017\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746017219374</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00018\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746017504375</created>\r\n      <option name=\"number\" value=\"00018\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00018\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746017504375</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00019\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746072326876</created>\r\n      <option name=\"number\" value=\"00019\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00019\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746072326876</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00020\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746072368536</created>\r\n      <option name=\"number\" value=\"00020\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00020\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746072368536</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00021\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746049981876</created>\r\n      <option name=\"number\" value=\"00021\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00021\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746049981876</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00022\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746049992303</created>\r\n      <option name=\"number\" value=\"00022\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00022\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746049992303</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00023\" summary=\"push these\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1746050550078</created>\r\n      <option name=\"number\" value=\"00023\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00023\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1746050550078</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"24\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"push these\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"push these\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 2c6524e927b97561bad7664741c4a15d1b5625be)
++++ b/.idea/workspace.xml	(date 1746241174223)
+@@ -4,7 +4,45 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these" />
++    <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
++      <change afterPath="$PROJECT_DIR$/myfiles/itemfeatures.txt" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/ItemFeatures.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Wishlist.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CurrentCustomer.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ItemFeaturesManager.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/WishlistManager.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmItemFeatures.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmReviewPanel.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmWishlist.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/myfiles/Review.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/Review.txt" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Review.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/InventoryManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/InventoryManager.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ProductManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ProductManager.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ReviewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ReviewManager.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmAdminDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmAdminDashboard.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmMain.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmProduct.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmReview.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/common/Review.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/common/Review.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/InventoryManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/InventoryManager.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/ProductManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/ProductManager.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/ReviewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/ReviewManager.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAdminDashboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAdminDashboard.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$1.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$2.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct$1.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct$2.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct$3.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$AddToCartListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$AddToCartListener.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$BackButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$BackButtonListener.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$CategoryChangeListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$CategoryChangeListener.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$SearchButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$SearchButtonListener.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts.class" afterDir="false" />
++    </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -41,39 +79,46 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;Application.Framuser.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.FrmUser.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmAddAddress.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmCart.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmCustomer.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmCustomerRegistration.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmDiscount.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmLoginCustomer.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmMain.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmManageCustomers.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmOrder.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmOrderCustomer.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmProduct.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmRegisterCustomer.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmReview.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.frmShowProducts.executor&quot;: &quot;Run&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "Application.Framuser.executor": "Run",
++    "Application.FrmUser.executor": "Run",
++    "Application.Main.executor": "Run",
++    "Application.ProductManager.executor": "Run",
++    "Application.frmAddAddress.executor": "Run",
++    "Application.frmAdminDashboard.executor": "Run",
++    "Application.frmCart.executor": "Run",
++    "Application.frmCustomer.executor": "Run",
++    "Application.frmCustomerRegistration.executor": "Run",
++    "Application.frmDiscount.executor": "Run",
++    "Application.frmInventory.executor": "Run",
++    "Application.frmItemFeatures.executor": "Run",
++    "Application.frmLoginCustomer.executor": "Run",
++    "Application.frmMain.executor": "Run",
++    "Application.frmManageCustomers.executor": "Run",
++    "Application.frmOrder.executor": "Run",
++    "Application.frmOrderCustomer.executor": "Run",
++    "Application.frmProduct.executor": "Run",
++    "Application.frmRegisterCustomer.executor": "Run",
++    "Application.frmReview.executor": "Run",
++    "Application.frmReviewPanel.executor": "Run",
++    "Application.frmShowProducts.executor": "Run",
++    "Application.frmShowReviews.executor": "Run",
++    "Application.frmWishlist.executor": "Run",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "RunOnceActivity.git.unshallow": "true",
++    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
++    "git-widget-placeholder": "main",
++    "ignore.virus.scanning.warn.message": "true",
++    "kotlin-language-version-configured": "true",
++    "node.js.detected.package.eslint": "true",
++    "node.js.detected.package.tslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs_package_manager_path": "npm",
++    "vue.rearranger.settings.migration": "true"
+   }
+-}</component>
++}]]></component>
+   <component name="RecentsManager">
+     <key name="MoveFile.RECENT_KEYS">
+       <recent name="C:\Users\asus\IdeaProjects\OnlineStore-S\images" />
+@@ -315,7 +360,31 @@
+       <option name="project" value="LOCAL" />
+       <updated>1746050550078</updated>
+     </task>
+-    <option name="localTasksCounter" value="24" />
++    <task id="LOCAL-00024" summary="push these">
++      <option name="closed" value="true" />
++      <created>1746214423715</created>
++      <option name="number" value="00024" />
++      <option name="presentableId" value="LOCAL-00024" />
++      <option name="project" value="LOCAL" />
++      <updated>1746214423715</updated>
++    </task>
++    <task id="LOCAL-00025" summary="push these">
++      <option name="closed" value="true" />
++      <created>1746214447921</created>
++      <option name="number" value="00025" />
++      <option name="presentableId" value="LOCAL-00025" />
++      <option name="project" value="LOCAL" />
++      <updated>1746214447921</updated>
++    </task>
++    <task id="LOCAL-00026" summary="push these">
++      <option name="closed" value="true" />
++      <created>1746214824468</created>
++      <option name="number" value="00026" />
++      <option name="presentableId" value="LOCAL-00026" />
++      <option name="project" value="LOCAL" />
++      <updated>1746214824468</updated>
++    </task>
++    <option name="localTasksCounter" value="27" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">

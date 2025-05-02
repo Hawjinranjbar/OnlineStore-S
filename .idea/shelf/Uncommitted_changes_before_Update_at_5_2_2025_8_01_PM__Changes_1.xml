@@ -1,0 +1,89 @@
+<changelist name="Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1" date="1746241351852" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/2/2025 8:01 PM [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/managers/InventoryManager.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/managers/InventoryManager.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/InventoryManager.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/managers/ReviewManager.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/managers/ReviewManager.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/ReviewManager.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmProduct.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmProduct.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmProduct.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/common/Review.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/common/Review.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/Review.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmMain.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmMain.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmMain.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$SearchButtonListener.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$SearchButtonListener.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmShowProducts$SearchButtonListener.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$AddToCartListener.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$AddToCartListener.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmShowProducts$AddToCartListener.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/managers/ProductManager.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/managers/ProductManager.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/ProductManager.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmShowProducts.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmAdminDashboard.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmAdminDashboard.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmAdminDashboard.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmProduct$3.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmProduct$3.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmProduct$3.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$CategoryChangeListener.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$CategoryChangeListener.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmShowProducts$CategoryChangeListener.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmProduct$1.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmProduct$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmProduct$1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmMain$2.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmMain$2.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmMain$2.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmMain$1.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmMain$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmMain$1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmProduct$2.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmProduct$2.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmProduct$2.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$BackButtonListener.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmShowProducts$BackButtonListener.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_8_01_PM_[Changes]1/frmShowProducts$BackButtonListener.class" />
+  </binary>
+</changelist>
