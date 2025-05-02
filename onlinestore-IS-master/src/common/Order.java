@@ -1,15 +1,17 @@
 package common;
 
 public class Order {
-    private int orderId;
-    private int customerId;
-    private int addressId;
-    private double totalAmount;
-    private String discountCode;
-    private String cartItems;
-    private String orderDate;
 
-    // 🔽 فیلدهای اضافی برای نمایش (نه برای ذخیره در فایل)
+    // 🧾 فیلدهای اصلی سفارش که توی فایل ذخیره می‌شن:
+    private int orderId;           // آیدی سفارش
+    private int customerId;        // آیدی مشتری
+    private int addressId;         // آیدی آدرسی که سفارش به اون می‌ره
+    private double totalAmount;    // مبلغ کل سفارش
+    private String discountCode;   // کد تخفیف استفاده شده
+    private String cartItems;      // لیست محصولات سفارش به صورت متن
+    private String orderDate;      // تاریخ سفارش
+
+    // 🔍 فیلدهای اضافه فقط برای نمایش داخل UI، ذخیره نمی‌شن!
     private String customerName;
     private String customerEmail;
     private String customerPhone;
@@ -19,6 +21,7 @@ public class Order {
     private String postalCode;
     private String details;
 
+    // ✅ سازنده اصلی با فیلدهایی که داخل فایل ذخیره می‌شن
     public Order(int orderId, int customerId, int addressId, double totalAmount,
                  String discountCode, String cartItems, String orderDate) {
         this.orderId = orderId;
@@ -30,7 +33,7 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    // 🟢 Getter و Setter های اصلی
+    // 🟢 Getter و Setter برای فیلدهای اصلی
     public int getOrderId() { return orderId; }
     public int getCustomerId() { return customerId; }
     public int getAddressId() { return addressId; }
@@ -39,7 +42,7 @@ public class Order {
     public String getCartItems() { return cartItems; }
     public String getOrderDate() { return orderDate; }
 
-    // 🟠 Getter و Setter برای اطلاعات مشتری
+    // 🟠 اطلاعات نمایشی مشتری (برای نمایش توی فرم)
     public String getCustomerName() { return customerName; }
     public void setCustomerName(String customerName) { this.customerName = customerName; }
 
@@ -49,7 +52,7 @@ public class Order {
     public String getCustomerPhone() { return customerPhone; }
     public void setCustomerPhone(String customerPhone) { this.customerPhone = customerPhone; }
 
-    // 🟡 Getter و Setter برای اطلاعات آدرس
+    // 🟡 اطلاعات نمایشی آدرس سفارش
     public String getCity() { return city; }
     public void setCity(String city) { this.city = city; }
 
@@ -62,3 +65,4 @@ public class Order {
     public String getDetails() { return details; }
     public void setDetails(String details) { this.details = details; }
 }
+
