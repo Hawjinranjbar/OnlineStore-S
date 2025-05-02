@@ -1,0 +1,23 @@
+<changelist name="Uncommitted_changes_before_Update_at_5_2_2025_12_32_PM_[Changes]1" date="1746214386384" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_12_32_PM_[Changes]1/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/2/2025 12:32 PM [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmMain.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmMain.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_12_32_PM_[Changes]1/frmMain.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="images/discounts.jpg" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_12_32_PM_[Changes]1/discounts.jpg" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmMain$2.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmMain$2.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_12_32_PM_[Changes]1/frmMain$2.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/OnlineStore-S/ui/frmMain$1.class" />
+    <option name="AFTER_PATH" value="out/production/OnlineStore-S/ui/frmMain$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_2_2025_12_32_PM_[Changes]1/frmMain$1.class" />
+  </binary>
+</changelist>
