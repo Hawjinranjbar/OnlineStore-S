@@ -6,24 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Cart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CartManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CartManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmCart.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmCart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/common/Address.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/common/Address.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/common/Cart.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/common/Cart.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/filemanager/txtFileManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/filemanager/txtFileManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/AddressManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/AddressManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/CartManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/CartManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAddAddress$BackButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAddAddress$BackButtonListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAddAddress$ReturnToCartListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAddAddress$ReturnToCartListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAddAddress$SaveAddressListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAddAddress$SaveAddressListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAddAddress.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAddAddress.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart$ApplyDiscountListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart$ApplyDiscountListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart$BackButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart$BackButtonListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart$DeleteProductListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart$DeleteProductListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart$FinalizeOrderListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart$FinalizeOrderListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart$GoToLoginListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart$GoToLoginListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmCart.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/Customer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CustomerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/CustomerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmLoginCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmLoginCustomer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmManageCustomers.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmManageCustomers.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -405,7 +391,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746223686491</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="push these">
+      <option name="closed" value="true" />
+      <created>1746227253652</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1746227253652</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
