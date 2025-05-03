@@ -12,7 +12,11 @@ public class frmDiscount extends JFrame {
     private JTextArea txtList;
     private DiscountManager dm;
 
-    public frmDiscount() {
+    private JFrame parent; // بک‌سیف
+
+    public frmDiscount(JFrame parent) {
+        this.parent = parent;
+
         setTitle("🎟️ Admin Panel - Manage Discounts");
         setSize(700, 600);
         setLocationRelativeTo(null);
@@ -42,11 +46,11 @@ public class frmDiscount extends JFrame {
         btnAdd = new JButton("➕ Add");
         btnUpdate = new JButton("✏️ Update");
         btnDelete = new JButton("❌ Delete");
-        btnBack = new JButton("🔙 Back to Menu");
+        btnBack = new JButton("🔙 Back to Dashboard");
 
         JButton[] buttons = {btnAdd, btnUpdate, btnDelete, btnBack};
-        for (JButton b : buttons) {
-            b.setFont(font);
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setFont(font);
         }
 
         btnAdd.setBackground(new Color(204, 255, 204));
@@ -59,7 +63,7 @@ public class frmDiscount extends JFrame {
         buttonPanel.add(btnAdd);
         buttonPanel.add(btnUpdate);
         buttonPanel.add(btnDelete);
-        buttonPanel.add(btnBack); // 🔙 اضافه شد
+        buttonPanel.add(btnBack);
 
         txtList = new JTextArea();
         txtList.setEditable(false);
@@ -75,7 +79,7 @@ public class frmDiscount extends JFrame {
         btnAdd.addActionListener(new AddDiscountListener());
         btnUpdate.addActionListener(new UpdateDiscountListener());
         btnDelete.addActionListener(new DeleteDiscountListener());
-        btnBack.addActionListener(new BackButtonListener()); // 🔙 وصل شد
+        btnBack.addActionListener(new BackButtonListener());
 
         refreshList();
         setVisible(true);
@@ -173,11 +177,13 @@ public class frmDiscount extends JFrame {
     private class BackButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             dispose();
-            new frmMain(); // برگشت به frmMain
+            if (parent != null) {
+                parent.setVisible(true);
+            }
         }
     }
 
     public static void main(String[] args) {
-        new frmDiscount();
+        new frmDiscount(null); // برای تست مستقل
     }
 }

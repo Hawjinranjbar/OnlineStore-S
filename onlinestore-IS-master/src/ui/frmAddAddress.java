@@ -10,8 +10,10 @@ public class frmAddAddress extends JFrame {
     private JTextField txtId, txtCity, txtStreet, txtPostalCode, txtDetails;
     private JButton btnSave, btnReturnToCart, btnBackToMenu;
     private AddressManager am;
+    private JFrame parent;
 
-    public frmAddAddress() {
+    public frmAddAddress(JFrame parent) {
+        this.parent = parent;
         setTitle("🏡 Add New Address");
         setSize(500, 550);
         setLocationRelativeTo(null);
@@ -33,7 +35,9 @@ public class frmAddAddress extends JFrame {
         txtDetails = new JTextField();
 
         JTextField[] fields = {txtId, txtCity, txtStreet, txtPostalCode, txtDetails};
-        for (JTextField field : fields) field.setFont(font);
+        for (int i = 0; i < fields.length; i++) {
+            fields[i].setFont(font);
+        }
 
         inputPanel.add(new JLabel("🆔 ID:")); inputPanel.add(txtId);
         inputPanel.add(new JLabel("🏙️ City:")); inputPanel.add(txtCity);
@@ -49,10 +53,10 @@ public class frmAddAddress extends JFrame {
         btnReturnToCart = new JButton("↩️ Return to Cart");
         btnReturnToCart.setBackground(new Color(255, 229, 204));
         btnReturnToCart.setFont(font);
-        btnReturnToCart.setVisible(false); // مخفی تا زمانی که آدرس ثبت شود
+        btnReturnToCart.setVisible(false);
         btnReturnToCart.addActionListener(new ReturnToCartListener());
 
-        btnBackToMenu = new JButton("🔙 Back to Menu");
+        btnBackToMenu = new JButton("🔙 Back");
         btnBackToMenu.setBackground(new Color(204, 229, 255));
         btnBackToMenu.setFont(font);
         btnBackToMenu.addActionListener(new BackButtonListener());
@@ -91,15 +95,17 @@ public class frmAddAddress extends JFrame {
 
     private class ReturnToCartListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            new frmCart();
-            dispose();
+            new frmCart(frmAddAddress.this); // back-safe
+            setVisible(false);
         }
     }
 
     private class BackButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             dispose();
-            new frmMain();
+            if (parent != null) {
+                parent.setVisible(true);
+            }
         }
     }
 
@@ -112,6 +118,6 @@ public class frmAddAddress extends JFrame {
     }
 
     public static void main(String[] args) {
-        new frmAddAddress();
+        new frmAddAddress(null); // برای تست
     }
 }

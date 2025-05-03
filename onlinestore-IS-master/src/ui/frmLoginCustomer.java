@@ -14,12 +14,22 @@ public class frmLoginCustomer extends JFrame {
     private JButton btnLogin, btnBack;
     private CustomerManager cm;
     private String source;
+    private JFrame parent;
 
     public frmLoginCustomer() {
-        this("default");
+        this(null, "default");
     }
 
     public frmLoginCustomer(String source) {
+        this(null, source);
+    }
+
+    public frmLoginCustomer(JFrame parent) {
+        this(parent, "default");
+    }
+
+    public frmLoginCustomer(JFrame parent, String source) {
+        this.parent = parent;
         this.source = source;
 
         setTitle("🔐 Customer Login");
@@ -48,7 +58,7 @@ public class frmLoginCustomer extends JFrame {
         btnLogin.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
         btnLogin.addActionListener(new LoginButtonListener());
 
-        btnBack = new JButton("🔙 Back to Menu");
+        btnBack = new JButton("🔙 Back");
         btnBack.setBackground(new Color(255, 229, 204));
         btnBack.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
         btnBack.addActionListener(new BackButtonListener());
@@ -66,7 +76,7 @@ public class frmLoginCustomer extends JFrame {
 
     private class LoginButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            String email = txtEmail.getText();
+            String email = txtEmail.getText().trim();
             String password = new String(txtPassword.getPassword());
 
             Customer customer = cm.findByEmailAndPassword(email, password);
@@ -79,7 +89,11 @@ public class frmLoginCustomer extends JFrame {
                 dispose();
 
                 if (source.equalsIgnoreCase("cart")) {
-                    new frmCart();
+                    new frmCart(frmLoginCustomer.this.parent);
+                } else {
+                    if (parent != null) {
+                        parent.setVisible(true);
+                    }
                 }
             } else {
                 JOptionPane.showMessageDialog(frmLoginCustomer.this, "❌ Invalid email or password.");
@@ -90,7 +104,9 @@ public class frmLoginCustomer extends JFrame {
     private class BackButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             dispose();
-            new frmMain();
+            if (parent != null) {
+                parent.setVisible(true);
+            }
         }
     }
 

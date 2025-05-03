@@ -1,5 +1,3 @@
-
-
 package ui;
 
 import javax.swing.*;
@@ -17,7 +15,6 @@ public class frmMain extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // 💗 منوی بالا بدون آیکن
         JPanel menuPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 15));
         menuPanel.setBackground(new Color(255, 228, 240));
 
@@ -29,22 +26,47 @@ public class frmMain extends JFrame {
         JButton btnAdminLogin = new JButton("Admin Login");
 
         JButton[] buttons = {btnCart, btnLogin, btnRegister, btnAdminLogin};
-        for (JButton btn : buttons) {
-            btn.setFont(font);
-            btn.setFocusPainted(false);
-            btn.setBackground(new Color(255, 228, 240));
-            btn.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-            menuPanel.add(btn);
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setFont(font);
+            buttons[i].setFocusPainted(false);
+            buttons[i].setBackground(new Color(255, 228, 240));
+            buttons[i].setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+            menuPanel.add(buttons[i]);
         }
 
-        btnCart.addActionListener(e -> new frmCart());
-        btnLogin.addActionListener(e -> new frmLoginCustomer());
-        btnRegister.addActionListener(e -> new frmRegisterCustomer());
-        btnAdminLogin.addActionListener(e -> new frmLoginAdmin());
+        // دکمه سبد خرید
+        btnCart.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new frmCart(frmMain.this);
+                setVisible(false);
+            }
+        });
+
+        // دکمه لاگین مشتری
+        btnLogin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new frmLoginCustomer(frmMain.this, "default");
+                setVisible(false);
+            }
+        });
+
+        // دکمه ثبت نام
+        btnRegister.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new frmRegisterCustomer(frmMain.this);
+                setVisible(false);
+            }
+        });
+
+        // 🔥 دکمه لاگین ادمین (ساده)
+        btnAdminLogin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new frmLoginAdmin(); // بدون پارامتر چون سازنده‌اش ساده‌ست
+            }
+        });
 
         add(menuPanel, BorderLayout.NORTH);
 
-        // 💗 دسته‌بندی‌ها
         JPanel categoryPanel = new JPanel(new GridLayout(1, 6, 10, 10));
         categoryPanel.setBackground(new Color(255, 228, 240));
         categoryPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -53,20 +75,19 @@ public class frmMain extends JFrame {
         String[] imageFiles = {"all.jpg", "makeup.jpg", "skincare.jpg", "haircare.jpg", "bodycare.jpg", "discounts.jpg"};
 
         for (int i = 0; i < categories.length; i++) {
-            int finalI = i;
+            int index = i;
             String categoryName = categories[i];
 
             JPanel box = new JPanel() {
                 BufferedImage bg = null;
                 {
                     try {
-                        bg = ImageIO.read(new File("images/" + imageFiles[finalI]));
+                        bg = ImageIO.read(new File("images/" + imageFiles[index]));
                     } catch (Exception e) {
-                        System.out.println("❌ Couldn't load " + imageFiles[finalI]);
+                        System.out.println("❌ Couldn't load " + imageFiles[index]);
                     }
                 }
 
-                @Override
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
                     if (bg != null) {
@@ -76,7 +97,6 @@ public class frmMain extends JFrame {
                         g.fillRect(0, 0, getWidth(), getHeight());
                     }
 
-                    // متن وسط با حاشیه مشکی
                     Graphics2D g2 = (Graphics2D) g;
                     g2.setFont(new Font("Segoe UI", Font.BOLD, 18));
                     FontMetrics fm = g2.getFontMetrics();
@@ -105,9 +125,11 @@ public class frmMain extends JFrame {
             box.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     if (categoryName.equalsIgnoreCase("Discounts")) {
-                        new frmDiscountViewer();
+                        new frmDiscountViewer(frmMain.this);
+                        setVisible(false);
                     } else {
-                        new frmShowProducts(categoryName);
+                        new frmShowProducts(frmMain.this, categoryName);
+                        setVisible(false);
                     }
                 }
             });

@@ -1,5 +1,3 @@
-
-
 package ui;
 
 import javax.swing.*;
@@ -17,7 +15,6 @@ public class frmAdminDashboard extends JFrame {
 
         Font font = new Font("Segoe UI", Font.BOLD, 16);
 
-        // ✅ پنل دکمه‌ها
         JPanel gridPanel = new JPanel(new GridLayout(2, 2, 20, 20));
         gridPanel.setBackground(new Color(255, 240, 245));
         gridPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
@@ -34,16 +31,35 @@ public class frmAdminDashboard extends JFrame {
 
         add(gridPanel, BorderLayout.CENTER);
 
-        // ✅ اکشن‌ها
-        btnOrders.addActionListener(new OrdersHandler());
-        btnDiscounts.addActionListener(new DiscountsHandler());
-        btnInventory.addActionListener(new InventoryHandler());
-        btnBack.addActionListener(new BackHandler());
+        btnOrders.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new frmOrder(frmAdminDashboard.this);
+                setVisible(false);
+            }
+        });
+
+        btnDiscounts.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new frmDiscount(frmAdminDashboard.this);
+                setVisible(false);
+            }
+        });
+
+        btnInventory.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new frmInventory(); // بدون parent چون نیازی نداره برگرده
+            }
+        });
+
+        btnBack.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
 
         setVisible(true);
     }
 
-    // 🎯 متد ساخت دکمه زیبا
     private JButton createButton(String text, Font font) {
         JButton btn = new JButton(text);
         btn.setFont(font);
@@ -52,34 +68,7 @@ public class frmAdminDashboard extends JFrame {
         return btn;
     }
 
-    // 🔻 کلاس‌های هندل‌کننده جداگانه
-    private class OrdersHandler implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            new frmOrder();
-        }
-    }
-
-    private class DiscountsHandler implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            new frmDiscount();
-        }
-    }
-
-    private class InventoryHandler implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            new frmInventory();
-        }
-    }
-
-    private class BackHandler implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            dispose();
-        }
-    }
-
     public static void main(String[] args) {
         new frmAdminDashboard();
     }
 }
-
-

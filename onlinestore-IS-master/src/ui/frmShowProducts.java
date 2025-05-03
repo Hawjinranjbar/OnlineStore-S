@@ -19,12 +19,15 @@ public class frmShowProducts extends JFrame {
     private JPanel panelProducts;
     private JScrollPane scrollPane;
     private Font emojiFont = new Font("Segoe UI Emoji", Font.PLAIN, 16);
+    private JFrame parent;
 
-    public frmShowProducts(String categoryName) {
+    public frmShowProducts(JFrame parent, String categoryName) {
+        this.parent = parent;
+
         setTitle("💋 Beauty Shop - View Products");
         setSize(900, 700);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         getContentPane().setBackground(new Color(255, 228, 240));
 
@@ -36,7 +39,6 @@ public class frmShowProducts extends JFrame {
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         searchPanel.setBackground(new Color(255, 228, 240));
 
-        // 🔙 دکمه برگشت
         JButton btnBack = new JButton("🔙 Back to Categories");
         btnBack.setFont(emojiFont);
         btnBack.setBackground(new Color(204, 255, 255));
@@ -50,12 +52,12 @@ public class frmShowProducts extends JFrame {
         btnSearch.setFont(emojiFont);
         btnSearch.addActionListener(new SearchButtonListener());
 
-        cmbCategory = new JComboBox<>(new String[]{"All", "Skincare", "Makeup", "Haircare", "Bodycare"});
+        cmbCategory = new JComboBox<String>(new String[]{"All", "Skincare", "Makeup", "Haircare", "Bodycare"});
         cmbCategory.setFont(emojiFont);
         cmbCategory.setSelectedItem(categoryName);
         cmbCategory.addActionListener(new CategoryChangeListener());
 
-        searchPanel.add(btnBack); // اضافه کردن دکمه برگشت
+        searchPanel.add(btnBack);
         searchPanel.add(txtSearch);
         searchPanel.add(btnSearch);
         searchPanel.add(cmbCategory);
@@ -89,7 +91,8 @@ public class frmShowProducts extends JFrame {
         panelProducts.removeAll();
         int count = 0;
 
-        for (Product p : products) {
+        for (int i = 0; i < products.length; i++) {
+            Product p = products[i];
             if (p != null) {
                 boolean matchKeyword = keyword.isEmpty() || p.getName().toLowerCase().contains(keyword);
                 boolean matchCategory = selectedCategory.equals("All") || p.getCategory().equalsIgnoreCase(selectedCategory);
@@ -163,7 +166,6 @@ public class frmShowProducts extends JFrame {
         return nf.format(price);
     }
 
-    // کلاس داخلی: افزودن به سبد
     private class AddToCartListener implements ActionListener {
         private Product product;
 
@@ -175,7 +177,8 @@ public class frmShowProducts extends JFrame {
             try {
                 CartManager cm = new CartManager();
                 Cart[] current = cm.SelectAll();
-                for (Cart c : current) {
+                for (int i = 0; i < current.length; i++) {
+                    Cart c = current[i];
                     if (c != null && c.getProductId() == product.getId()) {
                         JOptionPane.showMessageDialog(frmShowProducts.this, "⚠️ Product already in cart.");
                         return;
@@ -189,25 +192,24 @@ public class frmShowProducts extends JFrame {
         }
     }
 
-    // کلاس داخلی: جستجو
     private class SearchButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             searchProducts();
         }
     }
 
-    // کلاس داخلی: تغییر دسته‌بندی
     private class CategoryChangeListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             searchProducts();
         }
     }
 
-    // 🆕 کلاس داخلی: دکمه برگشت به frmMain
     private class BackButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             dispose();
-            new frmMain();
+            if (parent != null) {
+                parent.setVisible(true);
+            }
         }
     }
 }

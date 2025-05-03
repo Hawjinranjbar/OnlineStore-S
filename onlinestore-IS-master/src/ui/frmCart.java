@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
-
 import common.*;
 import managers.*;
 
@@ -20,7 +19,11 @@ public class frmCart extends JFrame {
     private DiscountManager discountManager = new DiscountManager();
     private Discount appliedDiscount = null;
 
-    public frmCart() {
+    private JFrame parent;
+
+    public frmCart(JFrame parent) {
+        this.parent = parent;
+
         setTitle("🛒 Your Shopping Cart");
         setSize(800, 750);
         setLocationRelativeTo(null);
@@ -64,7 +67,7 @@ public class frmCart extends JFrame {
         btnGoToLogin.setBackground(new Color(255, 204, 229));
         btnGoToLogin.setVisible(false);
 
-        btnBackToMenu = new JButton("🔙 Back to Menu");
+        btnBackToMenu = new JButton("💙 Back to Menu");
         btnBackToMenu.setFont(font);
         btnBackToMenu.setBackground(new Color(204, 229, 255));
 
@@ -106,7 +109,8 @@ public class frmCart extends JFrame {
         for (int i = 0; i < carts.length; i++) {
             Cart c = carts[i];
             if (c != null) {
-                for (Product p : products) {
+                for (int j = 0; j < products.length; j++) {
+                    Product p = products[j];
                     if (p != null && p.getId() == c.getProductId()) {
                         double itemPrice = p.getPrice() * c.getQuantity();
                         totalPrice += itemPrice;
@@ -141,7 +145,8 @@ public class frmCart extends JFrame {
             }
 
             Discount[] discounts = discountManager.SelectAll();
-            for (Discount d : discounts) {
+            for (int i = 0; i < discounts.length; i++) {
+                Discount d = discounts[i];
                 if (d != null && d.getDiscountCode().equalsIgnoreCase(code) && d.isActive()) {
                     appliedDiscount = d;
                     JOptionPane.showMessageDialog(frmCart.this, "✅ Discount applied successfully!");
@@ -172,7 +177,8 @@ public class frmCart extends JFrame {
             AddressManager am = new AddressManager();
             Address[] addresses = am.SelectAll();
             Address customerAddress = null;
-            for (Address a : addresses) {
+            for (int i = 0; i < addresses.length; i++) {
+                Address a = addresses[i];
                 if (a != null && a.getId() == customerId) {
                     customerAddress = a;
                     break;
@@ -187,8 +193,10 @@ public class frmCart extends JFrame {
             double totalAmount = 0;
             StringBuilder itemsText = new StringBuilder();
             Product[] products = productManager.SelectAll();
-            for (Cart c : carts) {
-                for (Product p : products) {
+            for (int i = 0; i < carts.length; i++) {
+                Cart c = carts[i];
+                for (int j = 0; j < products.length; j++) {
+                    Product p = products[j];
                     if (p != null && p.getId() == c.getProductId()) {
                         totalAmount += p.getPrice() * c.getQuantity();
                         itemsText.append(c.getQuantity()).append("x").append(p.getName()).append(", ");
@@ -210,8 +218,8 @@ public class frmCart extends JFrame {
             cartManager.ClearAll();
 
             JOptionPane.showMessageDialog(frmCart.this, "✅ Order finalized and saved!\n🧾 Order ID: " + orderId);
-            new frmOrder();
-            dispose();
+            new frmOrder(frmCart.this);
+            setVisible(false);
         }
     }
 
@@ -241,7 +249,9 @@ public class frmCart extends JFrame {
     private class BackButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             dispose();
-            new frmMain();
+            if (parent != null) {
+                parent.setVisible(true);
+            }
         }
     }
 
@@ -250,6 +260,6 @@ public class frmCart extends JFrame {
     }
 
     public static void main(String[] args) {
-        new frmCart();
+        new frmCart(null);
     }
 }
