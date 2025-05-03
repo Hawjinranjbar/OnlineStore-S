@@ -9,48 +9,51 @@ import java.util.Locale;
 import managers.OrderManager;
 import managers.AddressManager;
 import managers.CustomerManager;
-
-import common.Order;
-import common.Address;
-import common.Customer;
+import common.*;
 
 public class frmOrder extends JFrame {
-    // 🎯 کامپوننت‌های گرافیکی
-    private JTextArea txtOrderList;
-    private JButton btnRefresh, btnBack;
-
-    // 🎛️ مدیرها برای خوندن داده‌ها
+    private JTextArea txtOrderList;      // لیست فاکتورها
+    private JButton btnRefresh, btnBack; // دکمه‌ها
     private OrderManager om;
     private AddressManager am;
     private CustomerManager cm;
+    private JFrame parent;               // فرم قبلی
 
-    private JFrame parent; // فرم قبلی (برای برگشت)
+    private boolean showAllOrders = true;  // مشخص‌کننده اینکه همه سفارش‌ها نمایش داده بشن یا فقط سفارش‌های کاربر
 
+    // کانستراکتور پیش‌فرض (برای frmAdminDashboard)
     public frmOrder(JFrame parent) {
-        this.parent = parent;
+        this(parent, true); // پیش‌فرض: نمایش همه سفارش‌ها
+    }
 
-        setTitle("📦 Orders List"); // عنوان فرم
-        setSize(800, 600); // اندازه فرم
-        setLocationRelativeTo(null); // وسط صفحه
-        setDefaultCloseOperation(EXIT_ON_CLOSE); // بستن کامل فرم
+    // کانستراکتور اصلی با کنترل نمایش سفارش‌ها
+    public frmOrder(JFrame parent, boolean showAllOrders) {
+        this.parent = parent;
+        this.showAllOrders = showAllOrders;
+
+        setTitle("📦 Orders List");
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         getContentPane().setBackground(new Color(255, 240, 245));
 
-        // 🛠️ اتصال به لایه مدیریت فایل‌ها
+        // ساخت کلاس‌های مدیریتی
         om = new OrderManager();
         am = new AddressManager();
         cm = new CustomerManager();
 
+        // ساخت فونت
         Font font = new Font("Segoe UI Emoji", Font.PLAIN, 14);
 
-        // 📜 جعبه نمایش لیست سفارش‌ها
+        // ناحیه لیست سفارش‌ها
         txtOrderList = new JTextArea();
         txtOrderList.setEditable(false);
         txtOrderList.setFont(font);
         JScrollPane scrollPane = new JScrollPane(txtOrderList);
         scrollPane.setBorder(BorderFactory.createTitledBorder("📋 Orders Overview"));
 
-        // 🔄 دکمه‌های پایین صفحه
+        // دکمه‌های پایین
         btnRefresh = new JButton("🔄 Refresh Orders");
         btnRefresh.setFont(font);
         btnRefresh.setBackground(new Color(204, 229, 255));
@@ -66,107 +69,116 @@ public class frmOrder extends JFrame {
         bottomPanel.add(btnRefresh);
         bottomPanel.add(btnBack);
 
-        // ⬇️ اضافه کردن به فرم
         add(scrollPane, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // 🚀 اجرای اولیه: لود لیست سفارش‌ها
-        refreshOrderList();
+        refreshOrderList(); // نمایش اولیه سفارش‌ها
         setVisible(true);
     }
 
-    // 🔁 متد اصلی نمایش لیست سفارش‌ها
+    // نمایش لیست سفارش‌ها
     private void refreshOrderList() {
-        Order[] orders = om.SelectAll();     // همه سفارش‌ها
-        Address[] addresses = am.SelectAll(); // همه آدرس‌ها
-        Customer[] customers = cm.SelectAll(); // همه مشتری‌ها
+        Order[] orders = om.SelectAll();           // گرفتن همه سفارش‌ها از فایل
+        Address[] addresses = am.SelectAll();      // گرفتن همه آدرس‌ها
+        Customer[] customers = cm.SelectAll();     // گرفتن همه مشتری‌ها
 
         StringBuilder sb = new StringBuilder();
 
-        if (orders.length == 0) {
-            sb.append("🥺 No orders found.");
-        } else {
-            for (int i = 0; i < orders.length; i++) {
-                Order o = orders[i];
+        // گرفتن آیدی مشتری اگه لازم باشه فقط سفارش خودش رو ببینیم
+        int currentCustomerId = -1;
+        if (!showAllOrders && frmLoginCustomer.loggedInCustomer != null) {
+            currentCustomerId = frmLoginCustomer.loggedInCustomer.getId();
+        }
 
-                if (o != null) {
-                    // پیدا کردن مشتری بر اساس customerId
-                    Customer customer = null;
-                    for (int j = 0; j < customers.length; j++) {
-                        if (customers[j] != null && customers[j].getId() == o.getCustomerId()) {
-                            customer = customers[j];
-                            break;
-                        }
-                    }
+        boolean found = false; // بررسی اینکه چیزی پیدا شده یا نه
 
-                    // پیدا کردن آدرس بر اساس addressId
-                    Address address = null;
-                    for (int j = 0; j < addresses.length; j++) {
-                        if (addresses[j] != null && addresses[j].getId() == o.getAddressId()) {
-                            address = addresses[j];
-                            break;
-                        }
-                    }
+        for (int i = 0; i < orders.length; i++) {
+            Order o = orders[i];
 
-                    // 📝 نوشتن اطلاعات سفارش
-                    sb.append(i + 1).append(". ")
-                            .append("🆔 Order ID: ").append(o.getOrderId()).append("\n");
-
-                    if (customer != null) {
-                        sb.append("👤 Customer: ").append(customer.getName())
-                                .append(" | 📧 ").append(customer.getEmail())
-                                .append(" | 📱 ").append(customer.getPhone()).append("\n");
-                    } else {
-                        sb.append("👤 Customer ID: ").append(o.getCustomerId()).append(" (Not Found)\n");
-                    }
-
-                    if (address != null) {
-                        sb.append("🏠 Address: ").append(address.getCity()).append(", ").append(address.getStreet()).append("\n")
-                                .append("📬 Postal Code: ").append(address.getPostalCode()).append("\n")
-                                .append("📝 Details: ").append(address.getDetails()).append("\n");
-                    } else {
-                        sb.append("🏠 Address ID: ").append(o.getAddressId()).append(" (Not Found)\n");
-                    }
-
-                    // 💰 قیمت و باقی اطلاعات
-                    String formattedPrice = formatPrice(o.getTotalAmount());
-
-                    sb.append("💰 Total: ").append(formattedPrice).append(" Toman\n")
-                            .append("🎟️ Discount Code: ").append(o.getDiscountCode()).append("\n")
-                            .append("🛒 Items: ").append(o.getCartItems()).append("\n")
-                            .append("🕓 Date: ").append(o.getOrderDate()).append("\n")
-                            .append("--------------------------------------------------\n");
+            if (o != null) {
+                // فیلتر برای حالت مشتری لاگین‌شده
+                if (!showAllOrders && o.getCustomerId() != currentCustomerId) {
+                    continue; // این سفارش متعلق به مشتری لاگین‌شده نیست
                 }
+
+                found = true; // حداقل یک سفارش پیدا شده
+
+                // پیدا کردن اطلاعات مشتری
+                Customer customer = null;
+                for (Customer c : customers) {
+                    if (c != null && c.getId() == o.getCustomerId()) {
+                        customer = c;
+                        break;
+                    }
+                }
+
+                // پیدا کردن اطلاعات آدرس
+                Address address = null;
+                for (Address a : addresses) {
+                    if (a != null && a.getId() == o.getAddressId()) {
+                        address = a;
+                        break;
+                    }
+                }
+
+                // ساخت متن نمایش فاکتور
+                sb.append(i + 1).append(". 🧾 Order ID: ").append(o.getOrderId()).append("\n");
+
+                if (customer != null) {
+                    sb.append("👤 ").append(customer.getName())
+                            .append(" | 📧 ").append(customer.getEmail())
+                            .append(" | 📱 ").append(customer.getPhone()).append("\n");
+                } else {
+                    sb.append("👤 Customer ID: ").append(o.getCustomerId()).append(" (Unknown)\n");
+                }
+
+                if (address != null) {
+                    sb.append("🏠 Address: ").append(address.getCity()).append(", ")
+                            .append(address.getStreet()).append("\n")
+                            .append("📬 Postal Code: ").append(address.getPostalCode()).append("\n")
+                            .append("📝 Details: ").append(address.getDetails()).append("\n");
+                } else {
+                    sb.append("🏠 Address ID: ").append(o.getAddressId()).append(" (Unknown)\n");
+                }
+
+                sb.append("💰 Total: ").append(formatPrice(o.getTotalAmount())).append(" Toman\n")
+                        .append("🎟️ Discount Code: ").append(o.getDiscountCode()).append("\n")
+                        .append("🛒 Items: ").append(o.getCartItems()).append("\n")
+                        .append("📅 Date: ").append(o.getOrderDate()).append("\n")
+                        .append("--------------------------------------------------\n");
             }
         }
 
-        // نمایش داخل فرم
+        if (!found) {
+            sb.append("🥺 No orders found.");
+        }
+
         txtOrderList.setText(sb.toString());
     }
 
-    // 🎯 فرمت قشنگ برای پول
+    // فرمت عددی برای قیمت
     private String formatPrice(double price) {
         NumberFormat nf = NumberFormat.getNumberInstance(new Locale("en", "US"));
         return nf.format(price);
     }
 
-    // ⤴️ دکمه ریفرش
+    // دکمه Refresh
     private class RefreshButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             refreshOrderList();
         }
     }
 
-    // ⬅️ دکمه برگشت
+    // دکمه برگشت
     private class BackButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            dispose(); // بستن فرم
-            if (parent != null) parent.setVisible(true); // برگشت به فرم قبل
+            dispose();
+            if (parent != null) parent.setVisible(true);
         }
     }
 
-    // 🔰 اجرای مستقل فرم
+    // اجرای مستقل فرم
     public static void main(String[] args) {
-        new frmOrder(null);
+        new frmOrder(null, true); // پیش‌فرض: همه سفارش‌ها رو نشون بده
     }
 }

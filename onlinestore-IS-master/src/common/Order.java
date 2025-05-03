@@ -64,5 +64,11 @@ public class Order {
 
     public String getDetails() { return details; }
     public void setDetails(String details) { this.details = details; }
-}
 
+    // ✅ متد toString برای ذخیره‌سازی صحیح تو فایل
+    @Override
+    public String toString() {
+        return orderId + ";" + customerId + ";" + addressId + ";" +
+                totalAmount + ";" + discountCode + ";" + cartItems + ";" + orderDate;
+    }
+}

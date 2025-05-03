@@ -59,7 +59,9 @@ public class frmAdminDashboard extends JFrame {
     // 🔻 کلاس‌های هندل‌کننده جداگانه
     private class OrdersHandler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            new frmOrder(frmAdminDashboard.this);  // ارسال فرم والد
+            new frmOrder(frmAdminDashboard.this, true); // نمایش همه سفارش‌ها
+            // -1 یعنی بدون فیلتر، همه سفارش‌ها
+            // ارسال فرم والد
         }
     }
 
