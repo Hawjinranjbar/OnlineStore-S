@@ -6,20 +6,52 @@
   <component name="ChangeListManager">
     <list default="true" id="53be4df2-84f7-4fa5-a84d-28b41497e51b" name="Changes" comment="push these">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myfiles/Order.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/Order.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myfiles/cart.txt" beforeDir="false" afterPath="$PROJECT_DIR$/myfiles/cart.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/common/ItemFeatures.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/common/ItemFeatures.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/InventoryManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/InventoryManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ItemFeaturesManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/ItemFeaturesManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/WishlistManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/managers/WishlistManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmAdminDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmAdminDashboard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmInventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmInventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmItemFeatures.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmItemFeatures.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmShowProducts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmWishlist.java" beforeDir="false" afterPath="$PROJECT_DIR$/onlinestore-IS-master/src/ui/frmWishlist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/common/ItemFeatures.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/common/ItemFeatures.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/InventoryManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/InventoryManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/ItemFeaturesManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/ItemFeaturesManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/WishlistManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/managers/WishlistManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAdminDashboard$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAdminDashboard$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAdminDashboard$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAdminDashboard$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAdminDashboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmAdminDashboard.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory$4.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory$6.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmInventory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmItemFeatures$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmItemFeatures$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmItemFeatures.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmItemFeatures.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmMain.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmProduct.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$AddToCartListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$AddToCartListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$BackButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$BackButtonListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$CategoryChangeListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$CategoryChangeListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$SearchButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts$SearchButtonListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmShowProducts.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmWishlist$RemoveWishlistHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmWishlist$RemoveWishlistHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmWishlist.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OnlineStore-S/ui/frmWishlist.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,39 +89,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Framuser.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FrmUser.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmAddAddress.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmCart.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmCustomer.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmCustomerRegistration.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmDiscount.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmLoginCustomer.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmMain.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmManageCustomers.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmOrder.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmOrderCustomer.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmProduct.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmRegisterCustomer.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmReview.executor&quot;: &quot;Run&quot;,
-    &quot;Application.frmShowProducts.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Framuser.executor": "Run",
+    "Application.FrmUser.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.frmAddAddress.executor": "Run",
+    "Application.frmAdminDashboard.executor": "Run",
+    "Application.frmCart.executor": "Run",
+    "Application.frmCustomer.executor": "Run",
+    "Application.frmCustomerRegistration.executor": "Run",
+    "Application.frmDiscount.executor": "Run",
+    "Application.frmInventory.executor": "Run",
+    "Application.frmLoginCustomer.executor": "Run",
+    "Application.frmMain.executor": "Run",
+    "Application.frmManageCustomers.executor": "Run",
+    "Application.frmOrder.executor": "Run",
+    "Application.frmOrderCustomer.executor": "Run",
+    "Application.frmProduct.executor": "Run",
+    "Application.frmRegisterCustomer.executor": "Run",
+    "Application.frmReview.executor": "Run",
+    "Application.frmReviewPanel.executor": "Run",
+    "Application.frmShowProducts.executor": "Run",
+    "Application.frmWishlist.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\asus\IdeaProjects\OnlineStore-S\images" />
@@ -147,7 +183,7 @@
       <workItem from="1746003577653" duration="10929000" />
       <workItem from="1746088427512" duration="889000" />
       <workItem from="1746116477532" duration="1401000" />
-      <workItem from="1746172813578" duration="11641000" />
+      <workItem from="1746172813578" duration="8117000" />
     </task>
     <task id="LOCAL-00001" summary="push these">
       <option name="closed" value="true" />
@@ -359,13 +395,21 @@
     </task>
     <task id="LOCAL-00027" summary="push these">
       <option name="closed" value="true" />
-      <created>1746184974045</created>
+      <created>1746241411003</created>
       <option name="number" value="00027" />
       <option name="presentableId" value="LOCAL-00027" />
       <option name="project" value="LOCAL" />
-      <updated>1746184974045</updated>
+      <updated>1746241411003</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="push these">
+      <option name="closed" value="true" />
+      <created>1746241415275</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1746241415275</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

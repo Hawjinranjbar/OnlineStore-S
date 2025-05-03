@@ -1,4 +1,3 @@
-
 package managers;
 
 import common.Inventory;
@@ -43,5 +42,3 @@ public class InventoryManager {
         return list;
     }
 }
-
-

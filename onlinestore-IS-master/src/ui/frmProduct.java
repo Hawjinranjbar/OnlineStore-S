@@ -1,22 +1,40 @@
+
+
+
+
 package ui;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import managers.ProductManager;
+import managers.ItemFeaturesManager;
 import common.Product;
+import common.ItemFeatures;
 
 public class frmProduct extends JFrame {
-    private JTextField txtId, txtName, txtBrand, txtDescription, txtPrice, txtStock, txtSkinType, txtIsOrganic, txtImageUrl;
-    private JComboBox<String> cmbCategory;
-    private JButton btnInsert, btnUpdate, btnDelete, btnBack;
-    private JTextArea txtList;
-    private ProductManager pm;
-    private JFrame parent;
+    private JTextField txtId = new JTextField();
+    private JTextField txtName = new JTextField();
+    private JTextField txtBrand = new JTextField();
+    private JTextField txtDescription = new JTextField();
+    private JTextField txtPrice = new JTextField();
+    private JTextField txtStock = new JTextField();
+    private JTextField txtSkinType = new JTextField();
+    private JTextField txtIsOrganic = new JTextField();
+    private JTextField txtImageUrl = new JTextField();
+    private JComboBox<String> cmbCategory = new JComboBox<>(new String[]{"Makeup 💄", "Skincare 🌿", "Haircare 💇‍♀️", "Bodycare 🧴"});
 
-    public frmProduct(JFrame parent) {
-        this.parent = parent;
+    private JButton btnInsert = new JButton("➕ Insert");
+    private JButton btnUpdate = new JButton("✏️ Update");
+    private JButton btnDelete = new JButton("❌ Delete");
+    private JButton btnLoadFeatures = new JButton("🔍 Load Features");
+    private JButton btnEditFeatures = new JButton("🔧 Edit Item Features");
 
+    private JTextArea txtList = new JTextArea();
+    private ProductManager pm = new ProductManager();
+    private ItemFeaturesManager ifm = new ItemFeaturesManager();
+
+    public frmProduct() {
         setTitle("👑 Admin Panel - Manage Products");
         setSize(900, 700);
         setLocationRelativeTo(null);
@@ -24,27 +42,13 @@ public class frmProduct extends JFrame {
         setLayout(new BorderLayout(10, 10));
         getContentPane().setBackground(new Color(255, 240, 245));
 
-        pm = new ProductManager();
-
         JPanel inputPanel = new JPanel(new GridLayout(10, 2, 10, 10));
         inputPanel.setBorder(BorderFactory.createTitledBorder("🛠️ Product Details"));
         inputPanel.setBackground(new Color(255, 240, 245));
 
         Font font = new Font("Segoe UI Emoji", Font.PLAIN, 14);
-
-        txtId = new JTextField();
-        txtName = new JTextField();
-        txtBrand = new JTextField();
-        txtDescription = new JTextField();
-        txtPrice = new JTextField();
-        txtStock = new JTextField();
-        cmbCategory = new JComboBox<>(new String[]{"Makeup 💄", "Skincare 🌿", "Haircare 💇‍♀️", "Bodycare 🧴"});
-        txtSkinType = new JTextField();
-        txtIsOrganic = new JTextField();
-        txtImageUrl = new JTextField();
-
         JComponent[] fields = {txtId, txtName, txtBrand, txtDescription, txtPrice, txtStock, cmbCategory, txtSkinType, txtIsOrganic, txtImageUrl};
-        for (int i = 0; i < fields.length; i++) fields[i].setFont(font);
+        for (JComponent comp : fields) comp.setFont(font);
 
         inputPanel.add(new JLabel("🆔 Product ID:")); inputPanel.add(txtId);
         inputPanel.add(new JLabel("📝 Name:")); inputPanel.add(txtName);
@@ -57,28 +61,23 @@ public class frmProduct extends JFrame {
         inputPanel.add(new JLabel("🍃 Is Organic (true/false):")); inputPanel.add(txtIsOrganic);
         inputPanel.add(new JLabel("🖼️ Image URL:")); inputPanel.add(txtImageUrl);
 
-        btnInsert = new JButton("➕ Insert");
-        btnUpdate = new JButton("✏️ Update");
-        btnDelete = new JButton("❌ Delete");
-        btnBack = new JButton("🔙 Back to Inventory");
+        JButton[] buttons = {btnInsert, btnUpdate, btnDelete, btnLoadFeatures, btnEditFeatures};
+        for (JButton b : buttons) {
+            b.setFont(font);
+        }
 
-        // Button styles
         btnInsert.setBackground(new Color(204, 255, 204));
         btnUpdate.setBackground(new Color(255, 255, 153));
         btnDelete.setBackground(new Color(255, 204, 204));
-        btnBack.setBackground(new Color(204, 229, 255));
+        btnLoadFeatures.setBackground(new Color(204, 229, 255));
+        btnEditFeatures.setBackground(new Color(204, 229, 255));
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setBackground(new Color(255, 240, 245));
-        buttonPanel.add(btnInsert);
-        buttonPanel.add(btnUpdate);
-        buttonPanel.add(btnDelete);
-        buttonPanel.add(btnBack);
+        for (JButton b : buttons) buttonPanel.add(b);
 
-        txtList = new JTextArea();
         txtList.setFont(font);
         txtList.setEditable(false);
-
         JScrollPane scrollPane = new JScrollPane(txtList);
         scrollPane.setBorder(BorderFactory.createTitledBorder("📚 Product List"));
         scrollPane.setPreferredSize(new Dimension(850, 250));
@@ -87,7 +86,6 @@ public class frmProduct extends JFrame {
         add(buttonPanel, BorderLayout.CENTER);
         add(scrollPane, BorderLayout.SOUTH);
 
-        // Action listener for Insert button
         btnInsert.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -95,13 +93,14 @@ public class frmProduct extends JFrame {
                     pm.Insert(p);
                     refreshList();
                     JOptionPane.showMessageDialog(frmProduct.this, "✅ Product Inserted!");
+                    new frmShowProducts(p.getCategory());
+                    dispose();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frmProduct.this, "❌ Error inserting product.");
                 }
             }
         });
 
-        // Action listener for Update button
         btnUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -109,41 +108,64 @@ public class frmProduct extends JFrame {
                     Product p = getProductFromInput();
                     pm.Update(p, row);
                     refreshList();
-                    JOptionPane.showMessageDialog(frmProduct.this, "✅ Product updated!");
+                    JOptionPane.showMessageDialog(frmProduct.this, "✅ Product updated successfully!");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frmProduct.this, "❌ Error updating product.");
                 }
             }
         });
 
-        // Action listener for Delete button
         btnDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
                     int row = Integer.parseInt(JOptionPane.showInputDialog("Enter row number to delete:"));
                     pm.Delete(row);
                     refreshList();
-                    JOptionPane.showMessageDialog(frmProduct.this, "✅ Product deleted!");
+                    JOptionPane.showMessageDialog(frmProduct.this, "❌ Product Deleted!");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frmProduct.this, "❌ Error deleting product.");
                 }
             }
         });
 
-        // Action listener for Back button
-        btnBack.addActionListener(new ActionListener() {
+        btnLoadFeatures.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Close the current frame
-                if (parent != null) parent.setVisible(true); // Show the previous form (Inventory form)
+                try {
+                    int id = Integer.parseInt(txtId.getText());
+                    ItemFeatures feature = ifm.SearchByProductId(id);
+                    if (feature != null) {
+                        txtBrand.setText(feature.getBrand());
+                        txtDescription.setText(feature.getDescription());
+                        txtSkinType.setText(feature.getSkinType());
+                        txtIsOrganic.setText(String.valueOf(feature.isOrganic()));
+                        JOptionPane.showMessageDialog(frmProduct.this, "✅ Features loaded.");
+                    } else {
+                        JOptionPane.showMessageDialog(frmProduct.this, "❌ No features found for this product.");
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frmProduct.this, "❌ Invalid ID.");
+                }
             }
         });
 
-        refreshList(); // Initialize the product list
+        btnEditFeatures.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int id = Integer.parseInt(txtId.getText());
+                    new frmItemFeatures(id, txtBrand, txtDescription, txtSkinType, txtIsOrganic).setVisible(true);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frmProduct.this, "❌ Enter valid product ID first.");
+                }
+            }
+        });
+
+        refreshList();
         setVisible(true);
     }
 
     private Product getProductFromInput() {
-        String category = cmbCategory.getSelectedItem().toString().split(" ")[0];
+        String categoryRaw = cmbCategory.getSelectedItem().toString();
+        String categoryClean = categoryRaw.split(" ")[0];
         return new Product(
                 Integer.parseInt(txtId.getText()),
                 txtName.getText(),
@@ -151,7 +173,7 @@ public class frmProduct extends JFrame {
                 txtDescription.getText(),
                 Double.parseDouble(txtPrice.getText()),
                 Integer.parseInt(txtStock.getText()),
-                category,
+                categoryClean,
                 txtSkinType.getText(),
                 Boolean.parseBoolean(txtIsOrganic.getText()),
                 txtImageUrl.getText()
@@ -164,16 +186,21 @@ public class frmProduct extends JFrame {
         for (int i = 0; i < products.length; i++) {
             Product p = products[i];
             if (p != null) {
-                sb.append(i).append(". ").append(p.getName())
+                sb.append(i).append(". ")
+                        .append(p.getName())
                         .append(" | 💰 ").append(p.getPrice())
-                        .append(" | 📦 ").append(p.getStock())
-                        .append(" | 🗂 ").append(p.getCategory()).append("\n\n");
+                        .append(" | 🛒 Stock: ").append(p.getStock())
+                        .append(" | 🔖 Category: ").append(p.getCategory())
+                        .append("\n\n");
             }
         }
         txtList.setText(sb.toString());
     }
 
     public static void main(String[] args) {
-        new frmProduct(null);
+        new frmProduct();
     }
 }
+
+
+

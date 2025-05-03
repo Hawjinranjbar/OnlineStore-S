@@ -1,10 +1,12 @@
+
+
 package ui;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import common.Inventory;
 import managers.InventoryManager;
+import common.Inventory;
 
 public class frmInventory extends JFrame {
     private JTextField txtProductId, txtProductName, txtQuantity, txtSearch;
@@ -93,8 +95,8 @@ public class frmInventory extends JFrame {
 
         btnGoToProducts.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                setVisible(false); // برای Safe Back
-                new frmProduct(frmInventory.this); // به عنوان parent فرستاده میشه
+                setVisible(false);
+                new frmProduct(); // no argument constructor
             }
         });
 
@@ -106,6 +108,9 @@ public class frmInventory extends JFrame {
 
         refreshList();
         setVisible(true);
+    }
+
+    public frmInventory(frmAdminDashboard frmAdminDashboard) {
     }
 
     private void addStock() {
@@ -180,3 +185,10 @@ public class frmInventory extends JFrame {
         new frmInventory();
     }
 }
+
+
+
+
+
+
+

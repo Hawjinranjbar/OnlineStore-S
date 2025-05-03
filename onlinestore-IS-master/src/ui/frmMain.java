@@ -1,3 +1,4 @@
+
 package ui;
 
 import javax.swing.*;
@@ -34,7 +35,6 @@ public class frmMain extends JFrame {
             menuPanel.add(buttons[i]);
         }
 
-        // دکمه سبد خرید
         btnCart.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new frmCart(frmMain.this);
@@ -42,7 +42,6 @@ public class frmMain extends JFrame {
             }
         });
 
-        // دکمه لاگین مشتری
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new frmLoginCustomer(frmMain.this, "default");
@@ -50,7 +49,6 @@ public class frmMain extends JFrame {
             }
         });
 
-        // دکمه ثبت نام
         btnRegister.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new frmRegisterCustomer(frmMain.this);
@@ -58,10 +56,9 @@ public class frmMain extends JFrame {
             }
         });
 
-        // 🔥 دکمه لاگین ادمین (ساده)
         btnAdminLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new frmLoginAdmin(); // بدون پارامتر چون سازنده‌اش ساده‌ست
+                new frmLoginAdmin();
             }
         });
 
@@ -128,7 +125,7 @@ public class frmMain extends JFrame {
                         new frmDiscountViewer(frmMain.this);
                         setVisible(false);
                     } else {
-                        new frmShowProducts(frmMain.this, categoryName);
+                        new frmShowProducts(categoryName);
                         setVisible(false);
                     }
                 }
@@ -145,3 +142,9 @@ public class frmMain extends JFrame {
         new frmMain();
     }
 }
+
+
+
+
+
+
