@@ -1,0 +1,3 @@
+cosarex;best for skins with acne;oily;true
+ANUA;BEST FOR ITS SERUMS;OILY,DRY;false
+100;ANUA;THE BEST FOR ACNE;oily;false

@@ -1,17 +1,27 @@
 
-
-
-
 package managers;
 
 import common.Inventory;
 import filemanager.txtFileManager;
 
+import java.io.File;
+
 public class InventoryManager {
     private txtFileManager fm;
 
     public InventoryManager() {
-        fm = new txtFileManager("inventory.txt");
+        // مطمئن می‌شویم فایل داخل پوشه myFiles وجود دارد
+        File file = new File("myFiles/inventory.txt");
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+                System.out.println("📁 Created missing inventory.txt file.");
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Failed to create inventory.txt: " + e.getMessage());
+        }
+
+        fm = new txtFileManager("inventory.txt"); // این به صورت پیش‌فرض می‌ره داخل myFiles/
     }
 
     public void Insert(Inventory inv) {
@@ -33,4 +43,5 @@ public class InventoryManager {
         return list;
     }
 }
+
 

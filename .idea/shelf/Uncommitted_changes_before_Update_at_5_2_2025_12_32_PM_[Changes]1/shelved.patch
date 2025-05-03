@@ -1,0 +1,1015 @@
+Index: onlinestore-IS-master/src/common/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/common/User.java b/onlinestore-IS-master/src/common/Admin.java
+rename from onlinestore-IS-master/src/common/User.java
+rename to onlinestore-IS-master/src/common/Admin.java
+--- a/onlinestore-IS-master/src/common/User.java	(revision e5f38c4ec1b00ac4cb3b8d94233ff94c21d84c8d)
++++ b/onlinestore-IS-master/src/common/Admin.java	(date 1746146816824)
+@@ -1,52 +1,25 @@
++// === 1. POJO ===
+ package common;
+ 
+-public class User {
+-    private int id;
++public class Admin {
+     private String username;
+     private String password;
+-    private String role; // مثلا: admin یا customer
+ 
+-    public User(int id, String username, String password, String role) {
+-        this.id = id;
++    public Admin(String username, String password) {
+         this.username = username;
+         this.password = password;
+-        this.role = role;
+-    }
+-
+-    public int getId() {
+-        return id;
+-    }
+-
+-    public void setId(int id) {
+-        this.id = id;
+     }
+ 
+     public String getUsername() {
+         return username;
+     }
+ 
+-    public void setUsername(String username) {
+-        this.username = username;
+-    }
+-
+     public String getPassword() {
+         return password;
+     }
+ 
+-    public void setPassword(String password) {
+-        this.password = password;
+-    }
+-
+-    public String getRole() {
+-        return role;
+-    }
+-
+-    public void setRole(String role) {
+-        this.role = role;
+-    }
+-
+     @Override
+     public String toString() {
+-        return id + ";" + username + ";" + password + ";" + role;
++        return username + ";" + password;
+     }
+ }
+Index: onlinestore-IS-master/src/managers/UserManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/managers/UserManager.java b/onlinestore-IS-master/src/managers/AdminManager.java
+rename from onlinestore-IS-master/src/managers/UserManager.java
+rename to onlinestore-IS-master/src/managers/AdminManager.java
+--- a/onlinestore-IS-master/src/managers/UserManager.java	(revision e5f38c4ec1b00ac4cb3b8d94233ff94c21d84c8d)
++++ b/onlinestore-IS-master/src/managers/AdminManager.java	(date 1746146835366)
+@@ -1,85 +1,38 @@
++// === 2. MANAGER ===
+ package managers;
+ 
+-import common.User;
++import common.Admin;
+ import filemanager.txtFileManager;
+-import java.io.File;
+-
+-public class UserManager {
+ 
+-    private static final String FILE_NAME = "User.txt";
++public class AdminManager {
++    private txtFileManager fm;
+ 
+-    static {
+-        // Ensure the "myFiles" folder exists
+-        File folder = new File("myFiles");
+-        if (!folder.exists()) {
+-            folder.mkdirs();
+-        }
++    public AdminManager() {
++        fm = new txtFileManager("admin.txt");
++        ensureAdminFileExists();
++    }
+ 
+-        // Auto-create User.txt if it does not exist
+-        File file = new File("myFiles/" + FILE_NAME);
+-        if (!file.exists()) {
+-            txtFileManager filemanager = new txtFileManager(FILE_NAME);
+-            filemanager.CreateFile();
++    private void ensureAdminFileExists() {
++        // اگر فایل خالیه، یه ادمین پیش‌فرض اضافه کن
++        String[] lines = fm.GetArray();
++        if (lines == null || lines.length == 0 || lines[0].trim().isEmpty()) {
++            fm.AppendRow("admin;1234");
+         }
+     }
+ 
+-    public static void addUser(User user) {
+-        txtFileManager filemanager = new txtFileManager(FILE_NAME);
+-        filemanager.AppendRow(user.getId() + ";" + user.getUsername() + ";" + user.getPassword() + ";" + user.getRole());
+-    }
++    public Admin findByUsernameAndPassword(String username, String password) {
++        String[] lines = fm.GetArray();
++        if (lines == null) return null;
+ 
+-    public static User[] getAllUsers() {
+-        txtFileManager filemanager = new txtFileManager(FILE_NAME);
+-        String[] lines = filemanager.GetArray();
+-        User[] users = new User[lines.length];
+-        for (int i = 0; i < lines.length; i++) {
+-            String[] parts = lines[i].split(";");
+-            if (parts.length == 4) {
+-                try {
+-                    users[i] = new User(Integer.parseInt(parts[0]), parts[1], parts[2], parts[3]);
+-                } catch (NumberFormatException e) {
+-                    e.printStackTrace();
+-                }
+-            }
+-        }
+-        return users;
+-    }
+-
+-    public static void deleteUser(int rowIndex) {
+-        txtFileManager filemanager = new txtFileManager(FILE_NAME);
+-        filemanager.DeleteRow(rowIndex);
+-    }
+-
+-    public static void updateUser(User user, int rowIndex) {
+-        txtFileManager filemanager = new txtFileManager(FILE_NAME);
+-        filemanager.UpdateRow(user.getId() + ";" + user.getUsername() + ";" + user.getPassword() + ";" + user.getRole(), rowIndex);
+-    }
+-
+-    public static User getUser(int rowIndex) {
+-        txtFileManager filemanager = new txtFileManager(FILE_NAME);
+-        String line = filemanager.GetRow(rowIndex);
+-        if (line != null && !line.trim().isEmpty()) {
++        for (String line : lines) {
++            if (line == null || line.trim().isEmpty()) continue;
+             String[] parts = line.split(";");
+-            if (parts.length == 4) {
+-                try {
+-                    return new User(Integer.parseInt(parts[0]), parts[1], parts[2], parts[3]);
+-                } catch (NumberFormatException e) {
+-                    e.printStackTrace();
++            if (parts.length == 2) {
++                if (parts[0].equals(username) && parts[1].equals(password)) {
++                    return new Admin(username, password);
+                 }
+             }
+         }
+-        return null;
+-    }
+-
+-    public static User findUserByUsernameAndPassword(String username, String password) {
+-        User[] users = getAllUsers();
+-        for (int i = 0; i < users.length; i++) {
+-            if (users[i] != null &&
+-                    users[i].getUsername().equals(username) &&
+-                    users[i].getPassword().equals(password)) {
+-                return users[i];
+-            }
+-        }
+         return null;
+     }
+ }
+Index: onlinestore-IS-master/src/ui/frmMain.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\npackage ui;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\nimport java.awt.image.BufferedImage;\r\nimport java.io.File;\r\nimport javax.imageio.ImageIO;\r\n\r\npublic class frmMain extends JFrame {\r\n    public frmMain() {\r\n        setTitle(\"\uD83C\uDFE0 Online Shop - Main Menu\");\r\n        setSize(1200, 800);\r\n        setLocationRelativeTo(null);\r\n        setDefaultCloseOperation(EXIT_ON_CLOSE);\r\n        setLayout(new BorderLayout());\r\n\r\n        // \uD83D\uDC97 منوی بالا با آیکن کوچک\r\n        JPanel menuPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 15));\r\n        menuPanel.setBackground(new Color(255, 228, 240));\r\n\r\n        Font font = new Font(\"Segoe UI\", Font.PLAIN, 14);\r\n\r\n        JButton btnCart = new JButton(\"سبد خرید\", loadIcon(\"images/cart.png\"));\r\n        JButton btnDiscount = new JButton(\"تخفیف\u200Cها\", loadIcon(\"images/discount.png\"));\r\n        JButton btnLogin = new JButton(\"ورود مشتری\", loadIcon(\"images/login.png\"));\r\n        JButton btnRegister = new JButton(\"ثبت\u200Cنام\", loadIcon(\"images/register.png\"));\r\n\r\n        JButton[] buttons = {btnCart, btnDiscount, btnLogin, btnRegister};\r\n        for (JButton btn : buttons) {\r\n            btn.setFont(font);\r\n            btn.setFocusPainted(false);\r\n            btn.setBackground(new Color(255, 228, 240));\r\n            btn.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));\r\n            menuPanel.add(btn);\r\n        }\r\n\r\n        btnCart.addActionListener(e -> new frmCart());\r\n        btnDiscount.addActionListener(e -> new frmDiscount());\r\n        btnLogin.addActionListener(e -> new frmLoginCustomer());\r\n        btnRegister.addActionListener(e -> new frmRegisterCustomer());\r\n\r\n        add(menuPanel, BorderLayout.NORTH);\r\n\r\n        // \uD83D\uDC97 دسته\u200Cبندی\u200Cها\r\n        JPanel categoryPanel = new JPanel(new GridLayout(1, 5, 10, 10));\r\n        categoryPanel.setBackground(new Color(255, 228, 240));\r\n        categoryPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));\r\n\r\n        String[] categories = {\"ALL\", \"Makeup\", \"Skincare\", \"Haircare\", \"Bodycare\"};\r\n        String[] imageFiles = {\"all.jpg\", \"makeup.jpg\", \"skincare.jpg\", \"haircare.jpg\", \"bodycare.jpg\"};\r\n\r\n        for (int i = 0; i < categories.length; i++) {\r\n            int finalI = i;\r\n            String categoryName = categories[i];\r\n\r\n            JPanel box = new JPanel() {\r\n                BufferedImage bg = null;\r\n                {\r\n                    try {\r\n                        bg = ImageIO.read(new File(\"images/\" + imageFiles[finalI]));\r\n                    } catch (Exception e) {\r\n                        System.out.println(\"❌ Couldn't load \" + imageFiles[finalI]);\r\n                    }\r\n                }\r\n\r\n                @Override\r\n                protected void paintComponent(Graphics g) {\r\n                    super.paintComponent(g);\r\n                    if (bg != null) {\r\n                        g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);\r\n                    } else {\r\n                        g.setColor(Color.LIGHT_GRAY);\r\n                        g.fillRect(0, 0, getWidth(), getHeight());\r\n                    }\r\n\r\n                    // متن وسط با حاشیه مشکی\r\n                    Graphics2D g2 = (Graphics2D) g;\r\n                    g2.setFont(new Font(\"Segoe UI\", Font.BOLD, 18));\r\n                    FontMetrics fm = g2.getFontMetrics();\r\n                    int textWidth = fm.stringWidth(categoryName);\r\n                    int x = (getWidth() - textWidth) / 2;\r\n                    int y = getHeight() / 2;\r\n\r\n                    g2.setColor(Color.BLACK);\r\n                    for (int dx = -1; dx <= 1; dx++) {\r\n                        for (int dy = -1; dy <= 1; dy++) {\r\n                            if (dx != 0 || dy != 0) {\r\n                                g2.drawString(categoryName, x + dx, y + dy);\r\n                            }\r\n                        }\r\n                    }\r\n\r\n                    g2.setColor(Color.WHITE);\r\n                    g2.drawString(categoryName, x, y);\r\n                }\r\n            };\r\n\r\n            box.setPreferredSize(new Dimension(200, 180));\r\n            box.setBorder(BorderFactory.createLineBorder(Color.GRAY));\r\n            box.setLayout(null);\r\n\r\n            box.addMouseListener(new MouseAdapter() {\r\n                public void mouseClicked(MouseEvent e) {\r\n                    new frmShowProducts(categoryName);\r\n                }\r\n            });\r\n\r\n            categoryPanel.add(box);\r\n        }\r\n\r\n        add(categoryPanel, BorderLayout.CENTER);\r\n        setVisible(true);\r\n    }\r\n\r\n    private ImageIcon loadIcon(String path) {\r\n        try {\r\n            ImageIcon icon = new ImageIcon(path);\r\n            Image img = icon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);\r\n            return new ImageIcon(img);\r\n        } catch (Exception e) {\r\n            System.out.println(\"❌ Icon not found: \" + path);\r\n            return null;\r\n        }\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n\r\n        new frmMain();\r\n    }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmMain.java b/onlinestore-IS-master/src/ui/frmMain.java
+--- a/onlinestore-IS-master/src/ui/frmMain.java	(revision e5f38c4ec1b00ac4cb3b8d94233ff94c21d84c8d)
++++ b/onlinestore-IS-master/src/ui/frmMain.java	(date 1746213404577)
+@@ -1,3 +1,4 @@
++
+ 
+ package ui;
+ 
+@@ -16,18 +17,18 @@
+         setDefaultCloseOperation(EXIT_ON_CLOSE);
+         setLayout(new BorderLayout());
+ 
+-        // 💗 منوی بالا با آیکن کوچک
++        // 💗 منوی بالا بدون آیکن
+         JPanel menuPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 15));
+         menuPanel.setBackground(new Color(255, 228, 240));
+ 
+         Font font = new Font("Segoe UI", Font.PLAIN, 14);
+ 
+-        JButton btnCart = new JButton("سبد خرید", loadIcon("images/cart.png"));
+-        JButton btnDiscount = new JButton("تخفیف‌ها", loadIcon("images/discount.png"));
+-        JButton btnLogin = new JButton("ورود مشتری", loadIcon("images/login.png"));
+-        JButton btnRegister = new JButton("ثبت‌نام", loadIcon("images/register.png"));
++        JButton btnCart = new JButton("Cart");
++        JButton btnLogin = new JButton("Login");
++        JButton btnRegister = new JButton("Signup");
++        JButton btnAdminLogin = new JButton("Admin Login");
+ 
+-        JButton[] buttons = {btnCart, btnDiscount, btnLogin, btnRegister};
++        JButton[] buttons = {btnCart, btnLogin, btnRegister, btnAdminLogin};
+         for (JButton btn : buttons) {
+             btn.setFont(font);
+             btn.setFocusPainted(false);
+@@ -37,19 +38,19 @@
+         }
+ 
+         btnCart.addActionListener(e -> new frmCart());
+-        btnDiscount.addActionListener(e -> new frmDiscount());
+         btnLogin.addActionListener(e -> new frmLoginCustomer());
+         btnRegister.addActionListener(e -> new frmRegisterCustomer());
++        btnAdminLogin.addActionListener(e -> new frmLoginAdmin());
+ 
+         add(menuPanel, BorderLayout.NORTH);
+ 
+         // 💗 دسته‌بندی‌ها
+-        JPanel categoryPanel = new JPanel(new GridLayout(1, 5, 10, 10));
++        JPanel categoryPanel = new JPanel(new GridLayout(1, 6, 10, 10));
+         categoryPanel.setBackground(new Color(255, 228, 240));
+         categoryPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+ 
+-        String[] categories = {"ALL", "Makeup", "Skincare", "Haircare", "Bodycare"};
+-        String[] imageFiles = {"all.jpg", "makeup.jpg", "skincare.jpg", "haircare.jpg", "bodycare.jpg"};
++        String[] categories = {"ALL", "Makeup", "Skincare", "Haircare", "Bodycare", "Discounts"};
++        String[] imageFiles = {"all.jpg", "makeup.jpg", "skincare.jpg", "haircare.jpg", "bodycare.jpg", "discounts.jpg"};
+ 
+         for (int i = 0; i < categories.length; i++) {
+             int finalI = i;
+@@ -103,7 +104,11 @@
+ 
+             box.addMouseListener(new MouseAdapter() {
+                 public void mouseClicked(MouseEvent e) {
+-                    new frmShowProducts(categoryName);
++                    if (categoryName.equalsIgnoreCase("Discounts")) {
++                        new frmDiscountViewer();
++                    } else {
++                        new frmShowProducts(categoryName);
++                    }
+                 }
+             });
+ 
+@@ -114,19 +119,7 @@
+         setVisible(true);
+     }
+ 
+-    private ImageIcon loadIcon(String path) {
+-        try {
+-            ImageIcon icon = new ImageIcon(path);
+-            Image img = icon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+-            return new ImageIcon(img);
+-        } catch (Exception e) {
+-            System.out.println("❌ Icon not found: " + path);
+-            return null;
+-        }
+-    }
+-
+     public static void main(String[] args) {
+-
+         new frmMain();
+     }
+ }
+@@ -140,3 +133,9 @@
+ 
+ 
+ 
++
++
++
++
++
++
+Index: onlinestore-IS-master/src/ui/frmAdminDashboard.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmAdminDashboard.java b/onlinestore-IS-master/src/ui/frmAdminDashboard.java
+new file mode 100644
+--- /dev/null	(date 1746214364384)
++++ b/onlinestore-IS-master/src/ui/frmAdminDashboard.java	(date 1746214364384)
+@@ -0,0 +1,85 @@
++
++
++package ui;
++
++import javax.swing.*;
++import java.awt.*;
++import java.awt.event.*;
++
++public class frmAdminDashboard extends JFrame {
++    public frmAdminDashboard() {
++        setTitle("📊 Admin Dashboard");
++        setSize(600, 400);
++        setLocationRelativeTo(null);
++        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
++        getContentPane().setBackground(new Color(255, 240, 245));
++        setLayout(new BorderLayout(10, 10));
++
++        Font font = new Font("Segoe UI", Font.BOLD, 16);
++
++        // ✅ پنل دکمه‌ها
++        JPanel gridPanel = new JPanel(new GridLayout(2, 2, 20, 20));
++        gridPanel.setBackground(new Color(255, 240, 245));
++        gridPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
++
++        JButton btnOrders = createButton("📦 View Orders", font);
++        JButton btnDiscounts = createButton("🎟️ Manage Discounts", font);
++        JButton btnInventory = createButton("📦 Inventory", font);
++        JButton btnBack = createButton("🔙 Back", font);
++
++        gridPanel.add(btnOrders);
++        gridPanel.add(btnDiscounts);
++        gridPanel.add(btnInventory);
++        gridPanel.add(btnBack);
++
++        add(gridPanel, BorderLayout.CENTER);
++
++        // ✅ اکشن‌ها
++        btnOrders.addActionListener(new OrdersHandler());
++        btnDiscounts.addActionListener(new DiscountsHandler());
++        btnInventory.addActionListener(new InventoryHandler());
++        btnBack.addActionListener(new BackHandler());
++
++        setVisible(true);
++    }
++
++    // 🎯 متد ساخت دکمه زیبا
++    private JButton createButton(String text, Font font) {
++        JButton btn = new JButton(text);
++        btn.setFont(font);
++        btn.setFocusPainted(false);
++        btn.setBackground(new Color(255, 228, 240));
++        return btn;
++    }
++
++    // 🔻 کلاس‌های هندل‌کننده جداگانه
++    private class OrdersHandler implements ActionListener {
++        public void actionPerformed(ActionEvent e) {
++            new frmOrder();
++        }
++    }
++
++    private class DiscountsHandler implements ActionListener {
++        public void actionPerformed(ActionEvent e) {
++            new frmDiscount();
++        }
++    }
++
++    private class InventoryHandler implements ActionListener {
++        public void actionPerformed(ActionEvent e) {
++            new frmInventory();
++        }
++    }
++
++    private class BackHandler implements ActionListener {
++        public void actionPerformed(ActionEvent e) {
++            dispose();
++        }
++    }
++
++    public static void main(String[] args) {
++        new frmAdminDashboard();
++    }
++}
++
++
+Index: onlinestore-IS-master/src/common/Inventory.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/common/Inventory.java b/onlinestore-IS-master/src/common/Inventory.java
+new file mode 100644
+--- /dev/null	(date 1746174969878)
++++ b/onlinestore-IS-master/src/common/Inventory.java	(date 1746174969878)
+@@ -0,0 +1,71 @@
++
++
++
++package common;
++
++public class Inventory {
++    private int productId;
++    private String productName;
++    private int quantity;
++    private boolean isAddition; // true = ورود کالا | false = خروج کالا
++
++    public Inventory(int productId, String productName, int quantity, boolean isAddition) {
++        this.productId = productId;
++        this.productName = productName;
++        this.quantity = quantity;
++        this.isAddition = isAddition;
++    }
++
++    public int getProductId() {
++        return productId;
++    }
++
++    public String getProductName() {
++        return productName;
++    }
++
++    public int getQuantity() {
++        return quantity;
++    }
++
++    public boolean isAddition() {
++        return isAddition;
++    }
++
++    public void setProductId(int productId) {
++        this.productId = productId;
++    }
++
++    public void setProductName(String productName) {
++        this.productName = productName;
++    }
++
++    public void setQuantity(int quantity) {
++        this.quantity = quantity;
++    }
++
++    public void setAddition(boolean isAddition) {
++        this.isAddition = isAddition;
++    }
++
++    @Override
++    public String toString() {
++        return productId + ";" + productName + ";" + quantity + ";" + isAddition;
++    }
++
++    public static Inventory fromString(String line) {
++        String[] parts = line.split(";");
++        if (parts.length != 4) return null;
++        try {
++            int id = Integer.parseInt(parts[0]);
++            String name = parts[1];
++            int qty = Integer.parseInt(parts[2]);
++            boolean isAdd = Boolean.parseBoolean(parts[3]);
++            return new Inventory(id, name, qty, isAdd);
++        } catch (Exception e) {
++            return null;
++        }
++    }
++}
++
++
+Index: onlinestore-IS-master/src/ui/frmInventory.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmInventory.java b/onlinestore-IS-master/src/ui/frmInventory.java
+new file mode 100644
+--- /dev/null	(date 1746174969850)
++++ b/onlinestore-IS-master/src/ui/frmInventory.java	(date 1746174969850)
+@@ -0,0 +1,183 @@
++
++
++package ui;
++
++import javax.swing.*;
++import java.awt.*;
++import java.awt.event.*;
++import common.Inventory;
++import managers.InventoryManager;
++
++public class frmInventory extends JFrame {
++    private JTextField txtProductId, txtProductName, txtQuantity, txtSearch;
++    private JTextArea txtList;
++    private JButton btnAdd, btnRemove, btnSearch, btnRefresh, btnGoToProducts, btnBack;
++    private InventoryManager im;
++
++    public frmInventory() {
++        setTitle("📦 Inventory Management");
++        setSize(800, 600);
++        setLocationRelativeTo(null);
++        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
++        setLayout(new BorderLayout(10, 10));
++        getContentPane().setBackground(new Color(255, 240, 245));
++
++        im = new InventoryManager();
++
++        JPanel inputPanel = new JPanel(new GridLayout(4, 2, 10, 10));
++        inputPanel.setBackground(new Color(255, 240, 245));
++        inputPanel.setBorder(BorderFactory.createTitledBorder("📥 Product Info"));
++
++        txtProductId = new JTextField();
++        txtProductName = new JTextField();
++        txtQuantity = new JTextField();
++
++        inputPanel.add(new JLabel("🆔 Product ID:")); inputPanel.add(txtProductId);
++        inputPanel.add(new JLabel("🛙 Product Name:")); inputPanel.add(txtProductName);
++        inputPanel.add(new JLabel("🔢 Quantity:")); inputPanel.add(txtQuantity);
++
++        btnAdd = new JButton("➕ Add Stock");
++        btnRemove = new JButton("➖ Remove Stock");
++
++        inputPanel.add(btnAdd);
++        inputPanel.add(btnRemove);
++
++        txtList = new JTextArea();
++        txtList.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
++        txtList.setEditable(false);
++        JScrollPane scrollPane = new JScrollPane(txtList);
++        scrollPane.setBorder(BorderFactory.createTitledBorder("📋 Inventory List"));
++
++        JPanel bottomPanel = new JPanel(new FlowLayout());
++        bottomPanel.setBackground(new Color(255, 240, 245));
++
++        txtSearch = new JTextField(20);
++        btnSearch = new JButton("🔍 Search");
++        btnRefresh = new JButton("🔄 Refresh");
++        btnGoToProducts = new JButton("🛙 Manage Products");
++        btnBack = new JButton("⬅️ Back");
++
++        bottomPanel.add(new JLabel("Search by Name:"));
++        bottomPanel.add(txtSearch);
++        bottomPanel.add(btnSearch);
++        bottomPanel.add(btnRefresh);
++        bottomPanel.add(btnGoToProducts);
++        bottomPanel.add(btnBack);
++
++        add(inputPanel, BorderLayout.NORTH);
++        add(scrollPane, BorderLayout.CENTER);
++        add(bottomPanel, BorderLayout.SOUTH);
++
++        btnAdd.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                addStock();
++            }
++        });
++
++        btnRemove.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                removeStock();
++            }
++        });
++
++        btnSearch.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                search();
++            }
++        });
++
++        btnRefresh.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                refreshList();
++            }
++        });
++
++        btnGoToProducts.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                new frmProduct();
++            }
++        });
++
++        btnBack.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                dispose();
++            }
++        });
++
++        refreshList();
++        setVisible(true);
++    }
++
++    private void addStock() {
++        try {
++            int id = Integer.parseInt(txtProductId.getText().trim());
++            String name = txtProductName.getText().trim();
++            int qty = Integer.parseInt(txtQuantity.getText().trim());
++
++            Inventory inv = new Inventory(id, name, qty, true);
++            im.Insert(inv);
++            JOptionPane.showMessageDialog(this, "✅ Stock added!");
++            refreshList();
++        } catch (Exception ex) {
++            JOptionPane.showMessageDialog(this, "❌ Invalid input.");
++        }
++    }
++
++    private void removeStock() {
++        try {
++            int id = Integer.parseInt(txtProductId.getText().trim());
++            String name = txtProductName.getText().trim();
++            int qty = Integer.parseInt(txtQuantity.getText().trim());
++
++            Inventory inv = new Inventory(id, name, qty, false);
++            im.Insert(inv);
++            JOptionPane.showMessageDialog(this, "✅ Stock removed!");
++            refreshList();
++        } catch (Exception ex) {
++            JOptionPane.showMessageDialog(this, "❌ Invalid input.");
++        }
++    }
++
++    private void search() {
++        String keyword = txtSearch.getText().trim().toLowerCase();
++        Inventory[] list = im.SelectAll();
++        StringBuilder sb = new StringBuilder();
++        int count = 0;
++
++        for (int i = 0; i < list.length; i++) {
++            Inventory inv = list[i];
++            if (inv != null && inv.getProductName().toLowerCase().contains(keyword)) {
++                sb.append(inv.toString()).append("\n");
++                count++;
++            }
++        }
++
++        if (count == 0) {
++            sb.append("🥺 No matches found.");
++        }
++
++        txtList.setText(sb.toString());
++    }
++
++    private void refreshList() {
++        Inventory[] list = im.SelectAll();
++        StringBuilder sb = new StringBuilder();
++        for (int i = 0; i < list.length; i++) {
++            Inventory inv = list[i];
++            if (inv != null) {
++                sb.append(inv.toString()).append("\n");
++            }
++        }
++
++        if (sb.length() == 0) {
++            txtList.setText("📦 Inventory is empty.");
++        } else {
++            txtList.setText(sb.toString());
++        }
++    }
++
++    public static void main(String[] args) {
++        new frmInventory();
++    }
++}
++
+Index: onlinestore-IS-master/src/managers/InventoryManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/managers/InventoryManager.java b/onlinestore-IS-master/src/managers/InventoryManager.java
+new file mode 100644
+--- /dev/null	(date 1746174969886)
++++ b/onlinestore-IS-master/src/managers/InventoryManager.java	(date 1746174969886)
+@@ -0,0 +1,36 @@
++
++
++
++
++package managers;
++
++import common.Inventory;
++import filemanager.txtFileManager;
++
++public class InventoryManager {
++    private txtFileManager fm;
++
++    public InventoryManager() {
++        fm = new txtFileManager("inventory.txt");
++    }
++
++    public void Insert(Inventory inv) {
++        fm.AppendRow(inv.toString());
++    }
++
++    public Inventory[] SelectAll() {
++        String[] rows = fm.GetArray();
++        if (rows == null || rows.length == 0) return new Inventory[0];
++
++        Inventory[] list = new Inventory[rows.length];
++        for (int i = 0; i < rows.length; i++) {
++            try {
++                list[i] = Inventory.fromString(rows[i]);
++            } catch (Exception e) {
++                list[i] = null;
++            }
++        }
++        return list;
++    }
++}
++
+Index: onlinestore-IS-master/src/ui/frmDiscountViewer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmDiscountViewer.java b/onlinestore-IS-master/src/ui/frmDiscountViewer.java
+new file mode 100644
+--- /dev/null	(date 1746174969870)
++++ b/onlinestore-IS-master/src/ui/frmDiscountViewer.java	(date 1746174969870)
+@@ -0,0 +1,88 @@
++
++
++
++
++
++
++package ui;
++
++import javax.swing.*;
++import java.awt.*;
++import common.Discount;
++import managers.DiscountManager;
++
++public class frmDiscountViewer extends JFrame {
++    private JTextArea txtList;
++    private DiscountManager dm;
++
++    public frmDiscountViewer() {
++        setTitle("🎟️ Available Discounts");
++        setSize(700, 500);
++        setLocationRelativeTo(null);
++        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
++        setLayout(new BorderLayout(10, 10));
++        getContentPane().setBackground(new Color(255, 240, 245));
++
++        dm = new DiscountManager();
++
++        JLabel lblTitle = new JLabel("🎁 Active & Inactive Discounts", SwingConstants.CENTER);
++        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
++        lblTitle.setForeground(new Color(120, 0, 120));
++        lblTitle.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
++
++        txtList = new JTextArea();
++        txtList.setEditable(false);
++        txtList.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 15));
++        txtList.setBackground(new Color(255, 250, 252));
++        txtList.setMargin(new Insets(10, 10, 10, 10));
++
++        JScrollPane scrollPane = new JScrollPane(txtList);
++        scrollPane.setBorder(BorderFactory.createTitledBorder("📋 Discount List"));
++
++        JButton btnRefresh = new JButton("🔄 Refresh");
++        btnRefresh.setFont(new Font("Segoe UI", Font.PLAIN, 14));
++        btnRefresh.setBackground(new Color(204, 255, 229));
++        btnRefresh.addActionListener(e -> refreshList());
++
++        JPanel bottomPanel = new JPanel();
++        bottomPanel.setBackground(new Color(255, 240, 245));
++        bottomPanel.add(btnRefresh);
++
++        add(lblTitle, BorderLayout.NORTH);
++        add(scrollPane, BorderLayout.CENTER);
++        add(bottomPanel, BorderLayout.SOUTH);
++
++        refreshList();
++        setVisible(true);
++    }
++
++    private void refreshList() {
++        Discount[] discounts = dm.SelectAll();
++        StringBuilder sb = new StringBuilder();
++
++        if (discounts.length == 0) {
++            sb.append("🥺 No discounts available yet!");
++        } else {
++            for (int i = 0; i < discounts.length; i++) {
++                Discount d = discounts[i];
++                if (d != null) {
++                    sb.append(i + 1).append(". ")
++                            .append("🏷️ Code: ").append(d.getDiscountCode())
++                            .append(" | 🔢 ").append(d.getDiscountPercent()).append("%")
++                            .append(" | ").append(d.isActive() ? "✅ Active" : "🚫 Inactive")
++                            .append("\n----------------------------------\n");
++                }
++            }
++        }
++
++        txtList.setText(sb.toString());
++    }
++
++    public static void main(String[] args) {
++        new frmDiscountViewer();
++    }
++}
++
++
++
++
+Index: myfiles/admin.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/myfiles/admin.txt b/myfiles/admin.txt
+new file mode 100644
+--- /dev/null	(date 1746149724429)
++++ b/myfiles/admin.txt	(date 1746149724429)
+@@ -0,0 +1,1 @@
++admin;1234
+Index: myfiles/discount.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>1;1234;20;1;10.0;false\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/myfiles/discount.txt b/myfiles/discount.txt
+--- a/myfiles/discount.txt	(revision e5f38c4ec1b00ac4cb3b8d94233ff94c21d84c8d)
++++ b/myfiles/discount.txt	(date 1746158084162)
+@@ -1,1 +1,2 @@
+ 1;1234;20;1;10.0;false
++0;20;true
+Index: onlinestore-IS-master/src/ui/FrmUser.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/FrmUser.java b/onlinestore-IS-master/src/ui/frmLoginAdmin.java
+rename from onlinestore-IS-master/src/ui/FrmUser.java
+rename to onlinestore-IS-master/src/ui/frmLoginAdmin.java
+--- a/onlinestore-IS-master/src/ui/FrmUser.java	(revision e5f38c4ec1b00ac4cb3b8d94233ff94c21d84c8d)
++++ b/onlinestore-IS-master/src/ui/frmLoginAdmin.java	(date 1746157692295)
+@@ -1,0 +1,176 @@
++
++
++
++package ui;
++
++import javax.swing.*;
++import java.awt.*;
++import java.awt.event.*;
++import managers.AdminManager;
++import common.Admin;
++
++public class frmLoginAdmin extends JFrame {
++    private JTextField txtUsername;
++    private JPasswordField txtPassword;
++    private JButton btnLogin;
++    private JLabel lblMessage;
++    private AdminManager adminManager;
++
++    public frmLoginAdmin() {
++        setTitle("🔐 Admin Login");
++        setSize(400, 250);
++        setLocationRelativeTo(null);
++        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
++        setLayout(new BorderLayout(10, 10));
++
++        adminManager = new AdminManager();
++
++        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
++        panel.setBorder(BorderFactory.createTitledBorder("Admin Credentials"));
++
++        txtUsername = new JTextField();
++        txtPassword = new JPasswordField();
++        btnLogin = new JButton("Login");
++        lblMessage = new JLabel(" ", SwingConstants.CENTER);
++        lblMessage.setForeground(Color.RED);
++
++        panel.add(new JLabel("Username:"));
++        panel.add(txtUsername);
++        panel.add(new JLabel("Password:"));
++        panel.add(txtPassword);
++
++        JPanel bottomPanel = new JPanel(new BorderLayout());
++        bottomPanel.add(btnLogin, BorderLayout.CENTER);
++        bottomPanel.add(lblMessage, BorderLayout.SOUTH);
++
++        add(panel, BorderLayout.CENTER);
++        add(bottomPanel, BorderLayout.SOUTH);
++
++        btnLogin.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                login();
++            }
++        });
++
++        setVisible(true);
++    }
++
++    private void login() {
++        String username = txtUsername.getText().trim();
++        String password = new String(txtPassword.getPassword());
++
++        if (username.equals("selin") && password.equals("1234")) {
++            JOptionPane.showMessageDialog(this, "✅ Login successful! Welcome Admin.");
++            dispose();
++            new frmAdminDashboard();
++        } else {
++            lblMessage.setText("❌ Invalid username or password.");
++        }
++    }
++
++    public static void main(String[] args) {
++        new frmLoginAdmin();
++    }
++}
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++//// === 3. نمونه فرم ورود Admin (کوتاه شده) ===
++//package ui;
++//
++//import javax.swing.*;
++//import java.awt.*;
++//
++//import managers.AdminManager;
++//import common.Admin;
++//
++//public class frmLoginAdmin extends JFrame {
++//    private JTextField txtUsername;
++//    private JPasswordField txtPassword;
++//    private JButton btnLogin;
++//    private AdminManager am;
++//
++//    public frmLoginAdmin() {
++//        setTitle("🔐 Admin Login");
++//        setSize(400, 250);
++//        setLocationRelativeTo(null);
++//        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
++//        setLayout(new BorderLayout(10, 10));
++//
++//        am = new AdminManager();
++//
++//        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
++//        txtUsername = new JTextField();
++//        txtPassword = new JPasswordField();
++//
++//        panel.add(new JLabel("👤 Username:"));
++//        panel.add(txtUsername);
++//        panel.add(new JLabel("🔑 Password:"));
++//        panel.add(txtPassword);
++//
++//        btnLogin = new JButton("🔓 Login");
++//        btnLogin.addActionListener(e -> login());
++//
++//        JPanel btnPanel = new JPanel();
++//        btnPanel.add(btnLogin);
++//
++//        add(panel, BorderLayout.CENTER);
++//        add(btnPanel, BorderLayout.SOUTH);
++//
++//        setVisible(true);
++//    }
++//
++//    private void login() {
++//        String username = txtUsername.getText();
++//        String password = new String(txtPassword.getPassword());
++//
++//        Admin admin = am.findByUsernameAndPassword(username, password);
++//        if (admin != null) {
++//            JOptionPane.showMessageDialog(this, "✅ Welcome Admin " + username);
++//            dispose();
++//            // new frmAdminDashboard(); // بعداً
++//        } else {
++//            JOptionPane.showMessageDialog(this, "❌ Invalid credentials");
++//        }
++//    }
++//
++//    public static void main(String[] args) {
++//        new frmLoginAdmin();
++//    }
++//}

@@ -1,0 +1,1285 @@
+Index: onlinestore-IS-master/src/managers/InventoryManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\n\r\n\r\n\r\npackage managers;\r\n\r\nimport common.Inventory;\r\nimport filemanager.txtFileManager;\r\n\r\npublic class InventoryManager {\r\n    private txtFileManager fm;\r\n\r\n    public InventoryManager() {\r\n        fm = new txtFileManager(\"inventory.txt\");\r\n    }\r\n\r\n    public void Insert(Inventory inv) {\r\n        fm.AppendRow(inv.toString());\r\n    }\r\n\r\n    public Inventory[] SelectAll() {\r\n        String[] rows = fm.GetArray();\r\n        if (rows == null || rows.length == 0) return new Inventory[0];\r\n\r\n        Inventory[] list = new Inventory[rows.length];\r\n        for (int i = 0; i < rows.length; i++) {\r\n            try {\r\n                list[i] = Inventory.fromString(rows[i]);\r\n            } catch (Exception e) {\r\n                list[i] = null;\r\n            }\r\n        }\r\n        return list;\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/managers/InventoryManager.java b/onlinestore-IS-master/src/managers/InventoryManager.java
+--- a/onlinestore-IS-master/src/managers/InventoryManager.java	(revision 2c6524e927b97561bad7664741c4a15d1b5625be)
++++ b/onlinestore-IS-master/src/managers/InventoryManager.java	(date 1746241285602)
+@@ -1,17 +1,27 @@
+-
+-
+-
+ 
+ package managers;
+ 
+ import common.Inventory;
+ import filemanager.txtFileManager;
+ 
++import java.io.File;
++
+ public class InventoryManager {
+     private txtFileManager fm;
+ 
+     public InventoryManager() {
+-        fm = new txtFileManager("inventory.txt");
++        // مطمئن می‌شویم فایل داخل پوشه myFiles وجود دارد
++        File file = new File("myFiles/inventory.txt");
++        try {
++            if (!file.exists()) {
++                file.createNewFile();
++                System.out.println("📁 Created missing inventory.txt file.");
++            }
++        } catch (Exception e) {
++            System.out.println("❌ Failed to create inventory.txt: " + e.getMessage());
++        }
++
++        fm = new txtFileManager("inventory.txt"); // این به صورت پیش‌فرض می‌ره داخل myFiles/
+     }
+ 
+     public void Insert(Inventory inv) {
+@@ -34,3 +44,4 @@
+     }
+ }
+ 
++
+Index: onlinestore-IS-master/src/managers/ProductManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package managers;\r\n\r\nimport common.Product;\r\nimport filemanager.txtFileManager;\r\n\r\npublic class ProductManager {\r\n    private txtFileManager fm;\r\n    public static void main(String[] args) {\r\n        ProductManager pm = new ProductManager();\r\n        Product[] products = pm.SelectAll();\r\n        for (Product p : products) {\r\n            if (p != null) System.out.println(p.getName());\r\n        }\r\n    }\r\n\r\n    public ProductManager() {\r\n        fm = new txtFileManager(\"product.txt\");\r\n    }\r\n\r\n    public void Insert(Product p) {\r\n        fm.AppendRow(p.toString());\r\n    }\r\n\r\n    public void Update(Product p, int row) {\r\n        fm.UpdateRow(p.toString(), row);\r\n    }\r\n\r\n    public void Delete(int row) {\r\n        fm.DeleteRow(row);\r\n    }\r\n\r\n    public Product[] SelectAll() {\r\n        String[] rows = fm.GetArray();\r\n        if (rows == null || rows.length == 0) {\r\n            return new Product[0]; // اگه فایلی نباشه یا خالی باشه\r\n        }\r\n\r\n        Product[] products = new Product[rows.length];\r\n        for (int i = 0; i < rows.length; i++) {\r\n            try {\r\n                if (rows[i] != null && !rows[i].trim().isEmpty()) {\r\n                    String[] parts = rows[i].split(\";\");\r\n                    if (parts.length == 10) {\r\n                        int id = Integer.parseInt(parts[0]);\r\n                        String name = parts[1];\r\n                        String brand = parts[2];\r\n                        String description = parts[3];\r\n                        double price = Double.parseDouble(parts[4]);\r\n                        int stock = Integer.parseInt(parts[5]);\r\n                        String category = parts[6];\r\n                        String skinType = parts[7];\r\n                        boolean isOrganic = Boolean.parseBoolean(parts[8]);\r\n                        String imageFileName = parts[9];\r\n\r\n                        products[i] = new Product(id, name, brand, description, price, stock, category, skinType, isOrganic, imageFileName);\r\n                    }\r\n                }\r\n            } catch (Exception ex) {\r\n                // اگر خطایی تو پارسینگ بود، اون محصول رد میشه\r\n                System.out.println(\"❌ Error reading product at row \" + i + \": \" + ex.getMessage());\r\n                products[i] = null;\r\n            }\r\n        }\r\n        return products;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/managers/ProductManager.java b/onlinestore-IS-master/src/managers/ProductManager.java
+--- a/onlinestore-IS-master/src/managers/ProductManager.java	(revision 2c6524e927b97561bad7664741c4a15d1b5625be)
++++ b/onlinestore-IS-master/src/managers/ProductManager.java	(date 1746225193888)
+@@ -1,3 +1,5 @@
++
++
+ package managers;
+ 
+ import common.Product;
+Index: myfiles/itemfeatures.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/myfiles/itemfeatures.txt b/myfiles/itemfeatures.txt
+new file mode 100644
+--- /dev/null	(date 1746230147869)
++++ b/myfiles/itemfeatures.txt	(date 1746230147869)
+@@ -0,0 +1,3 @@
++cosarex;best for skins with acne;oily;true
++ANUA;BEST FOR ITS SERUMS;OILY,DRY;false
++100;ANUA;THE BEST FOR ACNE;oily;false
+Index: onlinestore-IS-master/src/common/Wishlist.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/common/Wishlist.java b/onlinestore-IS-master/src/common/Wishlist.java
+new file mode 100644
+--- /dev/null	(date 1746238966967)
++++ b/onlinestore-IS-master/src/common/Wishlist.java	(date 1746238966967)
+@@ -0,0 +1,31 @@
++
++package common;
++
++public class Wishlist {
++    private int customerId;
++    private int productId;
++
++    public Wishlist(int customerId, int productId) {
++        this.customerId = customerId;
++        this.productId = productId;
++    }
++
++    public int getCustomerId() {
++        return customerId;
++    }
++
++    public int getProductId() {
++        return productId;
++    }
++
++    public String toString() {
++        return customerId + ";" + productId;
++    }
++
++    public static Wishlist fromString(String row) {
++        String[] parts = row.split(";");
++        int customerId = Integer.parseInt(parts[0]);
++        int productId = Integer.parseInt(parts[1]);
++        return new Wishlist(customerId, productId);
++    }
++}
+Index: onlinestore-IS-master/src/managers/WishlistManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/managers/WishlistManager.java b/onlinestore-IS-master/src/managers/WishlistManager.java
+new file mode 100644
+--- /dev/null	(date 1746241285622)
++++ b/onlinestore-IS-master/src/managers/WishlistManager.java	(date 1746241285622)
+@@ -0,0 +1,68 @@
++
++package managers;
++
++import common.Wishlist;
++import filemanager.txtFileManager;
++import java.util.ArrayList;
++
++public class WishlistManager {
++    private txtFileManager fm;
++
++    public WishlistManager() {
++        fm = new txtFileManager("wishlist.txt");
++    }
++
++    public void Insert(Wishlist wishlist) {
++        fm.AppendRow(wishlist.toString());
++    }
++
++    public Wishlist[] SelectAll() {
++        String[] rows = fm.GetArray();
++        if (rows == null || rows.length == 0) return new Wishlist[0];
++
++        Wishlist[] result = new Wishlist[rows.length];
++        for (int i = 0; i < rows.length; i++) {
++            try {
++                result[i] = Wishlist.fromString(rows[i]);
++            } catch (Exception e) {
++                result[i] = null;
++            }
++        }
++        return result;
++    }
++
++    public boolean Exists(int customerId, int productId) {
++        Wishlist[] all = SelectAll();
++        for (int i = 0; i < all.length; i++) {
++            if (all[i] != null && all[i].getCustomerId() == customerId && all[i].getProductId() == productId) {
++                return true;
++            }
++        }
++        return false;
++    }
++
++    public void Delete(int customerId, int productId) {
++        String[] rows = fm.GetArray();
++        ArrayList<String> updated = new ArrayList<String>();
++
++        for (int i = 0; i < rows.length; i++) {
++            if (rows[i] != null && !rows[i].trim().isEmpty()) {
++                String[] parts = rows[i].split(";");
++                if (parts.length >= 2) {
++                    int cId = Integer.parseInt(parts[0]);
++                    int pId = Integer.parseInt(parts[1]);
++                    if (cId == customerId && pId == productId) {
++                        continue; // حذفش کن
++                    }
++                }
++                updated.add(rows[i]);
++            }
++        }
++
++        fm.Clear();
++        for (String line : updated) {
++            fm.AppendRow(line);
++        }
++    }
++}
++
+Index: onlinestore-IS-master/src/common/Review.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package common; // Package location\r\n\r\n// Review class stores review details\r\npublic class Review {\r\n    private int productId; // ID of the product being reviewed\r\n    private String customerName; // Name of the customer writing the review\r\n    private int rating; // Rating (out of 5)\r\n    private String comment; // Comment text\r\n\r\n    public Review() {} // Empty constructor\r\n\r\n    // Constructor with all fields\r\n    public Review(int productId, String customerName, int rating, String comment) {\r\n        this.productId = productId;\r\n        this.customerName = customerName;\r\n        this.rating = rating;\r\n        this.comment = comment;\r\n    }\r\n\r\n    // Getters and Setters (simple read/write functions)\r\n    public int getProductId() {\r\n        return productId;\r\n    }\r\n\r\n    public void setProductId(int productId) {\r\n        this.productId = productId;\r\n    }\r\n\r\n    public String getCustomerName() {\r\n        return customerName;\r\n    }\r\n\r\n    public void setCustomerName(String customerName) {\r\n        this.customerName = customerName;\r\n    }\r\n\r\n    public int getRating() {\r\n        return rating;\r\n    }\r\n\r\n    public void setRating(int rating) {\r\n        this.rating = rating;\r\n    }\r\n\r\n    public String getComment() {\r\n        return comment;\r\n    }\r\n\r\n    public void setComment(String comment) {\r\n        this.comment = comment;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/common/Review.java b/onlinestore-IS-master/src/common/Review.java
+--- a/onlinestore-IS-master/src/common/Review.java	(revision 2c6524e927b97561bad7664741c4a15d1b5625be)
++++ b/onlinestore-IS-master/src/common/Review.java	(date 1746232376230)
+@@ -1,52 +1,55 @@
+-package common; // Package location
++// ===========================
++// File: common/Review.java
++// ===========================
++
++package common;
+ 
+-// Review class stores review details
++import java.time.LocalDate;
++import java.time.format.DateTimeFormatter;
++
+ public class Review {
+-    private int productId; // ID of the product being reviewed
+-    private String customerName; // Name of the customer writing the review
+-    private int rating; // Rating (out of 5)
+-    private String comment; // Comment text
+-
+-    public Review() {} // Empty constructor
++    private int productId;
++    private String customerName;
++    private int rating;
++    private String comment;
++    private String date;
+ 
+-    // Constructor with all fields
+-    public Review(int productId, String customerName, int rating, String comment) {
+-        this.productId = productId;
+-        this.customerName = customerName;
+-        this.rating = rating;
+-        this.comment = comment;
+-    }
+-
+-    // Getters and Setters (simple read/write functions)
+-    public int getProductId() {
+-        return productId;
+-    }
+-
+-    public void setProductId(int productId) {
++    public Review(int productId, String customerName, int rating, String comment, String date) {
+         this.productId = productId;
+-    }
+-
+-    public String getCustomerName() {
+-        return customerName;
+-    }
+-
+-    public void setCustomerName(String customerName) {
+         this.customerName = customerName;
+-    }
+-
+-    public int getRating() {
+-        return rating;
+-    }
+-
+-    public void setRating(int rating) {
+         this.rating = rating;
+-    }
+-
+-    public String getComment() {
+-        return comment;
+-    }
+-
+-    public void setComment(String comment) {
+         this.comment = comment;
++        this.date = date;
+     }
+-}
+\ No newline at end of file
++
++    public int getProductId() { return productId; }
++    public String getCustomerName() { return customerName; }
++    public int getRating() { return rating; }
++    public String getComment() { return comment; }
++    public String getDate() { return date; }
++
++    public void setRating(int rating) { this.rating = rating; }
++    public void setComment(String comment) { this.comment = comment; }
++
++    @Override
++    public String toString() {
++        return productId + ";" + customerName + ";" + rating + ";" + comment + ";" + date;
++    }
++
++    public static Review fromString(String row) {
++        String[] parts = row.split(";");
++        if (parts.length != 5) throw new IllegalArgumentException("Invalid review row");
++        int productId = Integer.parseInt(parts[0]);
++        String name = parts[1];
++        int rating = Integer.parseInt(parts[2]);
++        String comment = parts[3];
++        String date = parts[4];
++        return new Review(productId, name, rating, comment, date);
++    }
++
++    // Helper method to create review with today’s date
++    public static Review create(int productId, String customerName, int rating, String comment) {
++        String date = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
++        return new Review(productId, customerName, rating, comment, date);
++    }
++}
+Index: onlinestore-IS-master/src/managers/CurrentCustomer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/managers/CurrentCustomer.java b/onlinestore-IS-master/src/managers/CurrentCustomer.java
+new file mode 100644
+--- /dev/null	(date 1746241285586)
++++ b/onlinestore-IS-master/src/managers/CurrentCustomer.java	(date 1746241285586)
+@@ -0,0 +1,22 @@
++
++package managers;
++
++public class CurrentCustomer {
++    private static int loggedInCustomerId = -1;
++
++    public static void login(int customerId) {
++        loggedInCustomerId = customerId;
++    }
++
++    public static int getLoggedInCustomerId() {
++        return loggedInCustomerId;
++    }
++
++    public static void logout() {
++        loggedInCustomerId = -1;
++    }
++
++    public static boolean isLoggedIn() {
++        return loggedInCustomerId != -1;
++    }
++}
+Index: onlinestore-IS-master/src/common/ItemFeatures.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/common/ItemFeatures.java b/onlinestore-IS-master/src/common/ItemFeatures.java
+new file mode 100644
+--- /dev/null	(date 1746228094743)
++++ b/onlinestore-IS-master/src/common/ItemFeatures.java	(date 1746228094743)
+@@ -0,0 +1,40 @@
++package common;
++
++public class ItemFeatures {
++    private int productId;
++    private String brand;
++    private String description;
++    private String skinType;
++    private boolean isOrganic;
++
++    public ItemFeatures(int productId, String brand, String description, String skinType, boolean isOrganic) {
++        this.productId = productId;
++        this.brand = brand;
++        this.description = description;
++        this.skinType = skinType;
++        this.isOrganic = isOrganic;
++    }
++
++    public int getProductId() { return productId; }
++    public String getBrand() { return brand; }
++    public String getDescription() { return description; }
++    public String getSkinType() { return skinType; }
++    public boolean isOrganic() { return isOrganic; }
++
++    public void setBrand(String brand) { this.brand = brand; }
++    public void setDescription(String description) { this.description = description; }
++    public void setSkinType(String skinType) { this.skinType = skinType; }
++    public void setOrganic(boolean isOrganic) { this.isOrganic = isOrganic; }
++
++    @Override
++    public String toString() {
++        return productId + ";" + brand + ";" + description + ";" + skinType + ";" + isOrganic;
++    }
++
++    public static ItemFeatures fromString(String row) {
++        String[] parts = row.split(";");
++        if (parts.length != 5) throw new IllegalArgumentException("Invalid itemfeatures row: " + row);
++        int productId = Integer.parseInt(parts[0]);
++        return new ItemFeatures(productId, parts[1], parts[2], parts[3], Boolean.parseBoolean(parts[4]));
++    }
++}
+Index: onlinestore-IS-master/src/ui/frmWishlist.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmWishlist.java b/onlinestore-IS-master/src/ui/frmWishlist.java
+new file mode 100644
+--- /dev/null	(date 1746241285596)
++++ b/onlinestore-IS-master/src/ui/frmWishlist.java	(date 1746241285596)
+@@ -0,0 +1,123 @@
++
++// ==========================
++// File: ui/frmWishlist.java
++// ==========================
++
++package ui;
++
++import javax.swing.*;
++import java.awt.*;
++import java.awt.event.*;
++import managers.WishlistManager;
++import managers.ProductManager;
++import managers.CurrentCustomer;
++import common.Wishlist;
++import common.Product;
++
++public class frmWishlist extends JFrame {
++    private JPanel panelWishlist;
++    private JScrollPane scrollPane;
++    private Font emojiFont = new Font("Segoe UI Emoji", Font.PLAIN, 16);
++    private WishlistManager wm = new WishlistManager();
++    private ProductManager pm = new ProductManager();
++
++    public frmWishlist() {
++        setTitle("💖 Your Wishlist");
++        setSize(800, 600);
++        setLocationRelativeTo(null);
++        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
++        setLayout(new BorderLayout(10, 10));
++        getContentPane().setBackground(new Color(255, 240, 245));
++
++        panelWishlist = new JPanel(new GridLayout(0, 2, 10, 10));
++        panelWishlist.setBackground(new Color(255, 240, 245));
++
++        scrollPane = new JScrollPane(panelWishlist);
++        scrollPane.setBorder(BorderFactory.createTitledBorder("🧡 Saved Products"));
++
++        add(scrollPane, BorderLayout.CENTER);
++        refreshWishlist();
++        setVisible(true);
++    }
++
++    private void refreshWishlist() {
++        panelWishlist.removeAll();
++        Wishlist[] all = wm.SelectAll();
++        Product[] allProducts = pm.SelectAll();
++        int customerId = CurrentCustomer.getLoggedInCustomerId();
++
++        for (int i = 0; i < all.length; i++) {
++            Wishlist w = all[i];
++            if (w != null && w.getCustomerId() == customerId) {
++                for (int j = 0; j < allProducts.length; j++) {
++                    Product p = allProducts[j];
++                    if (p != null && p.getId() == w.getProductId()) {
++                        panelWishlist.add(createWishlistCard(p));
++                        break;
++                    }
++                }
++            }
++        }
++
++        panelWishlist.revalidate();
++        panelWishlist.repaint();
++    }
++
++    private JPanel createWishlistCard(Product p) {
++        JPanel card = new JPanel(new BorderLayout(5, 5));
++        card.setBackground(Color.WHITE);
++        card.setBorder(BorderFactory.createLineBorder(Color.PINK));
++        card.setPreferredSize(new Dimension(250, 350));
++
++        JLabel lblImage = new JLabel();
++        try {
++            ImageIcon icon = new ImageIcon("images/" + p.getImageFileName());
++            Image img = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
++            lblImage.setIcon(new ImageIcon(img));
++        } catch (Exception e) {
++            lblImage.setText("🖼️");
++            lblImage.setHorizontalAlignment(SwingConstants.CENTER);
++        }
++
++        JLabel lblName = new JLabel(p.getName(), SwingConstants.CENTER);
++        lblName.setFont(emojiFont);
++
++        JLabel lblPrice = new JLabel(p.getPrice() + " Toman", SwingConstants.CENTER);
++        lblPrice.setFont(emojiFont);
++
++        JButton btnRemove = new JButton("❌ Remove");
++        btnRemove.setFont(emojiFont);
++        btnRemove.setBackground(new Color(255, 204, 204));
++        btnRemove.addActionListener(new RemoveWishlistHandler(p.getId()));
++
++        JPanel infoPanel = new JPanel(new GridLayout(2, 1));
++        infoPanel.setBackground(Color.WHITE);
++        infoPanel.add(lblName);
++        infoPanel.add(lblPrice);
++
++        card.add(lblImage, BorderLayout.NORTH);
++        card.add(infoPanel, BorderLayout.CENTER);
++        card.add(btnRemove, BorderLayout.SOUTH);
++
++        return card;
++    }
++
++    private class RemoveWishlistHandler implements ActionListener {
++        private int productId;
++
++        public RemoveWishlistHandler(int productId) {
++            this.productId = productId;
++        }
++
++        public void actionPerformed(ActionEvent e) {
++            wm.Delete(CurrentCustomer.getLoggedInCustomerId(), productId);
++            JOptionPane.showMessageDialog(frmWishlist.this, "❌ Removed from wishlist!");
++            refreshWishlist();
++        }
++    }
++
++    public static void main(String[] args) {
++        new frmWishlist();
++    }
++}
++
+Index: onlinestore-IS-master/src/managers/ReviewManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package managers;\r\n\r\nimport common.Review; // Import Review class\r\nimport filemanager.txtFileManager; // Import filemanager (note the lowercase 'f')\r\nimport java.io.File; // File handling\r\n\r\n// Manager class to manage file operations for Review\r\npublic class ReviewManager {\r\n\r\n    private static final String FILE_NAME = \"Review.txt\"; // Name of file\r\n\r\n    // Static block to make sure file and folder exist\r\n    static {\r\n        File folder = new File(\"myFiles\");\r\n        if (!folder.exists()) {\r\n            folder.mkdirs(); // Create \"myFiles\" folder if missing\r\n        }\r\n\r\n        File file = new File(\"myFiles/\" + FILE_NAME);\r\n        if (!file.exists()) {\r\n            txtFileManager fm = new txtFileManager(FILE_NAME);\r\n            fm.CreateFile(); // Create Review.txt if missing\r\n        }\r\n    }\r\n\r\n    // Add a new Review to file\r\n    public static void addReview(Review review) {\r\n        txtFileManager fm = new txtFileManager(FILE_NAME);\r\n        fm.AppendRow(review.getProductId() + \";\" + review.getCustomerName() + \";\" + review.getRating() + \";\" + review.getComment());\r\n    }\r\n\r\n    // Get all Reviews from file\r\n    public static Review[] getAllReviews() {\r\n        txtFileManager fm = new txtFileManager(FILE_NAME);\r\n        String[] lines = fm.GetArray();\r\n        Review[] reviews = new Review[lines.length];\r\n        for (int i = 0; i < lines.length; i++) {\r\n            String[] parts = lines[i].split(\";\");\r\n            if (parts.length == 4) {\r\n                try {\r\n                    reviews[i] = new Review(Integer.parseInt(parts[0]), parts[1], Integer.parseInt(parts[2]), parts[3]);\r\n                } catch (NumberFormatException e) {\r\n                    e.printStackTrace(); // Show error if data wrong\r\n                }\r\n            }\r\n        }\r\n        return reviews; // Return all loaded reviews\r\n    }\r\n\r\n    // Delete a Review by row index\r\n    public static void deleteReview(int rowIndex) {\r\n        txtFileManager fm = new txtFileManager(FILE_NAME);\r\n        fm.DeleteRow(rowIndex);\r\n    }\r\n\r\n    // Update a Review at specific row\r\n    public static void updateReview(Review review, int rowIndex) {\r\n        txtFileManager fm = new txtFileManager(FILE_NAME);\r\n        fm.UpdateRow(review.getProductId() + \";\" + review.getCustomerName() + \";\" + review.getRating() + \";\" + review.getComment(), rowIndex);\r\n    }\r\n\r\n    // Get a single Review by row index\r\n    public static Review getReview(int rowIndex) {\r\n        txtFileManager fm = new txtFileManager(FILE_NAME);\r\n        String line = fm.GetRow(rowIndex);\r\n        if (line != null && !line.trim().isEmpty()) {\r\n            String[] parts = line.split(\";\");\r\n            if (parts.length == 4) {\r\n                try {\r\n                    return new Review(Integer.parseInt(parts[0]), parts[1], Integer.parseInt(parts[2]), parts[3]);\r\n                } catch (NumberFormatException e) {\r\n                    e.printStackTrace();\r\n                }\r\n            }\r\n        }\r\n        return null;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/managers/ReviewManager.java b/onlinestore-IS-master/src/managers/ReviewManager.java
+--- a/onlinestore-IS-master/src/managers/ReviewManager.java	(revision 2c6524e927b97561bad7664741c4a15d1b5625be)
++++ b/onlinestore-IS-master/src/managers/ReviewManager.java	(date 1746235761032)
+@@ -1,78 +1,56 @@
++
+ package managers;
+ 
+-import common.Review; // Import Review class
+-import filemanager.txtFileManager; // Import filemanager (note the lowercase 'f')
+-import java.io.File; // File handling
++import common.Review;
++import filemanager.txtFileManager;
+ 
+-// Manager class to manage file operations for Review
++import java.util.ArrayList;
++
+ public class ReviewManager {
+-
+-    private static final String FILE_NAME = "Review.txt"; // Name of file
++    private txtFileManager fm;
+ 
+-    // Static block to make sure file and folder exist
+-    static {
+-        File folder = new File("myFiles");
+-        if (!folder.exists()) {
+-            folder.mkdirs(); // Create "myFiles" folder if missing
+-        }
++    public ReviewManager() {
++        fm = new txtFileManager("review.txt");
++    }
+ 
+-        File file = new File("myFiles/" + FILE_NAME);
+-        if (!file.exists()) {
+-            txtFileManager fm = new txtFileManager(FILE_NAME);
+-            fm.CreateFile(); // Create Review.txt if missing
+-        }
++    public void Insert(Review r) {
++        fm.AppendRow(r.toString());
+     }
+ 
+-    // Add a new Review to file
+-    public static void addReview(Review review) {
+-        txtFileManager fm = new txtFileManager(FILE_NAME);
+-        fm.AppendRow(review.getProductId() + ";" + review.getCustomerName() + ";" + review.getRating() + ";" + review.getComment());
+-    }
++    public Review[] GetByProductId(int productId) {
++        String[] rows = fm.GetArray();
++        if (rows == null || rows.length == 0) return new Review[0];
+ 
+-    // Get all Reviews from file
+-    public static Review[] getAllReviews() {
+-        txtFileManager fm = new txtFileManager(FILE_NAME);
+-        String[] lines = fm.GetArray();
+-        Review[] reviews = new Review[lines.length];
+-        for (int i = 0; i < lines.length; i++) {
+-            String[] parts = lines[i].split(";");
+-            if (parts.length == 4) {
+-                try {
+-                    reviews[i] = new Review(Integer.parseInt(parts[0]), parts[1], Integer.parseInt(parts[2]), parts[3]);
+-                } catch (NumberFormatException e) {
+-                    e.printStackTrace(); // Show error if data wrong
++        ArrayList<Review> result = new ArrayList<Review>();
++
++        for (int i = 0; i < rows.length; i++) {
++            try {
++                Review r = Review.fromString(rows[i]);
++                if (r != null && r.getProductId() == productId) {
++                    result.add(r);
+                 }
++            } catch (Exception ex) {
++                System.out.println("❌ Error reading review at row " + i + ": " + ex.getMessage());
+             }
+         }
+-        return reviews; // Return all loaded reviews
+-    }
+ 
+-    // Delete a Review by row index
+-    public static void deleteReview(int rowIndex) {
+-        txtFileManager fm = new txtFileManager(FILE_NAME);
+-        fm.DeleteRow(rowIndex);
++        return result.toArray(new Review[0]);
+     }
+ 
+-    // Update a Review at specific row
+-    public static void updateReview(Review review, int rowIndex) {
+-        txtFileManager fm = new txtFileManager(FILE_NAME);
+-        fm.UpdateRow(review.getProductId() + ";" + review.getCustomerName() + ";" + review.getRating() + ";" + review.getComment(), rowIndex);
+-    }
++    // Optional: all reviews
++    public Review[] SelectAll() {
++        String[] rows = fm.GetArray();
++        if (rows == null || rows.length == 0) return new Review[0];
+ 
+-    // Get a single Review by row index
+-    public static Review getReview(int rowIndex) {
+-        txtFileManager fm = new txtFileManager(FILE_NAME);
+-        String line = fm.GetRow(rowIndex);
+-        if (line != null && !line.trim().isEmpty()) {
+-            String[] parts = line.split(";");
+-            if (parts.length == 4) {
+-                try {
+-                    return new Review(Integer.parseInt(parts[0]), parts[1], Integer.parseInt(parts[2]), parts[3]);
+-                } catch (NumberFormatException e) {
+-                    e.printStackTrace();
+-                }
++        Review[] reviews = new Review[rows.length];
++        for (int i = 0; i < rows.length; i++) {
++            try {
++                reviews[i] = Review.fromString(rows[i]);
++            } catch (Exception e) {
++                reviews[i] = null;
+             }
+         }
+-        return null;
++        return reviews;
+     }
+ }
++
+Index: myfiles/Review.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/myfiles/Review.txt b/myfiles/Review.txt
+--- a/myfiles/Review.txt	(revision 2c6524e927b97561bad7664741c4a15d1b5625be)
++++ b/myfiles/Review.txt	(date 1746235668017)
+@@ -1,0 +1,1 @@
++17;selin;5;it is the best;2025-05-02
+Index: myfiles/wishlist.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/myfiles/wishlist.txt b/myfiles/wishlist.txt
+new file mode 100644
+--- /dev/null	(date 1746240871893)
++++ b/myfiles/wishlist.txt	(date 1746240871893)
+@@ -0,0 +1,2 @@
++-1;9
++-1;17
+Index: onlinestore-IS-master/src/managers/ItemFeaturesManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/managers/ItemFeaturesManager.java b/onlinestore-IS-master/src/managers/ItemFeaturesManager.java
+new file mode 100644
+--- /dev/null	(date 1746230274221)
++++ b/onlinestore-IS-master/src/managers/ItemFeaturesManager.java	(date 1746230274221)
+@@ -0,0 +1,125 @@
++
++package managers;
++
++import common.ItemFeatures;
++import filemanager.txtFileManager;
++
++public class ItemFeaturesManager {
++    private txtFileManager fm;
++
++    public ItemFeaturesManager() {
++        fm = new txtFileManager("itemfeatures.txt");
++    }
++
++    public void Insert(ItemFeatures item) {
++        fm.AppendRow(item.toString());
++    }
++
++    public void Update(ItemFeatures item, int row) {
++        fm.UpdateRow(item.toString(), row);
++    }
++
++    public void Delete(int row) {
++        fm.DeleteRow(row);
++    }
++
++    public ItemFeatures[] SelectAll() {
++        String[] rows = fm.GetArray();
++        if (rows == null || rows.length == 0) return new ItemFeatures[0];
++
++        ItemFeatures[] list = new ItemFeatures[rows.length];
++        for (int i = 0; i < rows.length; i++) {
++            try {
++                list[i] = ItemFeatures.fromString(rows[i]);
++            } catch (Exception e) {
++                list[i] = null;
++            }
++        }
++        return list;
++    }
++
++    public ItemFeatures SearchByProductId(int productId) {
++        ItemFeatures[] all = SelectAll();
++        for (int i = 0; i < all.length; i++) {
++            if (all[i] != null && all[i].getProductId() == productId) {
++                return all[i];
++            }
++        }
++        return null;
++    }
++
++    public void InsertOrUpdate(ItemFeatures item) {
++        ItemFeatures[] all = SelectAll();
++        for (int i = 0; i < all.length; i++) {
++            if (all[i] != null && all[i].getProductId() == item.getProductId()) {
++                Update(item, i);
++                return;
++            }
++        }
++        Insert(item);
++    }
++}
++
++
++
++
++
++
++
++//
++//
++//// =============================
++//// File: managers/ItemFeaturesManager.java
++//// =============================
++//
++//package managers;
++//
++//import common.ItemFeatures;
++//import filemanager.txtFileManager;
++//
++//public class ItemFeaturesManager {
++//    private txtFileManager fm;
++//
++//    public ItemFeaturesManager() {
++//        fm = new txtFileManager("itemfeatures.txt");
++//    }
++//
++//    public void Insert(ItemFeatures item) {
++//        fm.AppendRow(item.toString());
++//    }
++//
++//    public void Update(ItemFeatures item, int row) {
++//        fm.UpdateRow(item.toString(), row);
++//    }
++//
++//    public void Delete(int row) {
++//        fm.DeleteRow(row);
++//    }
++//
++//    public ItemFeatures[] SelectAll() {
++//        String[] rows = fm.GetArray();
++//        if (rows == null || rows.length == 0) return new ItemFeatures[0];
++//
++//        ItemFeatures[] list = new ItemFeatures[rows.length];
++//        for (int i = 0; i < rows.length; i++) {
++//            try {
++//                list[i] = ItemFeatures.fromString(rows[i]);
++//            } catch (Exception e) {
++//                list[i] = null;
++//            }
++//        }
++//        return list;
++//    }
++//
++//    public ItemFeatures SearchByBrand(String brand) {
++//        ItemFeatures[] all = SelectAll();
++//        if (all == null) return null;
++//
++//        for (int i = 0; i < all.length; i++) {
++//            if (all[i] != null && all[i].getBrand().equalsIgnoreCase(brand)) {
++//                return all[i];
++//            }
++//        }
++//        return null;
++//    }
++//}
+Index: onlinestore-IS-master/src/ui/frmItemFeatures.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmItemFeatures.java b/onlinestore-IS-master/src/ui/frmItemFeatures.java
+new file mode 100644
+--- /dev/null	(date 1746230274228)
++++ b/onlinestore-IS-master/src/ui/frmItemFeatures.java	(date 1746230274228)
+@@ -0,0 +1,108 @@
++
++package ui;
++
++import common.ItemFeatures;
++import managers.ItemFeaturesManager;
++
++import javax.swing.*;
++import java.awt.event.*;
++
++public class frmItemFeatures extends JFrame {
++    private JComboBox<String> cmbSkinType;
++    private JTextField txtBrand, txtDescription;
++    private JCheckBox chkOrganic;
++    private JButton btnSave;
++
++    private int productId;
++    private JTextField refBrand;
++    private JTextField refDescription;
++    private JTextField refSkinType;
++    private JTextField refIsOrganic;
++
++    private ItemFeaturesManager manager;
++
++    public frmItemFeatures(int productId, JTextField refBrand, JTextField refDescription, JTextField refSkinType, JTextField refIsOrganic) {
++        this.productId = productId;
++        this.refBrand = refBrand;
++        this.refDescription = refDescription;
++        this.refSkinType = refSkinType;
++        this.refIsOrganic = refIsOrganic;
++
++        setTitle("Item Features");
++        setSize(400, 300);
++        setLocationRelativeTo(null);
++        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
++        setLayout(null);
++
++        manager = new ItemFeaturesManager();
++
++        JLabel lblBrand = new JLabel("Brand:");
++        lblBrand.setBounds(30, 30, 100, 25);
++        add(lblBrand);
++
++        txtBrand = new JTextField();
++        txtBrand.setBounds(140, 30, 200, 25);
++        add(txtBrand);
++
++        JLabel lblDesc = new JLabel("Description:");
++        lblDesc.setBounds(30, 70, 100, 25);
++        add(lblDesc);
++
++        txtDescription = new JTextField();
++        txtDescription.setBounds(140, 70, 200, 25);
++        add(txtDescription);
++
++        JLabel lblSkin = new JLabel("Skin Type:");
++        lblSkin.setBounds(30, 110, 100, 25);
++        add(lblSkin);
++
++        cmbSkinType = new JComboBox<>(new String[]{"dry", "oily", "sensitive", "normal", "combination"});
++        cmbSkinType.setBounds(140, 110, 200, 25);
++        add(cmbSkinType);
++
++        chkOrganic = new JCheckBox("Is Organic?");
++        chkOrganic.setBounds(140, 150, 200, 25);
++        add(chkOrganic);
++
++        btnSave = new JButton("Save");
++        btnSave.setBounds(140, 190, 100, 30);
++        add(btnSave);
++
++        btnSave.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                String brand = txtBrand.getText().trim();
++                String desc = txtDescription.getText().trim();
++                String skinType = cmbSkinType.getSelectedItem().toString();
++                boolean isOrg = chkOrganic.isSelected();
++
++                if (brand.equals("") || desc.equals("")) {
++                    JOptionPane.showMessageDialog(frmItemFeatures.this, "Please fill all fields.");
++                    return;
++                }
++
++                ItemFeatures f = new ItemFeatures(productId, brand, desc, skinType, isOrg);
++                manager.InsertOrUpdate(f);
++
++                refBrand.setText(brand);
++                refDescription.setText(desc);
++                refSkinType.setText(skinType);
++                refIsOrganic.setText(String.valueOf(isOrg));
++
++                JOptionPane.showMessageDialog(frmItemFeatures.this, "✅ Features saved.");
++                dispose();
++            }
++        });
++
++        loadExisting();
++    }
++
++    private void loadExisting() {
++        ItemFeatures existing = manager.SearchByProductId(productId);
++        if (existing != null) {
++            txtBrand.setText(existing.getBrand());
++            txtDescription.setText(existing.getDescription());
++            cmbSkinType.setSelectedItem(existing.getSkinType());
++            chkOrganic.setSelected(existing.isOrganic());
++        }
++    }
++}
+\ No newline at end of file
+Index: onlinestore-IS-master/src/ui/frmReviewPanel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/onlinestore-IS-master/src/ui/frmReviewPanel.java b/onlinestore-IS-master/src/ui/frmReviewPanel.java
+new file mode 100644
+--- /dev/null	(date 1746235193977)
++++ b/onlinestore-IS-master/src/ui/frmReviewPanel.java	(date 1746235193977)
+@@ -0,0 +1,350 @@
++
++
++// =============================
++// File: ui/frmReviewPanel.java
++// =============================
++
++package ui;
++
++import common.Review;
++import managers.ReviewManager;
++
++import javax.swing.*;
++import javax.swing.table.DefaultTableModel;
++import java.awt.*;
++import java.awt.event.*;
++
++public class frmReviewPanel extends JFrame {
++    private JTable table;
++    private DefaultTableModel model;
++    private JTextField txtName;
++    private JComboBox<String> cmbRating;
++    private JTextArea txtComment;
++    private JButton btnSubmit;
++
++    private int productId;
++    private ReviewManager rm;
++
++    public frmReviewPanel(int productId) {
++        this.productId = productId;
++        this.rm = new ReviewManager();
++
++        setTitle("📝 Reviews for Product " + productId);
++        setSize(600, 520);
++        setLocationRelativeTo(null);
++        setLayout(null);
++        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
++        getContentPane().setBackground(new Color(255, 240, 250));
++
++        model = new DefaultTableModel();
++        model.addColumn("👤 Customer");
++        model.addColumn("⭐ Rating");
++        model.addColumn("💬 Comment");
++        model.addColumn("📅 Date");
++
++        table = new JTable(model);
++        JScrollPane scroll = new JScrollPane(table);
++        scroll.setBounds(20, 20, 540, 200);
++        add(scroll);
++
++        JLabel lblName = new JLabel("👤 Your Name:");
++        lblName.setBounds(20, 240, 100, 25);
++        add(lblName);
++
++        txtName = new JTextField();
++        txtName.setBounds(130, 240, 200, 25);
++        add(txtName);
++
++        JLabel lblRating = new JLabel("⭐ Rating:");
++        lblRating.setBounds(20, 280, 100, 25);
++        add(lblRating);
++
++        cmbRating = new JComboBox<>(new String[]{"1", "2", "3", "4", "5"});
++        cmbRating.setBounds(130, 280, 50, 25);
++        add(cmbRating);
++
++        JLabel lblComment = new JLabel("💬 Comment:");
++        lblComment.setBounds(20, 320, 100, 25);
++        add(lblComment);
++
++        txtComment = new JTextArea();
++        JScrollPane commentScroll = new JScrollPane(txtComment);
++        commentScroll.setBounds(130, 320, 300, 60);
++        add(commentScroll);
++
++        btnSubmit = new JButton("✨ Submit Review");
++        btnSubmit.setBounds(130, 400, 160, 30);
++        btnSubmit.setBackground(new Color(255, 204, 229));
++        btnSubmit.setFont(new Font("Segoe UI Emoji", Font.BOLD, 13));
++        add(btnSubmit);
++
++        btnSubmit.addActionListener(new ActionListener() {
++            public void actionPerformed(ActionEvent e) {
++                String name = txtName.getText().trim();
++                String comment = txtComment.getText().trim();
++                int rating = Integer.parseInt(cmbRating.getSelectedItem().toString());
++
++                if (name.equals("") || comment.equals("")) {
++                    JOptionPane.showMessageDialog(frmReviewPanel.this, "Please fill all fields.");
++                    return;
++                }
++
++                Review review = Review.create(productId, name, rating, comment);
++                rm.Insert(review);
++                JOptionPane.showMessageDialog(frmReviewPanel.this, "✅ Review submitted!");
++                loadReviews();
++                txtName.setText("");
++                txtComment.setText("");
++            }
++        });
++
++        loadReviews();
++    }
++
++    private void loadReviews() {
++        model.setRowCount(0);
++        Review[] reviews = rm.GetByProductId(productId);
++        for (Review r : reviews) {
++            model.addRow(new Object[]{
++                    r.getCustomerName(),
++                    r.getRating(),
++                    r.getComment(),
++                    r.getDate()
++            });
++        }
++    }
++
++    public static void main(String[] args) {
++        new frmReviewPanel(101).setVisible(true);
++    }
++
++    // 👇 داخل همین کلاس: نسخه‌ی مستقل فقط برای ثبت
++    public static class frmReview extends JFrame {
++        public frmReview(int productId) {
++            setTitle("Write a Review");
++            setSize(400, 300);
++            setLocationRelativeTo(null);
++            setLayout(null);
++            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
++
++            JLabel lblName = new JLabel("Your Name:");
++            lblName.setBounds(30, 30, 100, 25);
++            add(lblName);
++
++            JTextField txtName = new JTextField();
++            txtName.setBounds(130, 30, 200, 25);
++            add(txtName);
++
++            JLabel lblRating = new JLabel("Rating:");
++            lblRating.setBounds(30, 70, 100, 25);
++            add(lblRating);
++
++            JComboBox<String> cmbRating = new JComboBox<>(new String[]{"1", "2", "3", "4", "5"});
++            cmbRating.setBounds(130, 70, 50, 25);
++            add(cmbRating);
++
++            JLabel lblComment = new JLabel("Comment:");
++            lblComment.setBounds(30, 110, 100, 25);
++            add(lblComment);
++
++            JTextArea txtComment = new JTextArea();
++            JScrollPane scroll = new JScrollPane(txtComment);
++            scroll.setBounds(130, 110, 200, 60);
++            add(scroll);
++
++            JButton btnSubmit = new JButton("Submit");
++            btnSubmit.setBounds(130, 190, 100, 30);
++            add(btnSubmit);
++
++            btnSubmit.addActionListener(e -> {
++                String name = txtName.getText().trim();
++                String comment = txtComment.getText().trim();
++                int rating = Integer.parseInt(cmbRating.getSelectedItem().toString());
++                if (name.equals("") || comment.equals("")) {
++                    JOptionPane.showMessageDialog(frmReview.this, "Fill all fields");
++                    return;
++                }
++                new ReviewManager().Insert(Review.create(productId, name, rating, comment));
++                JOptionPane.showMessageDialog(frmReview.this, "Review Submitted");
++                dispose();
++            });
++        }
++    }
++
++    // 👇 داخل همین کلاس: نسخه‌ی مستقل فقط برای نمایش
++    public static class frmShowReviews extends JFrame {
++        public frmShowReviews(int productId) {
++            setTitle("View Reviews");
++            setSize(500, 400);
++            setLocationRelativeTo(null);
++            setLayout(new BorderLayout());
++            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
++
++            DefaultTableModel model = new DefaultTableModel();
++            model.addColumn("Customer");
++            model.addColumn("Rating");
++            model.addColumn("Comment");
++            model.addColumn("Date");
++
++            JTable table = new JTable(model);
++            JScrollPane scroll = new JScrollPane(table);
++            add(scroll, BorderLayout.CENTER);
++
++            Review[] reviews = new ReviewManager().GetByProductId(productId);
++            for (Review r : reviews) {
++                model.addRow(new Object[]{
++                        r.getCustomerName(), r.getRating(), r.getComment(), r.getDate()
++                });
++            }
++        }
++    }
++}
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++//package ui;
++//
++//import common.Review;
++//import managers.ReviewManager;
++//
++//import javax.swing.*;
++//import javax.swing.table.DefaultTableModel;
++//import java.awt.*;
++//import java.awt.event.*;
++//
++//public class frmReviewPanel extends JFrame {
++//    private JTable table;
++//    private DefaultTableModel model;
++//    private JTextField txtName;
++//    private JComboBox<String> cmbRating;
++//    private JTextArea txtComment;
++//    private JButton btnSubmit;
++//
++//    private int productId;
++//    private ReviewManager rm;
++//
++//    public frmReviewPanel(int productId) {
++//        this.productId = productId;
++//        this.rm = new ReviewManager();
++//
++//        setTitle("Reviews for Product ID: " + productId);
++//        setSize(600, 500);
++//        setLocationRelativeTo(null);
++//        setLayout(null);
++//        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
++//
++//        model = new DefaultTableModel();
++//        model.addColumn("Customer");
++//        model.addColumn("Rating");
++//        model.addColumn("Comment");
++//        model.addColumn("Date");
++//
++//        table = new JTable(model);
++//        JScrollPane scroll = new JScrollPane(table);
++//        scroll.setBounds(20, 20, 540, 200);
++//        add(scroll);
++//
++//        JLabel lblName = new JLabel("Your Name:");
++//        lblName.setBounds(20, 240, 100, 25);
++//        add(lblName);
++//
++//        txtName = new JTextField();
++//        txtName.setBounds(120, 240, 200, 25);
++//        add(txtName);
++//
++//        JLabel lblRating = new JLabel("Rating:");
++//        lblRating.setBounds(20, 280, 100, 25);
++//        add(lblRating);
++//
++//        cmbRating = new JComboBox<>(new String[]{"1", "2", "3", "4", "5"});
++//        cmbRating.setBounds(120, 280, 50, 25);
++//        add(cmbRating);
++//
++//        JLabel lblComment = new JLabel("Comment:");
++//        lblComment.setBounds(20, 320, 100, 25);
++//        add(lblComment);
++//
++//        txtComment = new JTextArea();
++//        JScrollPane commentScroll = new JScrollPane(txtComment);
++//        commentScroll.setBounds(120, 320, 300, 60);
++//        add(commentScroll);
++//
++//        btnSubmit = new JButton("Submit Review");
++//        btnSubmit.setBounds(120, 400, 150, 30);
++//        add(btnSubmit);
++//
++//        btnSubmit.addActionListener(new ActionListener() {
++//            public void actionPerformed(ActionEvent e) {
++//                String name = txtName.getText().trim();
++//                String comment = txtComment.getText().trim();
++//                int rating = Integer.parseInt(cmbRating.getSelectedItem().toString());
++//
++//                if (name.equals("") || comment.equals("")) {
++//                    JOptionPane.showMessageDialog(frmReviewPanel.this, "Please fill all fields.");
++//                    return;
++//                }
++//
++//                Review review = Review.create(productId, name, rating, comment);
++//                rm.Insert(review);
++//                JOptionPane.showMessageDialog(frmReviewPanel.this, "✅ Review submitted!");
++//                loadReviews();
++//                txtName.setText("");
++//                txtComment.setText("");
++//            }
++//        });
++//
++//        loadReviews();
++//    }
++//
++//    private void loadReviews() {
++//        model.setRowCount(0);
++//        Review[] reviews = rm.GetByProductId(productId);
++//        for (Review r : reviews) {
++//            model.addRow(new Object[]{
++//                    r.getCustomerName(),
++//                    r.getRating(),
++//                    r.getComment(),
++//                    r.getDate()
++//            });
++//        }
++//    }
++//
++//    public static void main(String[] args) {
++//        new frmReviewPanel(101).setVisible(true);
++//    }
++//}
+diff --git a/onlinestore-IS-master/src/ui/frmReview.java b/myfiles/inventory.txt
+rename from onlinestore-IS-master/src/ui/frmReview.java
+rename to myfiles/inventory.txt
